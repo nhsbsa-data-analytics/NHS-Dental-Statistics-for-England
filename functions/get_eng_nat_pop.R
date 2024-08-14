@@ -1,8 +1,9 @@
 #version of ons_nat_pop() function to get national mid year estimates 
 #data from https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2023
 #amended function as mid-year 2023 estimates currently only available for England and Wales nationally
+#example  eng_national_pop <- eng_nat_pop()
 
-eng_nat_pop <-
+get_eng_nat_pop <-
   function(url = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales/mid20232023localauthorityboundarieseditionofthisdataset/mye23tablesew.xlsx") {
 
     df <- invisible(openxlsx::read.xlsx(
