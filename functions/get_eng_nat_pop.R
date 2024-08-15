@@ -1,37 +1,32 @@
-#version of ons_nat_pop() function to get national mid year estimates 
+#version of ons_nat_pop() function to get national mid year estimates
+#removes population of Isles of Scilly Local Authority
 #data from https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2023
-#amended function as mid-year 2023 estimates currently only available for England and Wales nationally
-#example  eng_national_pop <- eng_nat_pop()
+#example  eng_national_pop <- get_eng_nat_pop()
 
 get_eng_nat_pop <-
-  function(url = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales/mid20232023localauthorityboundarieseditionofthisdataset/mye23tablesew.xlsx") {
-
+  function(url = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales/mid2011tomid2023detailedtimeserieseditionofthisdataset/myebtablesenglandwales20112023.xlsx") {
+    
     df <- invisible(openxlsx::read.xlsx(
       xlsxFile = url,
-        sheet = 11,
-      startRow = 8,
+      sheet = 5,
+      startRow = 2,
       colNames = TRUE,
-      cols = c(1:8)
-      ))
-      
+      cols = c(1,2,3,4,5,14,15,16,17,18)
+    ))
+     
+    #remove Isles of Scilly local authority by filtering on LA 23 code 
       pop_df <- df |>
-        dplyr::select(
-          Code,
-          Name,
-          `Mid-2023`,
-          `Mid-2022`,
-          `Mid-2021`,
-          `Mid-2020`,
-          `Mid-2019`
-        ) |>
-        dplyr::filter(Name == "ENGLAND") |>
+        dplyr::filter(country == "E" & ladcode23 != "E06000053") |>
         tidyr::pivot_longer(
-          cols = starts_with("Mid-"),
-          names_to = "Year",
-          names_prefix = "Mid-",
-          values_to = "Population",
+          cols = starts_with("population_"),
+          names_to = "year",
+          names_prefix = "population_",
+          values_to = "total_population",
           values_drop_na = TRUE
-        )
+        ) |>
+        dplyr::group_by(country, year) |>
+        dplyr::summarise(population = sum(total_population)) |>
+        ungroup()
       
     return(pop_df)
       
