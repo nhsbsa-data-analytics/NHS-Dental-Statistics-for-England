@@ -17,12 +17,12 @@ for (file in function_files) {
 lookups_list <- get_lsoa_icb_lookups()
 
 # get lsoa level population data for 2019, 20202, 2021, and 2022
-lsoa_list_t <- get_lsoa_pop_raw_data()
+lsoa_list <- get_lsoa_pop_raw_data()
 
 # get lookups from list for lsoa 2011 and lsoa 2021 level data to map
 # lsoa11 locations to 2022 ICB boundaries and lsoa21 locations to 2023 ICB boundaries
 lsoa11_lookup <- lookups_list$lsoa11_icb22
-lsoa21_lookup <- lookups_list$lsoa21_icb_23
+lsoa21_lookup <- lookups_list$lsoa21_icb23
 
 # get lsoa level population data from list
 lsoa_df_2019 <- lsoa_list$lsoa_2019

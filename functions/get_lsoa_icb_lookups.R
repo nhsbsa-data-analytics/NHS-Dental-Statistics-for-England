@@ -22,7 +22,7 @@ get_lsoa_icb_lookups <- function(lsoa11_link = "https://hub.arcgis.com/api/v3/da
   
   lookups <- list()
   lookups$lsoa11_icb22 <- lsoa11_to_icb22
-  lookups$lsoa21_icb_23 <- lsoa21_to_icb23
+  lookups$lsoa21_icb23 <- lsoa21_to_icb23
   lookups$region_22 <- region_22
   lookups$region_23 <- region_23
   
