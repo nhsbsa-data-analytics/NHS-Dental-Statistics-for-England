@@ -21,8 +21,7 @@ get_lsoa_pop_raw_data <-
         ),
         sheet = 4,
         startRow = 5,
-        colNames = TRUE,
-        cols = c(1:7)
+        colNames = TRUE
       )
     unlink(c(temp, temp2))
     
@@ -32,17 +31,16 @@ get_lsoa_pop_raw_data <-
         xlsxFile = link_2020,
         sheet = 4,
         startRow = 5,
-        colNames = TRUE,
-        cols = c(1, 2, 5, 6, 7)
-      )
+        colNames = TRUE)
+    
     lsoa_2021 <-
       openxlsx::read.xlsx(
         xlsxFile = link_2021_22,
         sheet = 5,
         startRow = 4,
-        colNames = TRUE,
-        cols = c(1:5)
+        colNames = TRUE
       )
+    
     #read in 2022 data with single year of age columns
     lsoa_2022 <-
       openxlsx::read.xlsx(

@@ -1,6 +1,14 @@
 # example script using functions from NHS dental statistics repo
 # to get population by sub-ICB in England from 2019 to 2022 (latest available)
-# excludes Isles of Scilly
+
+#1. load packages
+#2. get ONS lookups and raw LSOA population data
+#3. get sub-Integrated Care Board Location (SICBL) population
+#4. get NHS region population 
+#5. get ICB population by age
+#6. get NHS region population by age
+
+# 1. Load packages and source functions ----------------------------------------
 
 #library(dplyr)
 #library(openxlsx)
@@ -17,6 +25,8 @@ function_files <- list.files(path = "functions", pattern = "\\.R$")
 for (file in function_files) {
   source(file.path("functions", file))
 }
+
+#2. Get ONS lookups and raw LSOA population data -------------------------------
 
 # get list of ONS lookup files
 lookups_list <- get_lsoa_icb_lookups()
@@ -35,6 +45,8 @@ lsoa_df_2020 <- lsoa_list$lsoa_2020
 lsoa_df_2021 <- lsoa_list$lsoa_2021
 lsoa_df_2022 <- lsoa_list$lsoa_2022
 
+#3. Get sub-Integrated Care Board Location (SICBL) population ------------------
+
 # get population data for sub-icb by year
 sub_icb_pop <- get_eng_sicb_pop(
   lsoa11_lookup = lsoa11_lookup,
@@ -52,10 +64,13 @@ sub_icb_pop <- get_eng_sicb_pop(
 #length(unique(sub_icb_pop[["SICBLCD"]]))
 #length(unique(sub_icb_pop[["ICBCD"]]))
 
-# using CDH columns gives correct numbers (42 unique ICB codes, 106 unique SICBL codes)
+# using CDH columns gives correct numbers 
+# (42 unique ICB codes, 106 unique SICBL codes)
 
 #length(unique(sub_icb_pop[["ICBCDH"]]))
 #length(unique(sub_icb_pop[["SICBLCDH"]]))
+
+#4. Get NHS region population --------------------------------------------------
 
 # population by region
 # to be put into a function in future
@@ -78,3 +93,8 @@ nhs_eng_region_pop <- sub_icb_pop |>
 
 # check if 7 NHS regions present in final data  
 #length(unique(sicb_region_pop[["NHSER23CD"]]))
+
+#5. TO DO: Get ICB population by age -------------------------------------------
+
+
+#6. TO DO:  get NHS region population by age -----------------------------------

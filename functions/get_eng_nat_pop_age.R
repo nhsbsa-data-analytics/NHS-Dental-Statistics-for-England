@@ -1,5 +1,4 @@
 #version of ons_nat_pop() function to get national mid year estimates 
-#excludes Isles of Scilly Local Authority due to dental data coverage
 #data available by dental publication age bands or by adult/child split
 #data from https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2023
 #to include data from mid-2023 and get agebands, function gets local authority level data
@@ -19,7 +18,7 @@ get_eng_nat_pop_age <-
     ))
     
     pop_df <- df |>
-      dplyr::filter(country == "E" & ladcode23 != "E06000053") |>
+      dplyr::filter(country == "E") |>
       tidyr::pivot_longer(
         cols = starts_with("population_"),
         names_to = "year",
