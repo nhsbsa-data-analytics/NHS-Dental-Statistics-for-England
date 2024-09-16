@@ -401,27 +401,41 @@ wal_2324_workforce <- combined_data |>
     &
       NHSAREATEAMCODE %in% c("7A1", '7A2', '7A3', '7A4', '7A5', '7A6', '7A7')
     & (UOA > 0 | UDA > 0)
-  ) |>
+    & FD %in% c(NA, "N")) |>
   dplyr::mutate(PERFORMERAGE = as.numeric(age_calc(from = PERFORMERDATEOFBIRTH,
                                                    to = "2023/09/30"))) |>
   dplyr::mutate(TYPEOFCONTRACT = case_when(PAIDNOTPAIDBYNHSBSA == "N" ~ "TDS",
                                            TRUE ~ TYPEOFCONTRACT)) |>
   dplyr::mutate(
-    GDS_FLAG = case_when(TYPEOFCONTRACT == "GDS" ~ "Y",
-                         TRUE ~ "N"),
+    GDS_FLAG = case_when(TYPEOFCONTRACT == "GDS" ~ 1,
+                         TRUE ~ 0),
     PDS_FLAG = case_when(
-      TYPEOFCONTRACT == "PDS" ~ "Y",
-      TYPEOFCONTRACT == "PDS Plus" ~ "Y",
-      TRUE ~ "N"
+      TYPEOFCONTRACT == "PDS" ~ 1,
+      TYPEOFCONTRACT == "PDS Plus" ~ 1,
+      TRUE ~ 0
     ),
-    TDS_FLAG = case_when(TYPEOFCONTRACT == "TDS" ~ "Y",
-                         TRUE ~ "N"),
+    TDS_FLAG = case_when(TYPEOFCONTRACT == "TDS" ~ 1,
+                         TRUE ~ 0),
     AGEGROUP = case_when(
       PERFORMERAGE <= 35 ~ "Under 35",
       PERFORMERAGE <= 44 ~ "35-44",
       PERFORMERAGE <= 54 ~ "45-54",
       PERFORMERAGE >= 55 ~ "55+",
       TRUE ~ as.character(PERFORMERAGE)
+    )
+  ) |>
+  dplyr::group_by(PERFORMERGENDER, NHSAREATEAMCODE, PERFORMER, TYPEOFCONTRACT,
+                  GDS_FLAG, PDS_FLAG, TDS_FLAG, AGEGROUP) |>
+  dplyr::summarise(TOTAL_UDA = sum(UDA),
+                   TOTAL_UOA = sum(UOA),
+                   GDS_FLAG = max(GDS_FLAG),
+                   PDS_FLAG = max(PDS_FLAG),
+                   TDS_FLAG = max(TDS_FLAG),
+                   .groups = "drop") |>
+  dplyr::mutate(
+    MIXED_FLAG = case_when(
+      PDS_FLAG + GDS_FLAG == 2 ~ 1,
+      TRUE ~ 0
     )
   )
 
@@ -445,7 +459,7 @@ wal_perf_distinct_no_fd <- wal_2324_workforce |>
 
 wal_2324_join <- wal_2324_workforce |>
   dplyr::filter(FD %in% c(NA, "N")) |>
-  dplyr::left_join(raw_data_wal_2324, by = join_by(PERFORMER == Performer.Id))
+  dplyr::left_join(wal_roles_2324_unique, by = join_by(PERFORMER == Performer.Id))
 
 #row 124 of x (workforce activity) matching multiple in y (roles)
 #row 932 of y (roles) matching multiple in x (workforce activity)
@@ -471,7 +485,31 @@ wal_wf_role_check <- wal_roles_2324 |>
 wal_wf_duplicate_roles <- wal_2324_workforce |>
   dplyr::filter(PERFORMER %in% wal_wf_role_check$Performer.Id)
 
-wal_wf_activity_check <- wal_2324_workforce |>
-  dplyr::filter(FD %in% c(NA, "N")) |>
+wal_roles_duplicate <- wal_roles_2324 |>
+  dplyr::group_by(Performer.Id) |>
+  count() |>
+  dplyr::filter(n > 1)
+
+wal_roles_check <- wal_roles_2324 |>
+  dplyr::filter(Performer.Id %in% wal_roles_duplicate$Performer.Id)
   
+wal_roles_2324_unique <- wal_roles_2324 |>
+  dplyr::filter(
+    Role != "Foundation Dentist"
+    & Role != "Dental Care Professional") |>
+  dplyr::select(Role, Name, Performer.Id, Status, FINANCIAL_YEAR) |>
+  dplyr::distinct() 
+
+id_not_in_roles <- wal_2324_workforce |>
+  dplyr::filter(!(PERFORMER %in% wal_roles_2324_unique$Performer.Id))
   
+wal_2324_workforce |>
+  dplyr::filter(MIXED_FLAG == 1)
+  
+full_2324_activity <- combined_data |>
+  dplyr::filter(
+    FINANCIALYEAR == "2023/2024"
+    &
+      NHSAREATEAMCODE %in% c("7A1", '7A2', '7A3', '7A4', '7A5', '7A6', '7A7')
+    & (UOA > 0 | UDA > 0)
+    & FD %in% c(NA, "N"))
