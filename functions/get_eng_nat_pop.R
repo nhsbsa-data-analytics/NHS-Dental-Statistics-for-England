@@ -1,9 +1,7 @@
 #version of ons_nat_pop() function to get national mid year estimates
 #updated August 2025 to get latest ONS data for 2019 to 2024
 #data from https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales
-#example  
-
-eng_national_pop <- get_eng_nat_pop()
+#example  eng_national_pop <- get_eng_nat_pop()
 
 get_eng_nat_pop <-
   function(url = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales/mid20242023localauthorityboundaries/mye24tablesew.xlsx") {
@@ -30,12 +28,12 @@ get_eng_nat_pop <-
         financial_year = paste0(year, "/", year + 1)
       ) |>
       dplyr::select(
-        code = Code,
-        country = Name,
-        geography = Geography,
-        year,
-        financial_year,
-        population
+        CODE = Code,
+        COUNTRY = Name,
+        GEOGRAPHY = Geography,
+        CALENDAR_YEAR = year,
+        FINANCIAL_YEAR = financial_year,
+        POPULATION = population
       )
     
     return(pop_df)

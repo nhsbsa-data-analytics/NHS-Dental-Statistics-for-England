@@ -58,7 +58,6 @@ devtools::install_github(
 )
 
 # load nhsbsaUtils package
-
 library(nhsbsaUtils)
 
 # install and library all other required packages
@@ -107,8 +106,7 @@ nhsbsaUtils::publication_options()
 #Ward, SICBL, ICB and NHS Region for 2019 to 2022 (latest available at time of production)
 #Local Authority (LA) and England National for 2019 to 2024
 
-
-
+source("pop_data_import.R")
 
 # 3. Aggregations and analysis - activity data ---------------------------------
 
