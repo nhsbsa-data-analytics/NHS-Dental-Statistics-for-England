@@ -1,10 +1,21 @@
-### Pipeline to run PfD annual publication
+# Main pipeline script for NHS Dental official statistics publication
+# this script calls on other scripts from the NHS-Dental-Statistics-for-England repository
+
+# contains the following sections:
+# 1. Setup and package installation
+# 2. Data import
+# 3. Aggregations and analysis - activity data
+# 4. Aggregations and analysis - workforce data
+# 5. Data tables
+# 6. Charts and figures
+# 7. Render outputs
+# 8. Accessibility testing (in progress)
+# 9. Automated Quality Review testing (in progress)
+
 # clear environment
 rm(list = ls())
 
 # source functions
-# this is only a temporary step until all functions are built into packages
-
 # select all .R files in functions sub-folder
 function_files <- list.files(path = "functions", pattern = "\\.R$")
 
@@ -13,10 +24,9 @@ for (file in function_files) {
   source(file.path("functions", file))
 }
 
-# 1. Setup ---------------------------------------------------------------------
+#1. Setup and package installation ---------------------------------------------
 
 # load GITHUB_KEY if available in environment or enter if not
-
 if (Sys.getenv("GITHUB_PAT") == "") {
   usethis::edit_r_environ()
   stop(
@@ -24,8 +34,7 @@ if (Sys.getenv("GITHUB_PAT") == "") {
   )
 }
 
-# load DB_DWCP_USERNAME if available in environment or enter if not
-
+# load database credentials if available in environment or enter if not
 if (Sys.getenv("DB_DWCP_USERNAME") == "") {
   usethis::edit_r_environ()
   stop(
@@ -33,16 +42,26 @@ if (Sys.getenv("DB_DWCP_USERNAME") == "") {
   )
 }
 
+# check if Excel outputs are required
+makeSheet <- menu(c("Yes", "No"),
+                  title = "Do you wish to generate the Excel outputs?")
+
+# install and load devtools package
 install.packages("devtools")
 library(devtools)
 
-# install nhsbsaUtils package first as need check_and_install_packages()
-devtools::install_github("nhsbsa-data-analytics/nhsbsaUtils",
-                         auth_token = Sys.getenv("GITHUB_PAT"))
+# install nhsbsaUtils package first to use function check_and_install_packages()
+devtools::install_github(
+  "nhsbsa-data-analytics/nhsbsaUtils",
+  auth_token = Sys.getenv("GITHUB_PAT"),
+  force = TRUE
+)
+
+# load nhsbsaUtils package
 
 library(nhsbsaUtils)
 
-# install and library packages
+# install and library all other required packages
 req_pkgs <-
   c(
     "dplyr",
@@ -79,31 +98,57 @@ config <- yaml::yaml.load_file("config.yml")
 # load options
 nhsbsaUtils::publication_options()
 
-# 2. connect to DWH and pull max CY/FY  ----------------------------------------
+#2. Data import ----------------------------------------------------------------
 
-# build connection to warehouse
-con <- nhsbsaR::con_nhsbsa(dsn = "FBS_8192k",
-                           driver = "Oracle in OraClient19Home1",
-                           "DWCP")
+##2.1 Population data
 
-# 3. collect raw data ------------------------------------------
+#call pop_data_import.R script from RAP
+#imports ONS mid-year population estimates for:
+#Ward, SICBL, ICB and NHS Region for 2019 to 2022 (latest available at time of production)
+#Local Authority (LA) and England National for 2019 to 2024
 
-# 4. Build excel tables --------------------------------------------
 
-# 5. build charts and tables -----------------------------------------------------
 
-# 6. create markdowns ----------------------------------------------------------
+
+# 3. Aggregations and analysis - activity data ---------------------------------
+
+
+
+
+
+
+# 4. Aggregations and analysis - workforce data --------------------------------
+
+
+
+
+# Disconnect from data warehouse once all data extracted and aggregated
+DBI::dbDisconnect(con)
+
+# 5. Data tables ---------------------------------------------------------------
+
+
+
+
+
+# 6. Charts and figures --------------------------------------------------------
+
+
+
+
+
+# 7. Render outputs ------------------------------------------------------------
 
 # save narrative summary as html file into outputs folder
 # change file path to save somewhere else if needed
 rmarkdown::render("dental_narrative_v001.Rmd",
                   output_format = "html_document",
-                  output_file = "outputs/dental_narrative__2023_24_v001.html")
+                  output_file = "outputs/dental_narrative_2024_25_v001.html")
 
 # save copy as word document for use in quality review
 rmarkdown::render("dental_narrative_v001.Rmd",
                   output_format = "word_document",
-                  output_file = "outputs/dental_narrative__2023_24_v001.docx")
+                  output_file = "outputs/dental_narrative_2024_25_v001.docx")
 
 # save background document as html file into outputs folder
 # change file path to save somewhere else if needed
@@ -116,6 +161,14 @@ rmarkdown::render("dental_background_v001.Rmd",
                   output_file = "outputs/dental_background_info_methodology_v001.docx")
 
 
-# 8. disconnect from DWH  ------------------------------------------------------
 
-DBI::dbDisconnect(con)
+
+
+
+# 8. Accessibility testing (in progress) ---------------------------------------
+
+
+
+
+
+# 9. Automated Quality Review testing (in progress) ----------------------------
