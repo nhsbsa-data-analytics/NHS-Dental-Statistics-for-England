@@ -21,8 +21,8 @@ la_pop <- la_pop_age |>
   POPULATION = sum(POPULATION, na.rm = T),
   .groups = "drop")
 
-#TO DO: update LSOA, Ward, SICBL, ICB, NHS Region populations 2019 to 2022 
+#5. Ward population for 2019 to 2022, child vs adult split and ageband
+ward_pop_age <- get_ward_pop_age(file_path = "Y:/Official Stats/Dental/2024_25/Data")
+
+#TO DO: update LSOA, SICBL, ICB, NHS Region populations 2019 to 2022 
 #(latest available at time of production)
-
-
-
