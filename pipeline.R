@@ -85,7 +85,9 @@ req_pkgs <-
     "nhsbsa-data-analytics/nhsbsaExternalData",
     "nhsbsa-data-analytics/accessibleTables",
     "nhsbsa-data-analytics/nhsbsaDataExtract",
-    "nhsbsa-data-analytics/nhsbsaVis"
+    "nhsbsa-data-analytics/nhsbsaVis",
+    "svDialogs",
+    "zoo"
   )
 
 # library/install packages as required
@@ -108,10 +110,43 @@ nhsbsaUtils::publication_options()
 
 source("pop_data_import.R")
 
+#set up connection details 
+#for use when sourcing extract files in section 3
+
+con <- nhsbsaR::con_nhsbsa(dsn = "FBS_8192k",
+                           driver = "Oracle in OraClient19Home1",
+                           "DWCP")
+
 # 3. Aggregations and analysis - activity data ---------------------------------
 
+#define values for use in data extracts and formatting
+
+# years for For new edition
+first_year <- "2019/2020"
+last_year  <- "2024/2025"
+
+first_patients_seen_date <-
+  as.POSIXct(paste(substr(first_year, 1, 4), "09", "30", sep = "-")) ## Sept 30th
+last_patients_seen_date  <-
+  as.POSIXct(paste(substr(last_year, 6, 9),  "07", "01", sep = "-")) ## July 1st
+
+#3.1 Contract location - national activity overview tables
+
+#extract and aggregate data from SQL tables
+source("import_contract_activity_national_tables.R")
+
+#format data and write tables xlsx file
+source("create_nat_cont_activity_excel.R")
+
+#3.2 Contract location - geographical breakdown activity tables
 
 
+
+#3.3 Patient location - national activity overview tables
+
+
+
+#3.4 Patient location - geographical breakdown activity tables
 
 
 
@@ -120,13 +155,14 @@ source("pop_data_import.R")
 
 
 
-# Disconnect from data warehouse once all data extracted and aggregated
-DBI::dbDisconnect(con)
+
 
 # 5. Data tables ---------------------------------------------------------------
 
+#placeholder for CSVs code
 
-
+# Disconnect from data warehouse once all data extracted and aggregated
+DBI::dbDisconnect(con)
 
 
 # 6. Charts and figures --------------------------------------------------------
@@ -150,13 +186,13 @@ rmarkdown::render("dental_narrative_v001.Rmd",
 
 # save background document as html file into outputs folder
 # change file path to save somewhere else if needed
-rmarkdown::render("dental_background_v001.Rmd",
+rmarkdown::render("dental_background_v002.Rmd",
                   output_format = "html_document",
-                  output_file = "outputs/dental_background_info_methodology_v001.html")
+                  output_file = "outputs/dental_background_info_methodology_v002.html")
 
-rmarkdown::render("dental_background_v001.Rmd",
+rmarkdown::render("dental_background_v002.Rmd",
                   output_format = "word_document",
-                  output_file = "outputs/dental_background_info_methodology_v001.docx")
+                  output_file = "outputs/dental_background_info_methodology_v002.docx")
 
 
 

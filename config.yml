@@ -11,5 +11,11 @@ workforce_excel_table_link:
 national_pat_link:
 geography_pat_link:
 
+cover_sheet_sub_title_nat_activity: "National activity overview 2019/20 to 2024/25"
+cover_sheet_sub_title_geo_activity_contract: "Contract location geographical activity 2019/20 to 2024/25"
+cover_sheet_sub_title_geo_activity_patient: "Patient location geographical activity 2019/20 to 2024/25"
+cover_sheet_sub_title_workforce:
+table_sheet_title_fy: "England 2019/20 to 2024/25"
+
 
 

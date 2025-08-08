@@ -32,7 +32,7 @@ get_eng_nat_pop_age <-
       dplyr::summarise(band_population = sum(total_population)) |>
       ungroup() |>
       dplyr::mutate(
-        AGE_BAND = dplyr::case_when(
+        age_band = dplyr::case_when(
           age >= 85 ~ "85+",
           age >= 75 ~ "75-84",
           age >= 65 ~ "65-74",
@@ -43,22 +43,21 @@ get_eng_nat_pop_age <-
           TRUE ~ "00-04"
         )) |>
       dplyr::mutate(
-        CHILD_ADULT = dplyr::case_when(
-          age >= 18 ~ "ADULT",
-          TRUE ~ "CHILD"
+        adult_child = dplyr::case_when(
+          age >= 18 ~ "Adult",
+          TRUE ~ "Child"
         ),
-        CALENDAR_YEAR = as.numeric(stringr::str_extract(calendar_year, "\\d{4}")),
-        FINANCIAL_YEAR = paste0(CALENDAR_YEAR, "/", CALENDAR_YEAR + 1)
+        calendar_year = as.numeric(stringr::str_extract(calendar_year, "\\d{4}")),
+        financial_year = paste0(calendar_year, "/", calendar_year + 1)
       ) |>
-      dplyr::group_by(country, FINANCIAL_YEAR, CALENDAR_YEAR, AGE_BAND, CHILD_ADULT) |>
-      dplyr::summarise(POPULATION = sum(band_population)) |>
+      dplyr::group_by(country, financial_year, calendar_year, age_band, adult_child) |>
+      dplyr::summarise(population = sum(band_population)) |>
       ungroup() |>
-      dplyr::filter(as.numeric(substr(FINANCIAL_YEAR, 1,4)) >= 2019) |>
-      dplyr::rename(COUNTRY = country) |>
-      dplyr::arrange(CALENDAR_YEAR,
-                     (factor(CHILD_ADULT, levels = c('CHILD',
-                                                     'ADULT'))),
-                     (factor(AGE_BAND, levels = c('0','1', '2', '3',
+      dplyr::filter(as.numeric(substr(financial_year, 1,4)) >= 2019) |>
+      dplyr::arrange(calendar_year,
+                     (factor(adult_child, levels = c('Child',
+                                                     'Adult'))),
+                     (factor(age_band, levels = c('0','1', '2', '3',
                                                   '4', '5', '6', '7',
                                                   '8', '9', '10', '11',
                                                   '12', '13', '14', '15',
