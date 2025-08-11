@@ -12,10 +12,12 @@ national_pat_link:
 geography_pat_link:
 
 cover_sheet_sub_title_nat_activity: "National activity overview 2019/20 to 2024/25"
-cover_sheet_sub_title_geo_activity_contract: "Contract location geographical activity 2019/20 to 2024/25"
+cover_sheet_sub_title_geo_activity_contract: "Contract location geographical activity 2024/25"
 cover_sheet_sub_title_geo_activity_patient: "Patient location geographical activity 2019/20 to 2024/25"
 cover_sheet_sub_title_workforce:
 table_sheet_title_fy: "England 2019/20 to 2024/25"
+table_sheet_title_ltst_year: "England 2024/25"
+table_sheet_title_dcp_years: "England 2022/2023 to 2024/2025"
 
 
 

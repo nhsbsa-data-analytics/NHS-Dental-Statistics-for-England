@@ -1,6 +1,6 @@
 #script to format data to build national excel files
 #for contract location activity tables
-#to be called in main `pipeline.R` script
+#this script to be called in main `pipeline.R` script
 #functions loaded in main pipeline
 
 # Create sheets ready for export to Excel ---------------------------------
@@ -303,7 +303,7 @@ openxlsx::setColWidths(
 accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1g_i",
-  title = paste0("Table_1g_i: Courses of treatment by Dental Care Professional type, treatment band, and financial year, ", config$table_sheet_title_fy),
+  title = paste0("Table_1g_i: Courses of treatment by Dental Care Professional type, treatment band, and financial year, ", config$table_sheet_title_dcp_years),
   notes = c("notes go here"),
   dataset = table1gi,
   column_a_width = 20
@@ -332,7 +332,7 @@ openxlsx::setColWidths(
 accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1g_ii",
-  title = paste0("Table_1g_ii: Courses of treatment by Dental Care Professional type, treatment band, and financial quarter, ", config$table_sheet_title_fy),
+  title = paste0("Table_1g_ii: Courses of treatment by Dental Care Professional type, treatment band, and financial quarter, ", config$table_sheet_title_dcp_years),
   notes = c("notes go here"),
   dataset = table1aii,
   column_a_width = 20
@@ -391,7 +391,7 @@ openxlsx::setColWidths(
 accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2a_ii",
-  title = paste0("Table_2a_ii: Count of units of dental activity by treatment band and financial quarter ,", config$table_sheet_title_fy),
+  title = paste0("Table_2a_ii: Count of units of dental activity by treatment band and financial quarter, ", config$table_sheet_title_fy),
   notes = c("notes go here"),
   dataset = table2aii,
   column_a_width = 20

@@ -26,6 +26,14 @@ append_total_column_12345  <-
   function(TB) {
     cbind(TB, Total = rowSums(TB[, c(-1,-2,-3, -4, -5)], na.rm = TRUE))
   }
+append_total_column_1_to_6  <-
+  function(TB) {
+    cbind(TB, Total = rowSums(TB[, c(-1,-2,-3, -4, -5, -6)], na.rm = TRUE))
+  }
+append_total_column_1_to_8  <-
+  function(TB) {
+    cbind(TB, Total = rowSums(TB[, c(-1,-2,-3, -4, -5, -6, -7, -8)], na.rm = TRUE))
+  }
 
 percentage_table_1  <-
   function(TB) {
@@ -230,6 +238,22 @@ table1g <- table1g_import |>
         sep = " ",
         remove = FALSE)  |>
   select(TREATMENT_YEAR, everything()) |>
+  mutate(DCP =
+           recode(DCP,
+                  "0 - All"          = "All",
+                  "DCP-led"          = "DCP-led",
+                  "DCP-assisted"     = "DCP-assisted",
+                  "Non-DCP led and not DCP assisted" = "Non-DCP led and not DCP assisted"),
+         DCP_TYPE = 
+           recode(DCP_TYPE,
+                  "0 - All"          = "All",
+                  "Dental Hygienist" = "Dental Hygienist",
+                  "Dental Therapist" = "Dental Therapist",
+                  "Other" = "Other")) |>
+  arrange(desc(TREATMENT_YEAR),
+               QUARTER,
+               DCP,
+               DCP_TYPE) |>
   rename(
     "Financial Year" = TREATMENT_YEAR,
     "Quarter" = QUARTER,
@@ -244,16 +268,18 @@ table1g <- table1g_import |>
     "Urgent"  = URGENT,
     "Free"    = FREE,
     "Regulation 11 Replacement Appliance" = REG_11_REP_APP
-  )
+  ) 
   
 ## Insert a new Total column
 table1g <- append_total_column_12345(table1g)
 
 ## Split into Table_1g_i (quarters) and Table_1g_ii (years)
-table1gii  <-
-  table1g |> filter (Quarter != "All") |> select (!Quarter)
+
 table1gi <-
   table1g |> filter (Quarter == "All") |> select (!c(Quarter, "Financial Quarter"))
+
+table1gii  <-
+  table1g |> filter (Quarter != "All") |> select (!Quarter) 
 
 # Table_2a --------------------------------------------------
 
