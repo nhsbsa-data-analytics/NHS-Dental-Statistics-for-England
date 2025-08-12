@@ -31,6 +31,72 @@ sheetNames <- c(
 
 wb <- accessibleTables::create_wb(sheetNames)
 
+# create metadata tab (will need to open file and auto row heights once ran)
+meta_fields <- c(
+  "Financial year",
+  "Treatment band",
+  "Course of treatment (COT)",
+  "Unit of dental activity (UDA)",
+  "Patient type",
+  "Patient eligibility",
+  "Adult patients seen",
+  "Child patients seen",
+  "Age group",
+  "Date",
+  "Mid-year England population estimate",
+  "Mid-year population year",
+  "ODS code",
+  "ONS code",
+  "Region name",
+  "ICB name",
+  "Clinical treatment"
+)
+
+meta_descs <-
+  c("The financial year to which the data belongs. For example, 2024/2025.",
+    "NHS dental activity is broken down into treatment bands based on how complex the treatment is. For example, a dental
+    crown is a band 3 treatment. For activity with a date of acceptance from November 2022 onwards, band 2 treatments are
+    further broken down into sub-bands 2a, 2b, and 2c.",
+    "A COT is a course of treatment, usually begun after a dentist examines a patient and agrees treatment is required.
+    COTs have been calculated by counting the number of valid FP17 claim forms. COT counts in this publication exclude
+    orthodontic activity unless specified.",
+    "A UDA is a unit of dental activity, which a dental contract can be awarded after submitting a valid FP17 form.
+    A general dental COT can receive a set number of UDAs based on treatment band. For example, a COT of band 2a will
+    generally be awarded 3 UDA. Late submissions may have the UDA they receive reduced to 0.",
+    "Patient type can be child, exempt, or non-exempt.",
+    "Patient eligibility is the eligibility group of the patient. Adults undergoing NHS dental activity normally pay
+    a set amount of money towards treatment, unless they have a valid exemption. Children aged under 18, or under 19
+    and in full-time education, do not pay for treatment. More information on patient charges and exemptions can by
+    found in the background and methodology document.",
+    "A count of patients aged 18 or over seen by an NHS dentist in the 24 months up to the end of the specified period.",
+    "A count of patients aged 17 or under seen by an NHS dentist in the 12 months up to the end of the specified period.",
+    "The age group which the data has been aggregated up to, where age is the age of a patient at the date of acceptance
+    for treatment. For example, age group 18-64 includes all patients aged 18 to 64.",
+    "The date of the specified period.",
+    "The population estimate for the corresponding mid-year population year, from the latest ONS population estimates at
+    time of publication. Population estimates for 2023 or 2024 were not available for NHS region or ICB levels, so these
+    currently use the 2022 mid-year estimate for 2023/24 and 2024/25. Regional and ICB level numbers that are calculated
+    using population data are provisional and will be updated once 2023 and 2024 population estimates are available. Local
+    authority numbers for 2024/25 use mid-year population estimates for 2024 and are in their final form. All estimates
+    are taken from the ONS website at https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration.",
+    "The year in which the Office for National Statistics (ONS) mid-year population estimates were taken, required due
+    to the presentation of this data in financial year format.",
+    "The Organisation Data Service (ODS) code the data has been aggregated up to. For example, Devon ICB has an ODS code
+    of QJK.",
+    "The Office for National Statistics (ONS) geography code which the data has been aggregated up to.
+    For example, Hartlepool local authority has an ONS code of E06000001.",
+    "The name of the NHS region the data has been aggregated up to. For example, East of England.",
+    "The name of the Integrated Care Board (ICB) the data has been aggregated up to. For example, Devon ICB.
+    ICBs were introduced in 2022. More information on ICBs and how data is mapped to boundaries can be found in the
+    background and methodology document for this release. ICB level tables also include Health and Justice (H&J)
+    commissioners.",
+    "The clinical treatment listed on the FP17 form. For example, scale and polish." 
+  )
+
+accessibleTables::create_metadata(wb,
+                                  meta_fields,
+                                  meta_descs)
+
 #Sheet for : Table_1a ----------------------------------------------------------
 accessibleTables::write_sheet(
   workbook = wb,
@@ -471,7 +537,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_3a",
   title = paste0("Table_3a: Adult patients seen in the previous 24 months and child patients seen in the previous 12 months by NHS region, ", config$table_sheet_title_ltst_year),
-  notes = c("notes go here"),
+  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "2. A patient's age is calculated as at the given date."),
   dataset = geo_table3a_import,
   column_a_width = 20
 )
@@ -500,7 +567,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_3b",
   title = paste0("Table_3b: Adult patients seen in the previous 24 months and child patients seen in the previous 12 months by Integrated Care Board (ICB), ", config$table_sheet_title_ltst_year),
-  notes = c("notes go here"),
+  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "2. A patient's age is calculated as at the given date."),
   dataset = geo_table3b_import,
   column_a_width = 20
 )
@@ -529,7 +597,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_3c",
   title = paste0("Table_3c: Adult patients seen in the previous 24 months and child patients seen in the previous 12 months by Local Authority, ", config$table_sheet_title_ltst_year),
-  notes = c("notes go here"),
+  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "2. A patient's age is calculated as at the given date."),
   dataset = geo_table3c_import,
   column_a_width = 20
 )
@@ -558,7 +627,11 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_3d",
   title = paste0("Table_3d: Adult patients seen in the previous 24 months and child patients seen in the previous 12 months, as a percentage of the population by NHS region, ", config$table_sheet_title_ltst_year),
-  notes = c("notes go here"),
+  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "2. A patient's age is calculated as at the given date.",
+            "3. Population estimates for 2023 and 2024 were not available for NHS region or ICB levels at time of publication, so the 2022 mid-year estimate has been used for 2023/24 and 2024/25. Regional and ICB
+            level numbers that are calculated using population data are provisional and will be updated once 2023 and 2024 population estimates are available.",
+            "4. Mid-year population estimates from the Office for National Statistics (ONS) have been used. You can find more information about population estimates and a link to their source on the metadata sheet."),
   dataset = geo_table3d,
   column_a_width = 20
 )
@@ -593,7 +666,11 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_3e",
   title = paste0("Table_3e: Adult patients seen in the previous 24 months and child patients seen in the previous 12 months, as a percentage of the population by Integrated Care Board (ICB), ", config$table_sheet_title_ltst_year),
-  notes = c("notes go here"),
+  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "2. A patient's age is calculated as at the given date.",
+            "3. Population estimates for 2023 and 2024 were not available for NHS region or ICB levels at time of publication, so the 2022 mid-year estimate has been used for 2023/24 and 2024/25. Regional and ICB
+            level numbers that are calculated using population data are provisional and will be updated once 2023 and 2024 population estimates are available.",
+            "4. Mid-year population estimates from the Office for National Statistics (ONS) have been used. You can find more information about population estimates and a link to their source on the metadata sheet."),
   dataset = geo_table3e,
   column_a_width = 20
 )
@@ -628,7 +705,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_3f",
   title = paste0("Table_3f: Adult patients seen in the previous 24 months and child patients seen in the previous 12 months, as a percentage of the population by Local Authority, ", config$table_sheet_title_ltst_year),
-  notes = c("notes go here"),
+  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "2. A patient's age is calculated as at the given date.",
+            "3. Mid-year population estimates from the Office for National Statistics (ONS) have been used. You can find more information about population estimates and a link to their source on the metadata sheet."),
   dataset = geo_table3f,
   column_a_width = 20
 )

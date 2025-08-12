@@ -54,6 +54,7 @@ table1f_import <- import_table("DENTAL_NATIONAL_TABLE1F_2425")
 table1g_import <- import_table("DENTAL_NATIONAL_TABLE1G_2425") # DCP COT split
 table2a_import <- import_table("DENTAL_NATIONAL_TABLE2A_2425")
 table2c_import <- import_table("DENTAL_NATIONAL_TABLE2C_2425")
+table2g_import <- import_table("DENTAL_NATIONAL_TABLE2G_2425") # DCP UDA split
 table3a_import <- import_table("DENTAL_NATIONAL_TABLE3A_2425")
 table4a_import <- import_table("DENTAL_NATIONAL_TABLE4A_2425")
 table4c_import <- import_table("DENTAL_NATIONAL_TABLE4C_2425")
@@ -387,6 +388,67 @@ table2eii_uda <- table2c |>
 # Append totals columns
 table2ei_uda  <- append_total_column_12(table2ei_uda)
 table2eii_uda <- append_total_column_1(table2eii_uda)
+
+# Table 2g ----------------------------------------------------------------------
+
+########may need to rename to table 2f if no table 2f of exemptions UDA produced
+
+#new table for 2024/24 release, Dental Care Professional (DCP) COT split by treatment band
+#and whether activity was DCP-led, DCP-assisted, or not DCP led and not DCP assisted
+
+## Drop unwanted years and cols, replace Quarter with Year-Quarter, re-order cols, and rename cols
+table2g <- table2g_import |>
+  #  filter(between(TREATMENT_YEAR, first_year, last_year)) |>
+  filter(between(TREATMENT_YEAR, "2022/2023", last_year)) |>
+  select(!TOTAL) |>
+  unite("Financial Quarter",
+        c(TREATMENT_YEAR, QUARTER),
+        sep = " ",
+        remove = FALSE)  |>
+  select(TREATMENT_YEAR, everything()) |>
+  mutate(DCP =
+           recode(DCP,
+                  "0 - All"          = "All",
+                  "DCP-led"          = "DCP-led",
+                  "DCP-assisted"     = "DCP-assisted",
+                  "Non-DCP led and not DCP assisted" = "Non-DCP led and not DCP assisted"),
+         DCP_TYPE = 
+           recode(DCP_TYPE,
+                  "0 - All"          = "All",
+                  "Dental Hygienist" = "Dental Hygienist",
+                  "Dental Therapist" = "Dental Therapist",
+                  "Other" = "Other")) |>
+  arrange(desc(TREATMENT_YEAR),
+          QUARTER,
+          DCP,
+          DCP_TYPE) |>
+  rename(
+    "Financial Year" = TREATMENT_YEAR,
+    "Quarter" = QUARTER,
+    "DCP status" = DCP,
+    "DCP type" = DCP_TYPE,
+    "Band 1"  = BAND_1,
+    "Band 2"  = BAND_2,
+    "Band 2a" = BAND_2A,
+    "Band 2b" = BAND_2B,
+    "Band 2c" = BAND_2C,
+    "Band 3"  = BAND_3,
+    "Urgent"  = URGENT,
+    "Free"    = FREE,
+    "Regulation 11 Replacement Appliance" = REG_11_REP_APP
+  ) 
+
+## Insert a new Total column
+table2g <- append_total_column_12345(table2g)
+
+## Split into Table_1g_i (quarters) and Table_1g_ii (years)
+
+table2gi <-
+  table2g |> filter (Quarter == "All") |> select (!c(Quarter, "Financial Quarter"))
+
+table2gii  <-
+  table2g |> filter (Quarter != "All") |> select (!Quarter) 
+
 
 # Table 3a --------------------------------------------------
 ## Remove unwanted years and cols, and rename cols
