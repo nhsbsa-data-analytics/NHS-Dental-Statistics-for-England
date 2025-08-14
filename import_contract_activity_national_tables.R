@@ -44,6 +44,11 @@ percentage_table_12 <-
     cbind(TB[, c(1, 2)], TB[, c(-1,-2)] / TB$Total * 100)
   }
 
+percentage_table_1234 <-
+  function(TB) {
+    cbind(TB[, c(1, 2, 3, 4)], TB[, c(-1,-2, -3, -4)] / TB$Total * 100)
+  }
+
 # percentage_table_1 has trouble with naming the first col correctly
 
 # Import tables created in SQL --------------------------------------------------
