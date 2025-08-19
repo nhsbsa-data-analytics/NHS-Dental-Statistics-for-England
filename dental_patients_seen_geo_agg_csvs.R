@@ -2,9 +2,11 @@
 #load("Y:\\Official Stats\\Dental\\2023_24\\Drafts_and_Exploratory_Code\\R_scripts\\population_functions\\population_data_20_08_2024.RData")
 
 #Load required population data
-nhs_region_pop_by_age<- get_ICB_SICBL_NHSER_pop_age(link,"NHSER")
+nhs_region_pop_by_age<- get_ICB_SICBL_NHSER_pop_age("NHSER")
 
-icb_pop_by_age<- get_ICB_SICBL_NHSER_pop_age(link,"ICB")
+Sys.sleep(10)
+
+icb_pop_by_age<- get_ICB_SICBL_NHSER_pop_age("ICB")
 
 la_pop_age <- get_la_pop_age()
 
@@ -635,7 +637,7 @@ pat_seen_data_combined <- pat_seen_data_region_adult |>
           GEOGRAPHY_ONS_CODE,
           GEOGRAPHY_ODS_CODE,
           GEOGRAPHY_TYPE,
-          PATIENT_TYPE)
+          as.numeric(sub("^([0-9]+).*", "\\1", AGE_BAND)))
 
 #get list of financial years
 unique_years <- unique(pat_seen_data_combined$FINANCIAL_YEAR)
@@ -652,14 +654,14 @@ year_data <- pat_seen_data_combined |>
   select(UID, everything())
 
 fwrite(year_data, 
-       paste0("Y:\Official Stats\Dental\2024_25\csvs\CSV outputs\Geo Patients Seen csvs\\geo_dental_patients_seen_",
+       paste0("Y:\\Official Stats\\Dental\\2024_25\\csvs\\CSV outputs\\Geo Patients Seen csvs\\geo_dental_patients_seen_",
               substr(i, 1, 4),
               "_",
               substr(i, 8, 9),
               ".csv"))
 }
 
-setwd("Y:\Official Stats\Dental\2024_25\csvs\CSV outputs\Geo Patients Seen csvs")
+setwd("Y:\\Official Stats\\Dental\\2024_25\\csvs\\CSV outputs\\Geo Patients Seen csvs")
 
 #get all geo data .csv files path name
 den_act_csv_files <- list.files(pattern = "^geo_dental_patients_seen.*\\.csv$",

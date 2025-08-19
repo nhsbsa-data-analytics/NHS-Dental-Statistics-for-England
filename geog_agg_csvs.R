@@ -16,7 +16,7 @@ regional_data <- dplyr::tbl(con,
     FORM_TYPE == "G", 
     QUARTER != "unallocated_1",
     QUARTER != "unallocated_2",
-    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown"))
+    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown", "Only a Sedation"))
     ) |>
   mutate(
     FINANCIAL_QUARTER = paste0(TREATMENT_YEAR, " ", QUARTER),
@@ -70,7 +70,7 @@ icb_data <- dplyr::tbl(con,
     FORM_TYPE == "G", 
     QUARTER != "unallocated_1",
     QUARTER != "unallocated_2",
-    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown"))
+    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown", "Only a Sedation"))
   ) |>
   mutate(
     FINANCIAL_QUARTER = paste0(TREATMENT_YEAR, " ", QUARTER),
@@ -120,7 +120,7 @@ la_data <- dplyr::tbl(con,
     FORM_TYPE == "G", 
     QUARTER != "unallocated_1",
     QUARTER != "unallocated_2",
-    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown"))
+    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown", "Only a Sedation"))
   ) |>
   mutate(
     FINANCIAL_QUARTER = paste0(TREATMENT_YEAR, " ", QUARTER),

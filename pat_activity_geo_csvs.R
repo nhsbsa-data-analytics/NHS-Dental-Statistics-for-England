@@ -3,6 +3,15 @@ ons_code_lookup <- dplyr::tbl(con,
                               from = dbplyr::in_schema("OST", "ONS_CODES_LOOKUP_23"))|>
   collect()
 
+#get lookups for LA and Ward
+la_lookup<- get_la_lookup()
+
+ward_lookup <- get_ward_lookup()
+
+#requires copy of 2022 codes file saved in working directory due to issue with ONS website
+setwd("Y:\\Official Stats\\Dental\\2024_25\\csvs")
+region_lookup <- get_region_lookups()
+
 #get nhs region codes from lookup
 region_codes <- ons_code_lookup |> 
   select(NHSER23CDH, NHSER23CD, NHSER23NM) |>
@@ -16,7 +25,7 @@ regional_data <- dplyr::tbl(con,
     FORM_TYPE == "G", 
     QUARTER != "unallocated_1",
     QUARTER != "unallocated_2",
-    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown"))
+    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown", "Only a Sedation"))
   ) |>
   mutate(
     FINANCIAL_QUARTER = paste0(TREATMENT_YEAR, " ", QUARTER),
@@ -99,7 +108,7 @@ icbs_data <- dplyr::tbl(con,
     FORM_TYPE == "G", 
     QUARTER != "unallocated_1",
     QUARTER != "unallocated_2",
-    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown"))
+    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown", "Only a Sedation"))
   ) |>
   mutate(
     FINANCIAL_QUARTER = paste0(TREATMENT_YEAR, " ", QUARTER),
@@ -153,7 +162,7 @@ icb_data <- icbs_data |>
                                        TRUE ~ GEOGRAPHY_ONS_CODE)) |>
   dplyr::mutate(GEOGRAPHY_NAME = case_when(GEOGRAPHY_ONS_CODE == "Other"  ~ "Other",
                                        GEOGRAPHY_ONS_CODE == "Unknown" ~ "Unknown",
-                                       TRUE ~ GEOGRAPHY_NAME)) |>  #not sure what this should be depends on lookup
+                                       TRUE ~ GEOGRAPHY_NAME)) |>  
   dplyr::group_by(FINANCIAL_YEAR,
                   FINANCIAL_QUARTER,
                   GEOGRAPHY_TYPE,
@@ -174,7 +183,7 @@ las_data <- dplyr::tbl(con,
     FORM_TYPE == "G", 
     QUARTER != "unallocated_1",
     QUARTER != "unallocated_2",
-    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown"))
+    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown", "Only a Sedation"))
   ) |>
   mutate(
     FINANCIAL_QUARTER = paste0(TREATMENT_YEAR, " ", QUARTER),
@@ -247,7 +256,7 @@ wards_data <- dplyr::tbl(con,
     FORM_TYPE == "G", 
     QUARTER != "unallocated_1",
     QUARTER != "unallocated_2",
-    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown"))
+    !(TREATMENT_CHARGE_BAND_COMB %in% c("N/A", "Only a Domiciliary Visit", "Free - Unknown", "Only a Sedation"))
   ) |>
   mutate(
     FINANCIAL_QUARTER = paste0(TREATMENT_YEAR, " ", QUARTER),
