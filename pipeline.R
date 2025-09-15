@@ -43,8 +43,7 @@ if (Sys.getenv("DB_DWCP_USERNAME") == "") {
 }
 
 # check if Excel outputs are required
-makeSheet <- menu(c("Yes", "No"),
-                  title = "Do you wish to generate the Excel outputs?")
+makeSheet <- menu(c("Yes", "No"), title = "Do you wish to generate the Excel outputs?")
 
 # install and load devtools package
 install.packages("devtools")
@@ -82,41 +81,20 @@ req_pkgs <-
     "readxl",
     "kableExtra",
     "nhsbsa-data-analytics/nhsbsaR",
-#    "nhsbsa-data-analytics/nhsbsaExternalData", #not currently needed, population data loaded via custom functions
+    #    "nhsbsa-data-analytics/nhsbsaExternalData", #not currently needed, population data loaded via custom functions
     "nhsbsa-data-analytics/accessibleTables",
     "nhsbsa-data-analytics/nhsbsaDataExtract",
     "nhsbsa-data-analytics/nhsbsaVis",
+    "sf",
     "svDialogs",
     "zoo"
   )
 
-#Remove from final pipeline: individual package load in case of errors using req_pkgs
-# library(dplyr)
-# library(dbplyr)
-# library(DT)
-# library(data.table)
-# library(geojsonsf)
-# library(highcharter)
-# library(htmltools)
-# library(lubridate)
-# library(janitor)
-# library(kableExtra)
-# library(magrittr)
-# library(nhsbsaUtils)
-# library(nhsbsaR)
-# library(nhsbsaExternalData)
-# library(accessibleTables)
-# library(nhsbsaDataExtract)
-# library(nhsbsaVis)
-# library(openxlsx)
-# library(readxl)
-# library(rmarkdown)
-# library(stringr)
-# library(svDialogs)
-# library(tcltk)
-# library(tidyr)
-# library(yaml)
-# library(zoo)
+devtools::install_github(
+  "nhsbsa-data-analytics/nhsbsaVis",
+  auth_token = Sys.getenv("GITHUB_PAT"),
+  force = TRUE
+)
 
 #TO DO: set up logging using logr package
 #library(logr)
@@ -141,14 +119,20 @@ nhsbsaUtils::publication_options()
 
 source("pop_data_import.R")
 
-#set up connection details 
+#set up connection details
 #for use when sourcing extract files in section 3
 
-con <- nhsbsaR::con_nhsbsa(dsn = "FBS_8192k",
-                           driver = "Oracle in OraClient19Home1",
-                           "DWCP")
+con <- nhsbsaR::con_nhsbsa(dsn = "FBS_8192k", driver = "Oracle in OraClient19Home1", "DWCP")
+
+#alternative dsn argument for function if above causes error
+# con <- nhsbsaR::con_nhsbsa(dsn = NULL,
+#                            driver = "Oracle in OraClient19Home1",
+#                            database = "DWCP")
 
 #2.2 Geography lookups
+
+#general lookup for NHS geographies, SICBL to ICB to Region
+nhs_lookups <- get_lsoa_icb_lookups()
 
 #NHS England Region codes have changed between 2023 and 2024
 #As patient location data joins to the National Statistics Postcode Lookup (NSPL),
@@ -157,11 +141,19 @@ region_lookup <- get_region_lookup()
 
 #Get names and codes lookups for other levels used in geo tables
 
-icb_lookup <- get_icb_lookup()
+#icb_lookup <- get_icb_lookup()
+
+#icb_lookup <- nhs_lookups$region_23
+
+icb_lookup <- nhs_lookups$region_23 |>
+  dplyr::select(-c(SICBL23CD, SICBL23CDH, SICBL23NM, ObjectId)) |>
+  dplyr::distinct()
 
 #check if using commented out version of get_la_lookup()
 #as this is required for 1-1 match of 2023 LAD name to 2023 LAD code
-la_lookup <- get_la_lookup()
+la_lookup <- get_la_lookup() |>
+  dplyr::select(-(LAD22CD)) |>
+  dplyr::filter(!(is.na(LAD23CD)))
 
 ward_lookup <- get_ward_lookup()
 
@@ -169,15 +161,12 @@ ward_lookup <- get_ward_lookup()
 
 #define values for use in data extracts and formatting
 
-#years for new edition
-first_year <- "2019/2020"
-last_year  <- "2024/2025"
-
+#Check if code works when added to config file instead
 #values for patients seen tables
 first_patients_seen_date <-
   as.POSIXct(paste(substr(first_year, 1, 4), "09", "30", sep = "-")) ## Sept 30th
 last_patients_seen_date  <-
-  as.POSIXct(paste(substr(last_year, 6, 9),  "07", "01", sep = "-")) ## July 1st
+  as.POSIXct(paste(substr(last_year, 6, 9), "07", "01", sep = "-")) ## July 1st
 
 #3.1 Contract location - national activity overview tables
 
@@ -195,68 +184,83 @@ source("import_contract_activity_geo_tables.R")
 #format data and write tables xlsx file
 source("create_geo_cont_activity_excel.R")
 
-#3.3 Patient location - national activity overview tables
-#TO DO: fold national patient location data and geo patient location into same file
+#3.3 Patient location - geographical breakdown activity tables
 
-source()
+source("import_patient_activity_geo_tables.R")
 
-#3.4 Patient location - geographical breakdown activity tables
-
-source()
+#format data and write tables xlsx file
+source("create_geo_pat_activity_excel.R")
 
 # 4. Aggregations and analysis - workforce data --------------------------------
 
+#4.4 NHS dental workforce - England
 
+#TO DO: tidy workforce pipeline script, rename
+source("england_workforce_pipeline_2425.R")
 
+#format data and write tables xlsx file
+source("create_geo_cont_workforce_excel.R")
 
+#4.5 NHS dental workforce - Wales
+#optional code to run if producing outputs to send to Welsh team
 
+#may need to run some lines of commented out code in script manually
+#depending on whether Dental Care Professionals (DCPs) are to be removed from final totals
+#(sourcing script with no changes will keep DCPs in outputs)
+
+#xlsx files created within main Wales workforce pipeline, no separate xlsx script
+source("wales_workforce_pipeline_2425.R")
 
 # 5. Data tables ---------------------------------------------------------------
 
-#placeholder for CSVs code
+#placeholder for running CSVs code scripts for granular data extracts
 
 # Disconnect from data warehouse once all data extracted and aggregated
 DBI::dbDisconnect(con)
 
-
 # 6. Charts and figures --------------------------------------------------------
 
+#script to create highcharter charts
+#and create datasets for narrative tables and data download button
+#required to render chart code chunks in narrative markdown file in section 7
 
-
-
+source("create_chart_data.R")
 
 # 7. Render outputs ------------------------------------------------------------
 
 # save narrative summary as html file into outputs folder
 # change file path to save somewhere else if needed
-rmarkdown::render("dental_narrative_v001.Rmd",
-                  output_format = "html_document",
-                  output_file = "outputs/dental_narrative_2024_25_v001.html")
+rmarkdown::render(
+  "dental_narrative_2425_v001.Rmd",
+  output_format = "html_document",
+  output_file = "outputs/dental_narrative_2024_25_v001.html"
+)
 
-# save copy as word document for use in quality review
-rmarkdown::render("dental_narrative_v001.Rmd",
-                  output_format = "word_document",
-                  output_file = "outputs/dental_narrative_2024_25_v001.docx")
+# save copy as word document for use in quality review (QR) process
+rmarkdown::render(
+  "dental_narrative_2425_v001.Rmd",
+  output_format = "word_document",
+  output_file = "outputs/dental_narrative_2024_25_v001.docx"
+)
 
 # save background document as html file into outputs folder
 # change file path to save somewhere else if needed
-rmarkdown::render("dental_background_v002.Rmd",
-                  output_format = "html_document",
-                  output_file = "outputs/dental_background_info_methodology_v002.html")
+rmarkdown::render(
+  "dental_background_2425_v001.Rmd",
+  output_format = "html_document",
+  output_file = "outputs/dental_background_2425_v001.html"
+)
 
-rmarkdown::render("dental_background_v002.Rmd",
-                  output_format = "word_document",
-                  output_file = "outputs/dental_background_info_methodology_v002.docx")
-
-
-
-
+# save copy as word document for use in QR process
+rmarkdown::render(
+  "dental_background_2425_v001.Rmd",
+  output_format = "word_document",
+  output_file = "outputs/dental_background_2425_v001.docx"
+)
 
 
 # 8. Accessibility testing (in progress) ---------------------------------------
 
-
-
-
+#check colours used in charts and narrative for contrast and colour blindness issues
 
 # 9. Automated Quality Review testing (in progress) ----------------------------
