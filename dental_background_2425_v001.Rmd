@@ -1,0 +1,682 @@
+---
+title: "NHS Dental Statistics for England"
+always_allow_html: true
+output:
+  html_document:
+    anchor_sections: no
+    css: 
+      - www/style.css
+      - www/nhs-min.css
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+  word_document:
+    toc: yes
+    toc_depth: '3'
+---
+  
+<div class = "quartoheader", id = "fixed-header">
+  <header class="nhsuk-header" role="banner">
+    <div class="nhsuk-width-container nhsuk-header__container">
+      <div class="nhsuk-header__logo nhsuk-header__logo--only">
+        <a class="nhsuk-header__link" href="https://www.nhsbsa.nhs.uk/" aria-label="NHSBSA home" target="_blank">
+          <img class="nhsuk-logo" src="www/logo-nhsbsa.svg"" name="NHSBSA logo" alt="NHS Business Services Authority">
+        </a>
+      </div>
+    </div>
+</div>
+
+<html lang="en">
+
+```{r setup, include=FALSE}
+
+# set code chunk options to disable echo by default
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+
+
+```
+ 
+<main>
+
+# Background Information and Methodology {.toc-ignore}
+  
+## August 2025 {.toc-ignore}
+
+### 1. Background information
+
+This release is the second in this series by the NHS Business Services Authority (NHSBSA). Releases of this series up to financial year 2022/23 were published by NHS England, formerly NHS Digital, on their [NHS dental statistics for England webpage](https://digital.nhs.uk/data-and-information/publications/statistical/nhs-dental-statistics) from 2006 to 2023. 
+
+NHS dental activity in England is usually commissioned through Integrated Care Boards (ICBs), who make contracts with providers of dental services. The contract specifies the activity a provider needs to complete over the coming financial year. This activity comprises a pre-agreed number of units of dental activity (UDA), units of orthodontic activity (UOA), or other services such as domiciliary visits or sedations. 
+
+Dentists can work on multiple contracts at the same time. A contract can have more than one location, and a location can have more than one contract recorded against it. Although the contract itself is linked to a commissioning organisation's geographical boundary, a provider of dental services can have contracts across different ICBs or NHS regions. Therefore in these statistics, providers can be recorded against multiple different geographical areas.
+
+Reporting at geographical levels in these statistics is presented from 2 different views of the data. Contract location data is based on the location linked to the dental contract, which may be different to the location a patient lives in. Patient location data uses the patient's postcode, if available, on the FP17 form.
+
+Providers submit claims on FP17 forms to the NHSBSA for processing and this data forms the basis of the statistics in this publication. Dentists and other performers have 62 days to submit a claim for activity, and late submissions after this period may have the units of activity received reduced to 0. 
+
+The data also excludes NHS dental activity in hospitals. Treatment that is considered only for cosmetic purposes, such as tooth whitening, is not covered by NHS dental services. Cosmetic and other private treatments do not appear in the data used for this publication. 
+
+#### 1.1. Impact of COVID-19 {.toc-ignore}
+
+To limit COVID-19 transmissions, dental practices were instructed to close and cease all routine dental care from the 25th March 2020, and could commence opening from 8th June 2020 for all face to face care, including non-urgent treatment and where practices assessed they had the necessary safety requirements in place. The data reported in the publication including activity, patient numbers, finances, and treatments will be lower than expected during the time period of restrictions. You can find more information in the data quality section of this document.
+
+### 2. Methodology
+
+#### 2.1. Geographical Breakdowns 
+Data in this publication is broken down into different geographical levels, based on user needs for performing trend analysis and monitoring service uptake. 
+
+You can find more information about geographies in the UK on [the ONS UK geographies webpage](https://www.ons.gov.uk/methodology/geography/ukgeographies).
+
+##### Contract location {.toc-ignore}
+Dental activity is generally commissioned by ICBs and dental practices are not directly contracted to Sub-ICB Locations (SICBLs), Local Authorities (LAs), or electoral wards. Therefore there are no definitive SICBL, LA, or ward 'parents' for dental practices. Commissioning was previously done by NHS region level before moving to ICBs. More information on commissioning by NHS England can be found on the [NHS dental commissioning policies and procedures webpage](https://www.england.nhs.uk/primary-care/dentistry/dental-commissioning/dental-policies-and-procedures/).
+
+Contract location activity data has been mapped to NHS region, ICB, and LA level. Workforce data has been mapped to NHS region, ICB, and SICBL level. Data on activity and the number of patients seen is included in the supporting csv files down to contract level. Although ICBs were created in 2022, historical data for financial year 2019/20, 2020/21 and 2021/22 has been mapped to ICB level to provide a more consistent area for analysis over time.
+
+Dental data from the Isles of Scilly generally appears in contracts associated with the mainland, so activity based on contract location does not appear under the Isles of Scilly LA. This means population totals by LA in the contract location summary tables will not sum to the national total from other tables. Data for the Channel Islands is not covered in these statistics.
+
+##### Patient location {.toc-ignore}
+
+For the 2024/25 release onward, data in this publication is now available for geographical levels based on patient location. When a patient's postcode has been recorded on an FP17 form, this has been joined to the National Statistics Postcode Lookup (NSPL), based on the 2011 census version of the NSPL from August 2024. This version has been used to also allow mapping to Index of Multiple Deprivation (IMD) quintiles for England.
+
+Dental activity based on patient location has been mapped to NHS region, ICB, LA and ward level. Patient location data is not included at national level, except for national activity totals by IMD quintile. Workforce data based on patient location is also not included in these statistics.
+
+Valid postcodes that are mapped to Scotland, Northern Ireland, Wales or the Channel Islands have been included in geographical breakdowns in the 'Other' group. Some postcodes cannot be mapped to the NSPL. Data from postcodes that cannot be mapped, including where the patient postcode is missing, has been included in the tables in the 'Unknown' group. For 2024/25, 1.3% of total courses of treatment were from patient postcodes that could not be mapped to the NSPL.
+
+###### Index of Multiple Deprivation (IMD) {.toc-ignore}
+
+The [English Indices of Deprivation 2019](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019) have been used in these statistics as a measure of the level of deprivation for the area a patient postcode is in. Patient postcode has been used to map the IMD decile associated with the LSOA for that postcode.
+
+The IMD calculates deciles by ranking LSOAs from most deprived to least deprived and dividing them into 10 equal groups. These range from the most deprived 10% (decile 1) of small areas nationally to the least deprived 10% (decile 10) of small areas nationally. We have aggregated these deciles into 5 groups, known as quintiles, in this publication.
+
+Due to LSOA boundary changes for the 2021 census, [ONS mid-year population estimates for IMD deciles](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/adhocs/13773populationsbyindexofmultipledeprivationimddecileenglandandwales2020) are only available to 2020. Therefore population data has not been combined with dental activity data by IMD quintile. When interpreting IMD data in this publication, it should be noted that the size of the underlying populations may be different across quintiles. 
+
+#### 2.2. Dental Activity {.toc-ignore}
+Dental activity can be measured using:
+
+* courses of treatment (COT)
+
+* units of dental activity (UDA)
+
+During a patient’s first visit the dentist determines the amount of work needed, and the patient then starts a COT. Each COT can be awarded a given number of UDAs, based on the complexity of the treatment carried out. UDAs are then monitored throughout the year to see if the level of activity pre-agreed through the contract is delivered.
+
+##### FP17 Form {.toc-ignore}
+Dentists submit information on completed COT to NHS dental services using an FP17 form. The majority of these forms are now submitted electronically. Each FP17 is associated with 1 COT, so counts of COTs in these statistics are a count of valid FP17 forms. The NHSBSA dental services website has more information on [FP17 forms and how these are processed](https://www.nhsbsa.nhs.uk/fp17-processing-and-payments). 
+
+Claims are processed and validated through the COMPASS system then extracted into the NHSBSA data warehouse. This data forms the basis of the statistics in this publication.
+
+Sometimes FP17 forms are revoked, for example if they were originally submitted against an incorrect contract number. These are known as contra records and have been excluded from the data used in this publication. The corrected information is re-submitted on another FP17 form.
+
+##### Courses of treatment (COTs) {.toc-ignore}
+A COT is a course of treatment, usually begun after a dentist examines a patient and agrees treatment is required.
+
+A COT will generally include a patient examination, an assessment of the patient's oral health, then the planning and provision of treatment, if needed. Depending on the treatment, a single COT can include multiple visits by a patient.
+
+##### Treatment bands {.toc-ignore}
+NHS dental activity is broken down into treatment bands based on how complex the treatment is. If a patient is not exempt and has to pay for treatment, the cost is determined by the treatment band.  [Patient charges by band for 2024/25 can be found on the NHS website](https://www.nhs.uk/nhs-services/dentists/how-much-will-i-pay-for-nhs-dental-treatment/) along with information on what treatments each band covers.
+
+COTs are broken down into treatment bands based on the most complex treatment in the course. COTs can include multiple treatments. For example, a COT with 3 large fillings would have the same treatment band as a COT with only 1 small filling.
+
+Band 1 includes check up and simple treatment, for example examination, x-rays and prevention advice. 
+
+Band 2 was deprecated from 25 November 2022 onwards. It includes mid range treatments, for example fillings, extractions, and root canal work in addition to Band 1 work.
+
+Band 2a covers all band 2 treatments other than those in band 2b and band 2c. 
+
+Band 2b includes COT involving either non-molar endodontics to permanent teeth or a combined total of three or more teeth requiring permanent fillings or extractions.
+
+Band 2c includes COT involving molar endodontics on permanent teeth. 
+
+Band 3 includes includes complex treatments, for example, crowns, dentures, and bridges in addition to band 1 and band 2 work. 
+
+Urgent covers a specified set of treatments, including up to two extractions and one filling. Urgent treatment is provided to a patient where oral health is likely to deteriorate significantly, or the person is in severe pain by reason of their oral condition. It is also provided when urgent treatment is needed to prevent significant deterioration or address severe pain.
+ 
+Other includes COT which include the following procedures do not have a patient charge: arrest of bleeding, bridge repair, denture repair, removal of sutures and prescription issues. 
+
+##### Band 2 sub-bands {.toc-ignore}
+NHS England introduced changes to UDAs awarded for some band 2 claims, with the old band 2 being deprecated. For activity with a date of acceptance from 25 November 2022 onwards, band 2 treatments are further broken down into sub-bands 2a, 2b, and 2c. As courses of treatment can span many weeks, months, or years, it is possible for courses of treatments which concluded after 25 November 2022 to still be recorded under the 'legacy' band 2 treatment band, rather than the newly implemented Band 2a, 2b or 2c sub-bands. 
+
+The changes were [announced in July 2022 as part of the 2022/23 contract changes.](https://www.england.nhs.uk/publication/first-stage-of-dental-reform/) More information can be found on [the NHSBSA webpage for band 2 changes](https://www.nhsbsa.nhs.uk/units-dental-activity-uda-changes-band-2-treatments-friday-25-november).
+
+##### Units of dental activity (UDA) {.toc-ignore}
+
+A UDA is a unit of dental activity, which a dental contract can be awarded after submitting a valid FP17 claim form. A general dental COT can receive different numbers of UDAs based on treatment band. Late submissions may have the UDA they receive reduced to 0. Band 1 is the simplest treatment band, so usually receives 1 UDA per COT. More complex treatments receive a higher number of UDAs.
+
+More information on the UDAs received for each treatment band [can be found on the NHSBSA website](https://faq.nhsbsa.nhs.uk/knowledgebase/article/KA-01976/en-us).
+
+**Table 1: UDAs received by a general dental course of treatment (COT), by band**
+
+```{r}
+UDA_table <- data.table(
+  "Treatment band" = c("Band 1", "Band 2", "Band 2a", "Band 2b", "Band 2c", "Band 3", "Urgent", "Arrest of bleeding", 
+                          "Bridge repair", "Denture repair", "Prescription issue", "Removal of sutures" ),
+  "UDA" = c(1.0, 3.0, 3.0, 5.0, 7.0, 12.0, 1.2, 1.2, 1.2, 1.0, 0.0, 1.0)
+)
+
+knitr::kable(UDA_table, align = "lr")
+```
+
+#### 2.3. Clinical Treatments {.toc-ignore}
+
+The different clinical treatments available under NHS dental services are listed on the FP17 form. More than 1 clinical treatment can be included in a single COT. For example, a COT for a patient could include a scale and polish as well as a tooth extraction.
+
+**Table 2: NHS dental clinical treatments**
+
+```{r}
+clinical_treatments_table <- data.table(
+  "Treatment" = c(
+    "Scale and Polish",
+    "Fluoride varnish",
+    "Fissure sealants",
+    "Radiograph(s)",
+    "Endodontic treatment",
+    "Permanent fillings and sealant restorations",
+    "Extractions",  
+    "Crown(s)",
+    "Dentures",
+    "Veneer(s) applied",
+    "Inlay(s)",
+    "Bridge(s)",
+    "Referral for advanced mandatory services",
+    "Examination",
+    "Antibiotic items prescribed",
+    "Occlusal appliance hard bite",
+    "Occlusal appliance soft bite",
+    "Denture additional reline/rebase",
+    "Endodontic treatment - molar",
+    "Endodontic treatment - non molar",
+    "Advanced perio/Root surface debridement (RSD)",
+    "Other treatment"),
+  
+  "Description" = c(
+    "Simple periodontal treatment including scaling, polishing, marginal correction of fillings and charting of periodontal pockets.",
+    "Fluoride preparation applied to the teeth surface as a primary preventative measure.",
+    "Sealant material is applied to the pit and fissure systems as a primary preventative measure.",
+    "An x-ray, providing an image of the teeth, mouth and/or gums that can help identify underlying problems such as decay.",
+    "Root filling including removal of diseased or damaged pulp of the tooth. The root canal is then cleaned, shaped and filled with a suitable material.",
+    "Restoration of a tooth by filling a cavity to replace lost tooth tissue.",
+    "Tooth extraction. Also includes surgical removal of a buried root, unerupted tooth, impacted tooth or exostosed tooth.",
+    "Full coverage of a tooth where tooth tissue is not sufficient to restore the tooth by other means. This excludes stainless steel crowns.",
+    "A removable appliance that replaces some or all teeth.",
+    "Layer of material (often porcelain) covering the surface of a damaged or discoloured tooth.",
+    "Type of indirect restoration (i.e. created in the laboratory).",
+    "A fixed restoration that replaces one or more missing teeth.",
+    "Patient is referred to another contractor.",
+    "An examination for treatment planning purposes, normally including charting of the teeth, recording of the periodontal condition and soft tissue examination.",
+    "Patient is issued with a prescription containing antibiotic items. This shows the number of antibiotic treatments rather than the number of pills.",
+    "Hard occlusal splint, typically designed to be worn at night, to help to keep the jaw in a neutral position to reduce pressure.",
+    "Soft occlusal splint (biteguard), typically designed to be worn at night, to help to keep the jaw in a neutral position to reduce pressure.",
+    "Addition of a tooth, clasp, labial or buccal flange to their denture.",
+    "Root filling to a molar tooth, including removal of diseased or damaged pulp of the tooth. The root canal is then cleaned, shaped and filled with a suitable material.",
+    "Root filling to a non molar tooth, including removal of diseased or damaged pulp of the tooth. The root canal is then cleaned, shaped and filled with a suitable material.",
+    "Removal of plaque and tartar from the roots of teeth and below the gum line, particularly when severe gum disease is present.",
+    "Treatment not included in the above list.")
+
+)
+
+knitr::kable(clinical_treatments_table, align = "ll")
+```
+
+
+
+#### 2.4. Patients Seen {.toc-ignore}
+The measure of patients seen is the number of adult patients who received NHS dental care in the previous 24 months. This is defined as including patients where their last COT started within the past 24 months.
+
+For children, patients seen is the number of child patients who received NHS dental care in the previous 12 months, This is defined as including patients where their last COT started within the past 12 months.
+
+The 24-month time period for adults and 12-month period for children are aligned with the recommended longest interval between dental checks in the [National Institute for Health and Care Excellence (NICE) oral and dental Health guidance.](https://www.nice.org.uk/guidance/health-and-social-care-delivery/oral-health)
+
+Orthodontic patients are included in the patients seen counts, however it is not possible to determine which patients were seen for orthodontic visits. 
+
+Information is taken from the FP17 form and based on the date of validation processing at NHS Dental Services. Any COT started but not processed within the period will not appear in the 12 or 24 month count.
+
+This is different from the methodology for activity data, which measures the number of COTs which end within a given period such as a financial year. Since valid claims can be submitted after the treatment finished, activity data has a lag to account for receiving and processing claims from within the valid submission window. Because of the differences in dates used to include data, patients seen figures are available earlier than activity data. 
+
+Patients seen data is available for the 12 or 24 months up to the end of June 2025 in the summary tables, while activity data covers up to the end of March for the financial year 2024/25.
+
+Patients are only counted once in the time period, even if they have received several courses of treatment. Unique patients are identified by using surname, first initial, gender and date of birth. This means there may be some duplication and omissions where patients share the same information for each of these variables.
+
+For example, if 2 or more patients share the same surname, initial, gender and date of birth, some patients will be omitted. Patients may be counted twice if they have 2 or more episodes of care and their name is misspelled or their name changes between those episodes of care. If the 2 episodes of care are at different dental practices, there is a higher risk of duplication. Duplication and omissions are considered unlikely to affect overall counts by more than 1 or 2 percent.
+
+##### Patient age {.toc-ignore}
+For patients seen counts, patient age is the age of the patient at the end of the specified period.  A child is defined as aged 17 or under.
+
+##### Statistical Disclosure Control (SDC) {.toc-ignore}
+
+SDC has been applied to these statistics for the most granular patients seen CSV files. Patients seen counts have been redacted in the contract level breakdown, contract location geographical breakdown, and patient location geographical breakdown patients seen CSV tables if they relate to fewer than 5 patients. This mostly affects contract level data and ward level data for child patients aged less than 1 year.
+
+While some files have a relatively high percentage of rows redacted by SDC, the percentage of total patients seen values affected is small. For example, across the contract level patients seen CSV files for 2019/20 to 2025/26, 11% of rows are redacted, but this relates to only 0.1% of the total value from the patients seen column. For the geographical contract location and patient location patients seen CSV files, all files had less than 0.02% of the total for the patients seen column redacted due to SDC.
+
+Further information about our SDC protocol can be found on [the NHSBSA policies and procedures page](https://www.nhsbsa.nhs.uk/policies-and-procedures).
+
+#### 2.5 Population data {.toc-ignore}
+Data on the number of patients seen as a percentage of the population uses Office for National Statistics (ONS) mid-year population estimates. These population estimates are also used to calculate the population per dentist and dentists per 100,000 population in the workforce data. You can find the mid-year population estimates on the [ONS population and migration webpages](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration).
+
+The latest mid-year population estimates available at time of publication are used for the calculations. For national level figures, this means the number of patients seen as a percentage of the population uses the year halfway through the reporting period. For example, for patients seen in the 24 months to March 2025, the national mid-year population year used for England is 2024. 
+
+Mid-year population estimates from the Office for National Statistics (ONS) are used for NHS region, ICB, SICBL, and ward boundaries for the required patient age bands. Mid-year estimates for local authority and national level have a shorter lag between the year an estimate is for and when it is published. 
+
+This means some measures for NHS region, ICB, SIBL or ward levels use previous mid-year estimate years. These measures have been marked as provisional in the tables and will be updated when mid-year population estimates by LSOA become available for the latest year. For example, the latest mid-year estimate for NHS region, ICB, SICBL and ward populations was 2022 at time of production. Data based on these populations will be updated once 2023 estimates are available.
+
+ICBs were introduced in 2022, part-way through the time-series covered by the data. Previously, region, ICB, and SICBL populations in this publication were aggregated up from LSOA populations, but population estimates are now all extracted directly at the sub-national levels needed.  Some code changes to two ICBs have occurred between the 2022 and 2023 ICB structure mapping, so the latest ICB code has been used. 
+
+ONS population estimates are based on the estimated residential population of an area. This may affect data calculated from sub-national population estimates as patients being treated within an ICB may not necessarily be a resident of that ICB. The number of patients seen in the contract location activity tables may include patients who are not in the same area as the mid-year population estimate location. 
+
+For example, a patient who lives close to an ICB boundary may visit a dentist that works in a different ICB. Therefore activity has now also been mapped to areas based on patient postcode location. This will allow users to explore a patient-focused breakdown of activity across geographical areas, and how it may be different from contract location activity.
+
+#### 2.6. Fees and Exemptions 
+##### Patient type {.toc-ignore}
+Patients are split into three types according to their age and exemption status:
+
+* paying adults, who pay a charge to the full cost of the treatment
+* non-paying adults, who are exempt or remitted from paying a charge to the full cost of the treatment
+* children
+
+#### Exemptions {.toc-ignore}
+
+Patients are exempt from NHS dental charges where they are:
+
+* a child, defined as a patient aged 17 or under
+* aged 18 or over and in full-time education
+* pregnant or have had a baby in the year before treatment starts
+* an NHS inpatient where treatment is delivered by the hospital dentist
+* an NHS Hospital Dental Service outpatient, there may be a charge for dentures and bridges
+* included in an award of Income Support, income based Jobseeker’s Allowance, income-related Employment and Support Allowance, Pension Credit or Guarantee Credit or Universal Credit
+* named on a valid NHS tax credit exemption certificate
+* named on a valid NHS Low Income Scheme HC2 certificate
+* a patient named on an NHS Low Income Scheme HC3 certificate, these patients may be eligible for partial help with dental costs
+
+##### Patient Charges {.toc-ignore}
+Paying adults are charged according to the treatment band. ‘Other’ treatment incurs no charge. Patients do not have to pay a charge for free treatment, including removal of stitches, arrest of bleeding such as after a tooth extraction, or denture repair. If dentures cannot be repaired and a new set is required, these will have to be paid for. If the dentist only has to write a prescription for the patient, there is no dental patient charge for this. However, if the patient does not have an exemption and pays for their prescriptions, the usual prescription charge will apply.
+
+**Table 3: NHS Dental Charges applicable to paying adults**
+
+```{r}
+dental_charges_table <- data.table(
+  "Year" = c("2017/18", "2018/19", "2019/20", "2020/21", "2021/22", "2022/23", "2023/24", "2024/25"),
+  "Band 1 charge" = c("£20.60", "£21.60", "£22.70", "£23.80", "£23.80", "£23.80", "£25.80", "£27.40"),
+  "Band 2 charge" = c("£56.30", "£59.10", "£62.10", "£65.20", "£65.20", "£65.20", "£70.70", "£75.30"),
+  "Band 3 charge" = c("£244.30", "£256.50", "£269.30", "£282.80", "£282.80", "£282.80", "£306.80", "£326.70"),
+  "Urgent charge" = c("£20.60", "£21.60", "£22.70", "£23.80", "£23.80", "£23.80", "£25.80", "£27.40")
+)
+
+knitr::kable(dental_charges_table, align = "lrrrr")
+```
+
+The charge collected can vary from the notional charge for the band.
+
+Any changes to patient charges are usually applied from April 1, the start of each financial year. Patient charges for 2019/20 were in place until 14 December 2020, then increased to the 2020/21 rates listed in table 3. Patient charges were then frozen until the 2023/24 charges came into effect on 1 April 2023. 
+
+In some cases, the fee for a paying adult is fully or partially waived for:
+
+- a continuation of treatment where a COT is completed but the patient needs further treatment within two months
+- treatment on referral - the patient charge is collected by the referring dentist
+- treatment that qualifies for free repair or replacement
+- treatment that was not completed
+
+Reported patient charge revenue may be lower than expected as patient charge information is not collected from closed contracts. No account is taken in these statistics of refunds for patients who pay for their treatment and prove later that they should not have paid charges, or penalties imposed on those who should have paid but did not.
+
+Patient charges by band for 2024/25 can be found on the [NHS website](https://www.nhs.uk/nhs-services/dentists/how-much-will-i-pay-for-nhs-dental-treatment/) along with information on what treatments each band covers.
+
+#### 2.7. Orthodontics
+Orthodontics is a specialist area of dentistry concerned with the growth and development of the teeth and jaws and the prevention and treatment of abnormalities of this development. Therefore most orthodontic patients are children.
+
+##### FP17O Form{.toc-ignore}
+Orthodontic information is collected separately from dental activity data via the [FP17O](https://www.nhsbsa.nhs.uk/fp17-and-fp17o-changes-1-october-2022) form. You can find more details on the [NHSBSA Dental Services webpages](http://www.nhsbsa.nhs.uk/DentalServices.aspx).
+
+##### Units of orthodontic activity (UOA) {.toc-ignore}
+A unit of orthodontic activity (UOA) is an indication of the weight of an orthodontic course of treatment.
+
+A course of orthodontic activity equates to between 4 and 23 UOA, according to the age of the patient. All of these are credited to the dentist at the start of the COT. However treatment may be performed over a number of years and changes in contractual arrangements may need to be considered when interpreting historical orthodontic data.
+
+Under the present contractual arrangements dentists are paid a monthly sum. In return for this payment they have a contractual obligation to deliver a specified number of UOA in the course of a year, and are credited with UOA at the start of each course of orthodontic treatment. Additionally, they are credited with a smaller amount of UOA (1 or 0.8 of a unit) for carrying out orthodontic assessments and repairs.
+
+Due to the relatively small number of practitioners, at sub-national level, the movement of any orthodontic practitioner from one sub-region to another can have a significant impact on the aggregate UOA figures for the organisations concerned. Orthodontic activity is only provided at national and regional level.
+
+#### 2.8. Dental Workforce 
+Dental professionals working in dental services in England are required to be registered with the [General Dental Council (GDC)](https://www.gdc-uk.org/). Dental workforce data is based on the number of dentists who have carried out NHS activity during each financial year. Dental activity is recorded by the NHSBSA by [FP17 forms](https://www.nhsbsa.nhs.uk/fp17-processing-and-payments).
+
+##### Dental Contracts {.toc-ignore}
+Dentists can work under several contracts.
+
+**Table 4: NHS Dental contracts**
+
+```{r}
+dental_contracts_table <- data.table(
+  "Contract" = c(
+    "General Dental Services (GDS)",
+    "Personal Dental Services (PDS)",
+    "Trust-led Dental Services (TDS)"
+  ),
+  "Services" = c(
+    "Must provide a full range of mandatory services.",
+    "Are not obliged to provide the full range of mandatory services. If specialist services, such as orthodontic work, are provided this must be under a PDS agreement.",
+    "Can provide services under PDS agreements and then pay dentists directly rather than through the standard system operated by NHS Dental Services.")
+)
+
+knitr::kable(dental_contracts_table, align = "ll")
+```
+
+##### Contract Types
+
+A dentist can have multiple contracts within an ICB or across a series of ICBs. Dentists are counted against each ICB where they have a contract, which means that the sum of local level information may not match the national total.
+
+A dentist is assigned a contract type by looking at all the contracts they hold with activity recorded against them. The table below shows the combination of contract types and the corresponding category.
+
+**Table 5: Dental contract types**
+
+```{r}
+dental_contracts_types_table <- data.table(
+  "Dentist operates under" = c( "GDS only", "GDS & TDS", "GDS & PDS", "GDS & PDS & TDS", "PDS only", "PDS & TDS", "TDS only" ),
+  "Categorized as" = c( "GDS", "GDS", "Mixed", "Mixed", "PDS", "PDS","TDS")
+)
+
+knitr::kable(dental_contracts_types_table , align = "ll")
+```
+
+
+Some dentists may operate under a GDS contract in one ICB and a PDS contract in another. In this case they are counted under the GDS contract type in the first ICB and PDS in the second. If these are within the same ICB, they will count under the Mixed contract type in ICB, region, and national level aggregations.
+
+##### Dentist type {.toc-ignore}
+
+Due to changes in the collection system at NHSBSA it was not possible to determine the working arrangements of dentists in time for NHS England's 2018/19 publication, so dentist type was removed from that analysis. A new methodology was implemented for 2019/20 based upon the access rights of dentists using the NHSBSA COMPASS system and figures were also recalculated for 2018/19. 
+
+This methodology has been used for 2024/25 results, and there are now 6 years of comparable data. This data has not been validated so may not be fully accurate. However, when previously compared to self-declaration by dentists in the [NHS Digital Dental Working Patterns Survey covering 2018/19 and 2019/20](https://digital.nhs.uk/data-and-information/publications/statistical/dental-working-hours), there was closer alignment in dental type compared to the old methodology.
+
+
+Dentists are assigned to one of the following dentist types depending on their contractual and working arrangements:
+
+* A Providing-Performer is a dentist who has a contract with NHS England and NHS Improvement to provide primary dental services and who also delivers dental services themselves.
+* An Associate delivers dental services but does not hold a contract with NHS England and NHS Improvement. They are employed by a provider and were previously called ‘Performer-only’ dentists in these publications.
+* Provider-only is a dentist who has a contract with NHS England to provide primary dental services, but sub-contracts all dental activity to other dentists and does not perform any NHS dentistry on the contract themselves.
+
+The change in methodology resulted in large numbers of dentists being reclassified as Providing-Performer and a consequential decrease in Associate dentist numbers for 2018/19 data and onwards. This means there is a major break in the time-series and figures split by dentist type prior to 2018/19 have been removed from the report. The table below indicates the scale of the change:
+
+```{r}
+old_methodology_table <- data.table(
+ "Old Methodology" = c("2017/18"),
+ "National Total" = c(format(24308, big.mark = ",")),
+ "Providing-Performer" = c(format(2555, big.mark = ",")),
+ "Associate" = c(format(21753, big.mark = ",")),
+ "Unknown" = c(NA)
+)
+
+knitr::kable(old_methodology_table , align = "lrrrr")
+```
+
+```{r}
+new_methodology_table <- data.table(
+ "New Methodology" = c("2018/19", "2019/20", "2020/21", "2021/22", "2022/23"),
+ "National Total" = format(c(24545, 24684, 23733, 24272, 24151), big.mark = ",", trim=TRUE),
+ "Providing-Performer" = format(c(4954, 4863, 4682, 4752, 4604), big.mark = ",", trim=TRUE),
+ "Associate" = format(c(19550, 19781, 19026, 19485, 19512), big.mark = ",", trim=TRUE),
+ "Unknown" = format(c(41, 40, 25, 35, 35), big.mark = ",", trim=TRUE)
+)
+
+knitr::kable(new_methodology_table , align = "lrrrr")
+```
+
+The overall headcount of dentists was not affected in NHS Digital's previous publications, but any comparison with dentist type in data published previously for 2017/18 and earlier should be made with caution. It should be noted that NHS Digital publications do not include data for Provider-only dentists. Provider-only have no NHS activity recorded against them and authorised bodies, including certain companies and NHS trusts, may hold contracts with NHS England and NHS Improvement to provide primary dental services.
+
+Foundation dentists are included in the data as Associates. Dental care professionals (DCPs) such as dental therapists and hygienists are excluded from the main workforce statistics. However, some DCPs that lead on dental activity are included in table 3a of the workforce excel file. Breakdowns of activity that has been led or assisted by DCPs is available in the dental activity excel tables and the DCP activity CSV tables. 
+
+##### Performer role {.toc-ignore}
+The role of a dental performer is needed to assign dentist type. For each financial year, the role of a dental performer at the end of the financial year is used, including whether they are a dentist, foundation dentist, or a DCP. When a performer cannot be found in the end-of-year current roles data, for example if they were no longer on an active contract, they are assigned based on the last recorded role on record within that year. 
+
+Any unmapped performers are then checked against whether they were a foundation dentist at the time of activity. Remaining unmapped performers are assigned the latest role on record across the past 3 years, or grouped as 'unknown' if they cannot be mapped using any of these methods. 
+
+##### Dentist age {.toc-ignore}
+
+The age of dentists is calculated as of 30 September in each year.
+
+##### Joiners {.toc-ignore}
+
+A joiner is a dentist with activity recorded against them in a year, but none in the previous year, across all contracts within a given area. For example, joiners for 2024/25 will be dentists who carried out activity in 2024/25 but no activity in 2023/24. 
+
+##### Leavers {.toc-ignore}
+
+A leaver is a dentist with activity recorded against them in a year, but none in the following year, across all contracts within a given area. Therefore, information on the number of leavers is not available until the end of the following year. For example, 2024/25 leavers will be dentists who carried out activity in 2023/24 but no activity in 2024/25.
+
+##### Workforce geographical breakdowns {.toc-ignore}
+
+Dentists have been assigned to ICB level based on the ICB associated with the dental contract. ICB level data has subsequently been mapped up to NHS region using the [April 2023 lookup of health geographies from the ONS geoportal website](https://geoportal.statistics.gov.uk/datasets/ons::sub-icb-locations-to-integrated-care-boards-to-nhser-april-2023-lookup-in-en/about). 
+
+Breakdowns by SICBL are instead based on the primary correspondence address.  This may be different from the location of the commissioner of the dental contract. Some dentists with a primary correspondence address in Wales have been excluded from the SICBL level data. However, dentists with a Welsh primary correspondence address will be included in ICB, regional, and national totals if they have performed activity under English NHS dental contracts.
+
+Counts of dentists at each level will only include the number of unique dentists in each group. For example, the national totals in table 1a of the workforce summary tables will only count each dentist once even if they have multiple contracts in the same financial year. However, adding together sub-national totals will result in double counting of dentists with contracts in more than one region, ICB, or SICBL in the same year.
+
+### 3. Changes to this publication
+
+You should always use the latest available data from a publication series. Definitions and explanations have been updated in the supporting documentation to reflect changes to this publication.
+
+#### 3.1 Changes for 2024/25 {.toc-ignore}
+
+Geographic breakdowns of activity data based on the location of the patient’s postcode have been added to the publication for 2019/20 to 2024/25. This is in addition to existing breakdowns by the location of the dental contract. This will allow users to investigate differences between the level of activity carried out in an area, compared to the level of activity for patients with a postcode in that area. Postcodes have been mapped using the National Statistics Postcode Lookup (NSPL) 2011 census version for August 2024.
+
+Some patient postcodes cannot be mapped using the NSPL and this data has been recorded as ‘Unknown’ in the supporting summary table files. When a patient’s postcode is from areas in the UK outside of England, this has been recorded as ‘Other’ in the summary table files.
+
+Dental activity data by ward and national Index of Multiple deprivation (IMD) quintile, both based on patient location, is also now included in the supporting summary tables and CSV files. Breakdowns of activity by DCP status and DCP type have also been added. These changes have been informed by user feedback.
+
+The format of the population data used has changed between the 2023/24 and 2024/25 publication releases. The 2023/24 release mapped region and ICB level populations up from LSOA mid-year population estimates by age and gender. For 2024/25, ONS population data has been extracted directly at the geographical levels required.
+
+Some historical activity data may change between years, when FP17 form claims have been withdrawn or changed. The amount of data affected is small as dentists have an incentive to submit forms and corrections within 62 days of activity, as otherwise the UDA of the activity awarded against the contract may be reduced to 0. New FP17 forms submitted after the 15-month treatment window for each financial year used in this publication are also not included in the tables. However, some small changes, such as reductions in the UDAs or COTs, may be found for existing forms where the activity and details on the form record have been changed a long time after the form submission. Between the 2023/24 and 2024/25 release, the highest change in national annual COTs for historical data was a 332 COTs reduction for 2023/24 data, a less than 0.001% change.
+
+#### 3.2 Changes to previous NHS Digital methodology {.toc-ignore}
+
+For the first release in this series by the NHSBSA for 2023/24, several changes were made to the methodology from previous releases. A 6-year time series from 2019/20 to 2024/25 has been produced using the newer methodology, which can be used for comparisons over time.
+
+Due to the methodology changes, some numbers will not match historical totals published in previous years. The changes have generally had a small impact on the data compared to the previously published data, in most cases of less than 1%.
+
+Compared to previous releases by NHS England, formerly NHS Digital, the main changes made during extracting and analysing dental activity data were:
+
+* the removal of revoked FP17 records
+* the removal of late submission claims outside of the reported time period
+* how courses of treatment are calculated
+* changes to mapping to ONS population data.
+
+Other changes to the methodology were minor, and have not had a noticeable impact on data at the level released in these statistics or the accompanying tables. All data released in these tables has notes and metadata to inform users of what to be aware of when using this data. 
+
+In addition to the methodology, changes were made to the formatting of the tables and a statistical summary narrative was added, to align with other official statistics publications produced by the NHSBSA. 
+
+##### 3.2.1. Changes to dental activity data {.toc-ignore}
+
+Revoked FP17 records, which are used to amend or withdraw a previously submitted claim have been removed, to avoid counting withdrawn FP17 forms. 
+
+This publication excludes data where a form has been submitted outside the maximum possible submission window for a given financial year, to more closely mirror the methodology used by other dental data published on the NHSBSA Open Data Portal.
+
+Previously, COTs were calculated by dividing the given UDA weighting for a given band. This has been changed to a count of valid FP17 forms for treatment that has been completed, to get the number of COTs.
+
+For years that appear in both the 2022/23 and 2023/24 publications, the national annual totals of COTs has changed by less than 1% as a result of the methodology changes to dental activity. The national annual totals of UDAs have changed by less than 0.1%. 
+
+##### 3.2.2. Changes to dental workforce data {.toc-ignore}
+
+Workforce data will not match previously published totals for several reasons. The way that data is processed in the system that dentists use to submit FP17 forms means there is no accessible historical record of what role type a dentist was in. Historical extract files have been used instead for years prior to 2024/25. 
+
+Due to data retention periods, not all files were available for the years needed to calculate joiners and leavers. Some data on sub-national joiners and leavers which was previously available was omitted for 2024/25 while the quality of this data was investigated. We have now changed how we source this data due to underlying issues. The workforce tables were recreated from the new data source and are now included in the workforce Excel summary tables and the workforce CSV (comma separated values) files.
+
+For workforce table 1a, national annual totals of NHS dentists, the totals for 2020/21 and 2022/23 were the same in the 2022/23 publication and the 2023/24 publication. The difference in national totals of dentists for 2019/20 and 2021/22 between publications was small, at 0.03% less in the 2023/24 release. Changes in other geographical level totals between the publications have not been fully explored. 
+
+For the 2023/24 and 2024/25 releases, the way leavers data has been presented in the tables has changed. For example, dentists who performed activity in 2022/23 then no activity in 2023/24 have been included in the 2023/24 leavers totals. In the previous NHS Digital releases, dentists who performed activity in 2022/23 then no activity in 2023/24 were included in the leavers totals for 2022/23. 
+
+### 4. Strengths and limitations
+
+#### 4.1. Strengths
+
+The data extracted into the NHSBSA data warehouse from the COMPASS system only contains claims that have been validated. As the publication has been brought in-house, data can be examined down to form level when investigating any issues during production of these statistics.
+
+This data contains data down to a high level of granularity, allowing users to explore data down to contract level in addition to the national and sub-national breakdowns. Releasing data on the dental workforce at the same time as activity data gives users more context when interpreting dental data. 
+
+#### 4.2. Limitations
+
+The activity data used in this publication becomes available several months after the end of the financial year. This, combined with the time needed to produce the publication, results in a lag between the publishing date and the time period the data is for. This impacts on the timeliness of the statistics for users.
+
+The way workforce roles data is processed and stored makes it more complex to explore back through time. The methods for extracting historical workforce data will be investigated before the next annual release.
+
+### 5. Revisions
+
+Any revisions that we make to these statistics will be made in line with our [Revisions and Corrections policy.](https://www.nhsbsa.nhs.uk/policies-and-procedures) Any significant errors found within these statistics after their publication that would result in the contradiction of conclusions previously drawn from the data will be notified of prominently on our website and any other platforms that host these statistics, corrected as soon as possible, and communicated clearly to users and stakeholders.
+
+### 6. Related statistics, comparability and useful resources
+
+The NHS website has more information on [what activity is covered by NHS dental services.](https://www.nhs.uk/using-the-nhs/nhs-services/dentists/whats-available-on-the-nhs/) 
+
+The NHSBSA also publish selected dental activity and orthodontic activity data by month on the [Open Data Portal](https://opendata.nhsbsa.net/theme/dental-data). These datasets have been produced using different methodologies so cannot be used to compare directly against this publication. For example, the dental official statistics publication includes data from H&J commissioners as well as foundation dentists, but this activity is excluded from some other NHSBSA data outputs. Unlike the official statistics publication, some other outputs exclude activity where dental contracts were unpaid.
+
+#### UK dental data
+
+NHS Dental Services within the NHSBSA collect and manage NHS dental data for England. More details are available on the [NHS Dental Services page](https://www.nhsbsa.nhs.uk/nhs-dental-services) of the NHSBSA website.
+
+Information on dentistry and dental services for other countries in the UK is available for Wales on the [Welsh government website](https://www.gov.wales/nhs-dental-services), for Scotland on the [Public Health Scotland website](https://www.publichealthscotland.scot/our-areas-of-work/primary-care/dental-care/overview/), and the [Department of Health website for Northern Ireland](https://www.health-ni.gov.uk/topics/dentistry).
+
+#### Adult Dental Health Survey (ADHS) {.toc-ignore}
+
+The [2009 Adult Dental Health Survey (ADHS)](https://digital.nhs.uk/data-and-information/publications/statistical/adult-dental-health-survey) is the fifth in a series of national dental surveys that have been carried out every decade since 1968. The main purpose of these surveys has been to get a picture of the dental health of the adult population and how this has changed over time.
+
+#### Children’s Dental Health Survey (CDHS){.toc-ignore}
+
+The [Child Dental Health Survey 2013, England, Wales and Northern Ireland](https://digital.nhs.uk/data-and-information/publications/statistical/children-s-dental-health-survey/child-dental-health-survey-2013-england-wales-and-northern-ireland) provides statistical estimates on the dental health of 5, 8, 12 and 15-year-old children in England, Wales and Northern Ireland. It uses data collected during dental examinations conducted in schools on a random sample of children by NHS dentists and nurses.
+
+#### Hospital Episode Statistics (HES) {.toc-ignore}
+
+HES are the national statistical data warehouse for England of the care provided by NHS hospitals and for NHS patients treated elsewhere. Information on accident and emergency (A&E), outpatient and inpatient activity are available from the [HES webpage on the NHS Digital website](https://digital.nhs.uk/data-and-information/data-tools-and-services/data-services/hospital-episode-statistics).
+
+#### GP patient survey: dental statistics {.toc-ignore}
+
+In January to March 2024, 2.6 million adults were asked about their views on NHS dentistry as part of the GP Patient Survey. The findings of the survey are published on NHS England's [GP patient survey dental statistics webpage](https://www.england.nhs.uk/statistics/category/statistics/gp-dental-statistics/).
+
+### 7. Quality of the statistics
+
+We aim to provide users of this publication with an evidence-based assessment of its quality and the quality of the data from which it is produced. We do so to demonstrate our commitment to comply with the UK Statistics Authority’s (UKSA) Code of Practice for Statistics, particularly the pillar of Quality and its principles.
+
+**Q1 Suitable data sources** – Statistics should be based on the most appropriate data to meet intended uses. The impact of any data limitations for use should be assessed, minimised, and explained.
+
+**Q2 Sound methods** – Producers of statistics and data should use the best available methods and recognised standards and be open about their decisions.
+
+**Q3 Assured quality** – Producers of statistics and data should explain clearly how they assure themselves that statistics and data are accurate, reliable, coherent, and timely.
+
+This is an assessment of the quality of these statistics against the European standard for quality reporting and its dimensions specific to statistical outputs, particularly:
+
+*	Relevance
+*	Accuracy and reliability
+* Timeliness and punctuality
+*	Accessibility
+*	Coherence and comparability
+
+These principles guide us and are complimented by the UKSA’s regulatory standard for the Quality Assurance of Administrative Data (QAAD).
+
+
+#### 7.1. Relevance
+
+*This dimension covers the degree to which the product meets user need in both coverage and content*
+
+This publication allows commissioners and policy makers to monitor levels of service delivery to target groups, highlighting changes over time. It provides information to the Department of Health and Social Care and local NHS managers, allowing for the monitoring of the provision of dental services and dental expenditure, and helping to inform planning.
+
+The annual publications, previously quarterly and biannual, include information on activity and patients seen, orthodontic data, clinical treatment data, information on patient charges and dental workforce statistics. The activity data monitors levels of activity across treatment bands, highlighting changes in practice over time. The key use of the patients seen data is to monitor the effectiveness of the current dental contract.
+
+#### 7.2. Accuracy and Reliability
+
+*This dimension covers the statistics proximity between an estimate and the unknown true value*
+
+Provisional data was previously published in the mid-year publication and adjusted to provide the estimated final position for national data. Adjustment methodology and factors are published in the guide to dental publications that accompany previous NHS Digital publications in this series.
+
+Currently:
+- final activity data is published in the annual report
+- patients seen data is all final data and is published in the annual reports, this was previously quarterly/biannual
+- final data on orthodontics, clinical treatment and patient charges are published in the annual report
+- figures for patient charges may be slightly lower than expected as information is not collected from closed contracts, although the volume of these is limited.
+
+Some calculcated figures using ONS mid-year population estimates are provisional and will be changed when the latest population estimates are published. More information on this can be found in the table notes of the affected data, and in the guidance on population data in this background and methodology document.
+
+
+#### 7.3. Timeliness and punctuality
+
+*Timeliness refers to the time gap between publication and the reference period. Punctuality refers to the gap between planned and actual publication dates*
+
+This publication is classed as Official Statistics and the publication date was pre-announced. There was no gap between the planned and actual publication date.
+
+- activity data is published four and a half months after the end of the relevant financial year.
+- patients seen data is published four and a half months after the end of the relevant financial year.
+- patient charges, orthodontics and clinical data are published four and a half months after the end of the financial year.
+
+#### 7.4. Accessibility and clarity
+
+##### **7.4.1. Accessibility**
+
+*Accessibility is the ease with which users can access the data, also reflecting the format in which the data are available and the availability of supporting information.*
+
+This publication combines data in table format with a statistical summary narrative  presented as an HTML webpage, with supporting documentation also released in HTML format.
+
+Additional information is provided in Excel format at sub-national level, including csv files which are suitable for further analysis.
+
+
+#### 7.5. Coherence and comparability
+
+*Coherence is the degree to which data have been derived from different sources or methods but refer to the same topic or similar. Comparability is the degree to which data can be compared over time and domain*
+
+In April 2019 there were changes to the regional arrangements of NHS bodies, including CCG mergers and the creation of new NHS commissioning regions. These changes limit the capability of mapping dental practices within time series.  You can find out more about [changes to regions and CCGs on the ODS webpage.](https://digital.nhs.uk/services/organisation-data-service/changes-to-ods-services) 
+
+Further changes to commissioning services occurred with the introduction of ICBs, which are now the usual commissioning organisations. Information about the move to ICBs can be found on the [ODS webpage for the introduction of ICBs.](https://digital.nhs.uk/services/organisation-data-service/upcoming-code-changes) 
+
+
+##### 7.5.1. Comparisons over time
+
+**Trade-offs between output quality components**
+
+This data is collected by NHS Dental Services, part of the NHSBSA. The majority of the information is collected electronically and data is made available to us for publication as a by-product of these processes.
+
+<!-- **Assessment of user needs and perceptions** -->
+
+<!-- *This dimension covers the processes for finding out about users and uses and their views on the statistical products* -->
+
+##### 7.6. Confidentiality, transparency and security
+
+*The procedures and policy used to ensure sound confidentiality, security and transparent practices*
+
+The data contained in this publication are Official Statistics. [The code of practice](https://code.statisticsauthority.gov.uk/) is adhered to from collecting the data to publishing. 
+
+Comparability with other publications produced by the NHSBSA can be determined using the [Official Statistics guidance table](https://www.nhsbsa.nhs.uk/statistical-collections), which is maintained with the release of each new publication. This table shows how all of the NHSBSA’s statistics publications compare across a range of measures to help users identify the best publication for their needs or understand where differences in figures may occur.
+
+##### 7.7. Impact of COVID-19
+
+On the 25 March 2020, dental practices were instructed to close and defer routine, non-urgent dental care including orthodontics and establish remote urgent care services to limit the transmission of COVID-19. The restrictions included:
+
+•        Cease all routine dental care (including orthodontics) (UK-wide)
+
+•        Cease all aerosol generating procedures (UK-wide)
+
+•        Offer patients with urgent needs appropriate advice and prescriptions over the phone (UK-wide)
+
+•        Cease all face-to-face urgent care (England, Scotland)
+
+Due to the COVID-19 restrictions the number of FP17 and FP17W claim forms and therefore, the totals regarding activity, patient numbers, finances and  treatments, will be much lower than traditionally expected for the final quarter of 2019/20 and the entire 2020/21 financial year. It is anticipated the number of children patients will be impacted the most. Dental practices could commence opening from 8th June 2020 for all face to face care, including non-urgent treatment and where practices assessed they had the necessary safety requirements in place. Information about [instructions from NHS England can be found online.](https://www.england.nhs.uk/coronavirus/publication/preparedness-letters-for-dental-care/)
+
+
+###### 7.7.1. Dental headcount (2020/21)
+
+The annual 2020/21 publication covers the first year of the coronavirus pandemic that has had a large impact on the healthcare profession. In terms of NHS dentistry, most practices were closed between April and June 2020 and some dental practitioners were redeployed to help with the initial COVID-19 response whilst others faced a longer lay off due to shielding and/or sickness. Although practices started to reopen from June 2020, increased fallow time between treatments and reduced minimum thresholds for NHS dental activity, potentially mean that not all dental practitioners returned to primary care dentistry during 2020/21. This may have contributed to the decrease in the overall dental headcount figure.
+
+### 8. Feedback and contact us
+
+Feedback is important to us. We welcome any questions and comments about this document and its contents. Please quote ‘NHS Dental Statistics – Background and Methodology Note’ in the subject title of any correspondence.
+
+A [continuous feedback survey](https://online1.snapsurveys.com/Official_Statistics_Feedback) is available on the NHS Dental Statistics web page that can be completed by users.
+
+You can view our [privacy policy](https://www.nhsbsa.nhs.uk/our-policies/privacy) on our website to see how your data is used and stored.
+
+You can contact us by:
+
+**Email:** statistics@nhsbsa.nhs.uk
+
+**You can also write to us at:**
+
+NHSBSA - Statistics  
+NHS Business Services Authority  
+Stella House  
+Goldcrest Way  
+Newburn Riverside  
+Newcastle upon Tyne  
+NE15 8NY
+
+</main>
