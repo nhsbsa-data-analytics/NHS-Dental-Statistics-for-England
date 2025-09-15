@@ -5,7 +5,7 @@
 
 #example:  region_lookup <- get_region_lookup()
 
-get_region_lookups <- function(region21_link = "https://hub.arcgis.com/api/v3/datasets/56b4b6f7685c42dbac7bd544d5fcba0e_0/downloads/data?format=csv&spatialRefId=3857&where=1%3D1",
+get_region_lookup <- function(region21_link = "https://hub.arcgis.com/api/v3/datasets/56b4b6f7685c42dbac7bd544d5fcba0e_0/downloads/data?format=csv&spatialRefId=3857&where=1%3D1",
                                 region22_link = "https://www.arcgis.com/sharing/rest/content/items/46b634b42ceb45cbbfbe9c960fb77ec9/data",
                                 region24_link = "https://hub.arcgis.com/api/v3/datasets/2d1f5f98890f4e4aae598b26a4ad3350_0/downloads/data?format=csv&spatialRefId=4326&where=1%3D1"){
   

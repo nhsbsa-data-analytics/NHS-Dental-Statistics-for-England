@@ -60,7 +60,9 @@ meta_fields <- c(
   "Mid-year population year",
   "Clinical treatment",
   "Patient charge revenue (GBP)",
-  "Cost of treatment delivered to exempt patient groups"
+  "Cost of treatment delivered to exempt patient groups",
+  "DCP status",
+  "DCP type"
 )
 
 meta_descs <-
@@ -80,7 +82,9 @@ meta_descs <-
     "The year in which the Office for National Statistics (ONS) mid-year population estimates were taken, required due to the presentation of this data in financial year format.",
     "The clinical treatment listed on the FP17 form. For example, scale and polish.",
     "Adults undergoing NHS dental activity normally pay a set amount of money towards treatment, unless they have a valid exemption. The cost depends on what treatment is needed. Patient charge revenue is measured in GBP and is the total of the patient charges received for treatment over the specified period.",
-    "The cost of treatment in this table is an estimated total of how much patients with an exemption would have paid if they were not exempt. This cost has not actually been collected from patients.")
+    "The cost of treatment in this table is an estimated total of how much patients with an exemption would have paid if they were not exempt. This cost has not actually been collected from patients.",
+    "Dental Care Professionals (DCPs) are non-dentist roles and were previously only permitted to assist in providing treatment. Changes were made in 2025 to the General Dental Council (GDC) scope of practice. These changes mean some dental hygienists and dental therapists can now lead on selected dental activities. The DCP status in this data can be DCP-led, DCP-assisted, or Non-DCP led and not DCP assisted",
+    "The DCP type is the role of a DCP, such as dental hygienist or dental therapist. Other DCP roles have not been grouped in these tables as 'Other'.")
 
 accessibleTables::create_metadata(wb,
                                   meta_fields,
@@ -92,8 +96,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1a_i",
   title = paste0("Table_1a_i: Count of courses of treatment by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because band 2 sub-bands were not used until 2022/2023.",
-            "2. Band 2 sub-bands were introduced in November 2022. Due to the length of time some treatments may take, it is possible for data prior to the introduction of sub-bands to still occur past this point."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because band 2 sub-bands were not used until 2022/2023.",
+            "3. Band 2 sub-bands were introduced in November 2022. Due to the length of time some treatments may take, it is possible for data prior to the introduction of sub-bands to still occur past this point."),
   dataset = table1ai,
   column_a_width = 20
 )
@@ -122,7 +127,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1a_ii",
   title = paste0("Table_1a_ii: Count of courses of treatment by treatment band and financial quarter, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because band 2 sub-bands were not used until 2022/2023."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because band 2 sub-bands were not used until 2022/2023."),
   dataset = table1aii,
   column_a_width = 20
 )
@@ -151,7 +157,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1b_i",
   title = paste0("Table_1b_i: Percentage of courses of treatment by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because band 2 sub-bands were not used until 2022/2023."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because band 2 sub-bands were not used until 2022/2023."),
   dataset = table1bi,
   column_a_width = 20
 )
@@ -180,7 +187,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1b_ii",
   title = paste0("Table_1b_ii: Percentage of courses of treatment by treatment band and financial quarter, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because band 2 sub-bands were not used until 2022/2023."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because band 2 sub-bands were not used until 2022/2023."),
   dataset = table1bii,
   column_a_width = 20
 )
@@ -209,8 +217,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1c",
   title = paste0("Table_1c: Courses of treatment by treatment band, patient type and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
-            "2. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
+            "3. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
   dataset = table1c_excel,
   column_a_width = 20
 )
@@ -239,8 +248,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1d",
   title = paste0("Table_1d: Percentage of courses of treatment by treatment band, patient type and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
-            "2. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
+            "3. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
   dataset = table1d,
   column_a_width = 20
 )
@@ -269,8 +279,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1e_i",
   title = paste0("Table 1e_i: Percentage of courses of treatment by patient type, treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
-            "2. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
+            "3. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
   dataset = table1ei,
   column_a_width = 20
 )
@@ -299,7 +310,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1e_ii",
   title = paste0("Table 1e_ii: Percentage of courses of treatment by patient type and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
   dataset = table1eii,
   column_a_width = 20
 )
@@ -326,8 +338,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1f",
   title = paste0("Table_1f: Courses of treatment by patient exemption type, treatment band, and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. In exemption type, a child is classed as being aged 17 or under at the time that treatment starts. The paying adult category is included in this table for reference and contains adult patients who do not have a full or partial exemption from patient charges towards their treatment.",
-            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. In exemption type, a child is classed as being aged 17 or under at the time that treatment starts. The paying adult category is included in this table for reference and contains adult patients who do not have a full or partial exemption from patient charges towards their treatment.",
+            "3. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
   dataset = table1f,
   column_a_width = 20
 )
@@ -356,7 +369,7 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1g_i",
   title = paste0("Table_1g_i: Courses of treatment by Dental Care Professional type, treatment band, and financial year, ", config$table_sheet_title_dcp_years),
-  notes = c("notes go here"),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab."),
   dataset = table1gi,
   column_a_width = 20
 )
@@ -385,7 +398,7 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_1g_ii",
   title = paste0("Table_1g_ii: Courses of treatment by Dental Care Professional type, treatment band, and financial quarter, ", config$table_sheet_title_dcp_years),
-  notes = c("notes go here"),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab."),
   dataset = table1gii,
   column_a_width = 20
 )
@@ -415,7 +428,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2a_i",
   title = paste0("Table_2a_i: Count of units of dental activity by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
   dataset = table2ai,
   column_a_width = 20
 )
@@ -444,7 +458,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2a_ii",
   title = paste0("Table_2a_ii: Count of units of dental activity by treatment band and financial quarter, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
   dataset = table2aii,
   column_a_width = 20
 )
@@ -473,7 +488,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2b_i",
   title = paste0("Table_2b_i: Percentage of units of dental activity by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
   dataset = table2bi,
   column_a_width = 20
 )
@@ -502,7 +518,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2b_ii",
   title = paste0("Table_2b_ii: Percentage of units of dental activity by treatment band and financial quarter, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
   dataset = table2bii,
   column_a_width = 20
 )
@@ -531,8 +548,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2c",
   title = paste0("Table_2c: Units of dental activity by treatment band, patient type and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
-            "2. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
+            "3. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
   dataset = table2c_excel,
   column_a_width = 20
 )
@@ -561,8 +579,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2d",
   title = paste0("Table 2d: Percentage of units of dental activity by treatment band, patient type and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
-            "2. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
+            "3. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
   dataset = table2d,
   column_a_width = 20
 )
@@ -593,8 +612,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2e_i",
   title = paste0("Table 2e_i: Percentage of units of dental activity by patient type, treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
-            "2. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
+            "3. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
   dataset = table2ei,
   column_a_width = 20
 )
@@ -623,7 +643,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2e_ii",
   title = paste0("Table 2e_ii: Percentage of units of dental activity by patient type and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Patient type can be exempt, non-exempt, or child. A child is classed as being aged 17 or under at the time that treatment starts. Exempt patients do not pay patient charges towards their treatment, but do not have an age exemption."),
   dataset = table2eii,
   column_a_width = 20
 )
@@ -650,7 +671,7 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2g_i",
   title = paste0("Table_2g_i: Units of dental activity by Dental Care Professional type, treatment band, and financial year, ", config$table_sheet_title_dcp_years),
-  notes = c("notes go here"),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab."),
   dataset = table2gi,
   column_a_width = 20
 )
@@ -679,7 +700,7 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_2g_ii",
   title = paste0("Table_2g_ii: Units of dental activity by Dental Care Professional type, treatment band, and financial quarter, ", config$table_sheet_title_dcp_years),
-  notes = c("notes go here"),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab."),
   dataset = table2gii,
   column_a_width = 20
 )
@@ -709,7 +730,7 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_3a",
   title = paste0("Table 3a: Units of orthodontic activity by financial year, ", config$table_sheet_title_fy),
-  notes = c("notes go here"),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab."),
   dataset = table3a,
   column_a_width = 20
 )
@@ -738,8 +759,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_4a",
   title = paste0("Table 4a: Number of adult patients seen in the 24 months prior to a specified date, ", config$table_sheet_title_fy),
-  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
-            "2. A patient's age is calculated as at the given date."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "3. A patient's age is calculated as at the given date."),
   dataset = table4a,
   column_a_width = 20
 )
@@ -767,9 +789,10 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_4b",
   title = paste0("Table 4b: Percentage of adult patients seen in the 24 months prior to a specified date ,", config$table_sheet_title_fy),
-  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
-            "2. A patient's age is calculated as at the given date.",
-            "3. Mid-year population estimates have been taken from the latest ONS population estimates at time of publication. A link to these can be found in the metadata sheet."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "3. A patient's age is calculated as at the given date.",
+            "4. Mid-year population estimates have been taken from the latest ONS population estimates at time of publication. A link to these can be found in the metadata sheet."),
   dataset = table4b,
   column_a_width = 20
 )
@@ -799,8 +822,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_4c",
   title = paste0("Table 4c: Number of child patients seen in the 12 months prior to a specified date, ", config$table_sheet_title_fy),
-  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
-            "2. A patient's age is calculated as at the given date."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "3. A patient's age is calculated as at the given date."),
   dataset = table4c,
   column_a_width = 20
 )
@@ -828,9 +852,10 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_4d",
   title = paste0("Table 4d: Percentage of child patients seen in the 12 months prior to a specified date, ", config$table_sheet_title_fy),
-  notes = c("1. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
-            "2. A patient's age is calculated as at the given date.",
-            "3. Mid-year population estimates have been taken from the latest ONS population estimates at time of publication. A link to these can be found in the metadata sheet."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Patients seen includes orthodontists visits. It is not possible to determine which patients were seen for orthodontic visits.",
+            "3. A patient's age is calculated as at the given date.",
+            "4. Mid-year population estimates have been taken from the latest ONS population estimates at time of publication. A link to these can be found in the metadata sheet."),
   dataset = table4d,
   column_a_width = 20
 )
@@ -888,7 +913,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_5b",
   title = paste0("Table 5b: Estimated number of clinical treatment items provided to adults by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
   dataset = table5b,
   column_a_width = 20
 )
@@ -916,7 +942,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_5c",
   title = paste0("Table 5c: Estimated number of child courses of treatment that contain each clinical treatment by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
   dataset = table5c,
   column_a_width = 20
 )
@@ -945,7 +972,8 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_5d",
   title = paste0("Table 5d: Estimated number of clinical treatment items provided to children by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022."),
   dataset = table5d,
   column_a_width = 20
 )
@@ -975,8 +1003,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_6a",
   title = paste0("Table 6a: Patient charge revenue (£) by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
-            "2. Patient revenue is the amount charged to patients who do not have a full or partial exemption. You can find more information in the metadata sheet and in the background and methdology document."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
+            "3. Patient revenue is the amount charged to patients who do not have a full or partial exemption. You can find more information in the metadata sheet and in the background and methdology document."),
   dataset = table6a,
   column_a_width = 20
 )
@@ -1005,8 +1034,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_6b",
   title = paste0("Table 6b: Percentage patient charge revenue by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
-            "2. Patient revenue is the amount charged to patients who do not have a full or partial exemption. You can find more information in the metadata sheet and in the background and methdology document."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
+            "3. Patient revenue is the amount charged to patients who do not have a full or partial exemption. You can find more information in the metadata sheet and in the background and methdology document."),
   dataset = table6b,
   column_a_width = 20
 )
@@ -1036,8 +1066,9 @@ accessibleTables::write_sheet(
   workbook = wb,
   sheetname = "Table_6c",
   title = paste0("Table 6c: Cost of treatment (£) delivered to exempt groups by treatment band and financial year, ", config$table_sheet_title_fy),
-  notes = c("1. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
-            "2. The cost of treatment in this table is an estimated total of how much patients with an exemption would have paid if they were not exempt. This cost has not actually been collected from patients."),
+  notes = c("1. Field definitions can be found on the 'Metadata' tab.",
+            "2. Some cells in this table are empty because data was not available for the time period. Band 2 sub-bands were introduced for treatment with a date of acceptance on or after 25 November 2022.",
+            "3. The cost of treatment in this table is an estimated total of how much patients with an exemption would have paid if they were not exempt. This cost has not actually been collected from patients."),
   dataset = table6c,
   column_a_width = 20
 )

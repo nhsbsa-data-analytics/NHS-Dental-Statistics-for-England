@@ -43,10 +43,29 @@ percentage_table_12 <-
   function(TB) {
     cbind(TB[, c(1, 2)], TB[, c(-1,-2)] / TB$Total * 100)
   }
-
+percentage_table_123 <-
+  function(TB) {
+    cbind(TB[, c(1, 2, 3)], TB[, c(-1,-2, -3)] / TB$Total * 100)
+  }
 percentage_table_1234 <-
   function(TB) {
     cbind(TB[, c(1, 2, 3, 4)], TB[, c(-1,-2, -3, -4)] / TB$Total * 100)
+  }
+percentage_table_12345 <-
+  function(TB) {
+    cbind(TB[, c(1, 2, 3, 4, 5)], TB[, c(-1,-2, -3, -4, -5)] / TB$Total * 100)
+  }
+percentage_table_123_pat_seen <-
+  function(TB) {
+    cbind(TB[, c(1, 2, 3)], TB[, c(-1,-2, -3)] / TB$Total * 100)
+  }
+percentage_table_1234_pat_seen <-
+  function(TB) {
+    cbind(TB[, c(1, 2, 3, 4)], TB[, c(-1,-2, -3, -4)] / TB$Total * 100)
+  }
+percentage_table_12345_pat_seen <-
+  function(TB) {
+    cbind(TB[, c(1, 2, 3, 4, 5)], TB[, c(-1,-2, -3, -4, -5)] / TB$Total * 100)
   }
 
 # percentage_table_1 has trouble with naming the first col correctly
@@ -76,13 +95,13 @@ table6c_import <- import_table("DENTAL_NATIONAL_TABLE6C_2425")
 table1a <- table1a_import |>
   filter(between(TREATMENT_YEAR, first_year, last_year)) |>
   select(!TOTAL) |>
-  unite("Financial Quarter",
+  unite("Financial quarter",
         c(TREATMENT_YEAR, QUARTER),
         sep = " ",
         remove = FALSE)  |>
   select(TREATMENT_YEAR, everything()) |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
+    "Financial year" = TREATMENT_YEAR,
     "Quarter" = QUARTER,
     "Band 1"  = BAND_1,
     "Band 2"  = BAND_2,
@@ -102,7 +121,7 @@ table1a <- append_total_column_123(table1a)
 table1aii  <-
   table1a |> filter (Quarter != "All") |> select (!Quarter)
 table1ai <-
-  table1a |> filter (Quarter == "All") |> select (!c(Quarter, "Financial Quarter"))
+  table1a |> filter (Quarter == "All") |> select (!c(Quarter, "Financial quarter"))
 
 # Table 1c --------------------------------------------------
 ## Drop unwanted years and cols, re-code charge_status col, and rename cols
@@ -128,7 +147,7 @@ table1c <- table1c_import |>
     )
   ) |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
+    "Financial year" = TREATMENT_YEAR,
     "Patient_Type"   = PATIENT_CHARGE_STATUS,
     ## leaving the underscore in for now, removed below
     "Band 1"  = BAND_1,
@@ -179,7 +198,7 @@ table1ei_cot <- table1c |>
 # Create Table1eii_uda
 table1eii_cot <- table1c |>
   filter(Patient_Type != "All") |>
-  select("Financial Year", "Patient_Type", "Total") |>
+  select("Financial year", "Patient_Type", "Total") |>
   pivot_wider(names_from = Patient_Type, values_from = "Total")
 
 # Append totals columns
@@ -212,8 +231,8 @@ table1f <- table1f_import |>
     )
   ) |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
-    "Exemption Type"   = EXEMPTION_DESC,
+    "Financial year" = TREATMENT_YEAR,
+    "Exemption type"   = EXEMPTION_DESC,
     ## leaving the underscore in for now, removed below
     "Band 1"  = BAND_1,
     "Band 2"  = BAND_2,
@@ -239,7 +258,7 @@ table1g <- table1g_import |>
 #  filter(between(TREATMENT_YEAR, first_year, last_year)) |>
   filter(between(TREATMENT_YEAR, "2022/2023", last_year)) |>
   select(!TOTAL) |>
-  unite("Financial Quarter",
+  unite("Financial quarter",
         c(TREATMENT_YEAR, QUARTER),
         sep = " ",
         remove = FALSE)  |>
@@ -261,7 +280,7 @@ table1g <- table1g_import |>
                DCP,
                DCP_TYPE) |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
+    "Financial year" = TREATMENT_YEAR,
     "Quarter" = QUARTER,
     "DCP status" = DCP,
     "DCP type" = DCP_TYPE,
@@ -282,7 +301,7 @@ table1g <- append_total_column_12345(table1g)
 ## Split into Table_1g_i (quarters) and Table_1g_ii (years)
 
 table1gi <-
-  table1g |> filter (Quarter == "All") |> select (!c(Quarter, "Financial Quarter"))
+  table1g |> filter (Quarter == "All") |> select (!c(Quarter, "Financial quarter"))
 
 table1gii  <-
   table1g |> filter (Quarter != "All") |> select (!Quarter) 
@@ -293,13 +312,13 @@ table1gii  <-
 table2a <- table2a_import |>
   filter(between(TREATMENT_YEAR, first_year, last_year)) |>
   select(!TOTAL) |>
-  unite("Financial Quarter",
+  unite("Financial quarter",
         c(TREATMENT_YEAR, QUARTER),
         sep = " ",
         remove = FALSE)  |>
   select(TREATMENT_YEAR, everything()) |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
+    "Financial year" = TREATMENT_YEAR,
     "Quarter" = QUARTER,
     "Band 1"  = BAND_1,
     "Band 2"  = BAND_2,
@@ -319,7 +338,7 @@ table2a <- append_total_column_123(table2a)
 table2aii  <-
   table2a |> filter (Quarter != "All") |> select (!Quarter)
 table2ai <-
-  table2a |> filter (Quarter == "All") |> select (!c(Quarter, "Financial Quarter"))
+  table2a |> filter (Quarter == "All") |> select (!c(Quarter, "Financial quarter"))
 
 # Table 2c --------------------------------------------------
 ## Drop unwanted years and cols, re-code charge_status col, and rename cols
@@ -336,7 +355,7 @@ table2c <- table2c_import |>
     )
   ) |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
+    "Financial year" = TREATMENT_YEAR,
     "Patient_Type"   = CHARGE_STATUS,
     ## leaving the underscore in for now, removed below
     "Band 1"  = BAND_1,
@@ -355,7 +374,7 @@ table2c <- append_total_column_12(table2c)
 
 ## Split into Table_2c_i (patient-types) and Table_2c_ii (all)
 table2c_excel  <-
-  table2c |> filter (Patient_Type != "All") |> rename("Patient Type" = Patient_Type)
+  table2c |> filter (Patient_Type != "All") |> rename("Patient type" = Patient_Type)
 
 # Table2e_uda  --------------------------------------------------
 
@@ -387,7 +406,7 @@ table2ei_uda <- table2c |>
 # Create Table2eii_uda
 table2eii_uda <- table2c |>
   filter(Patient_Type != "All") |>
-  select("Financial Year", "Patient_Type", "Total") |>
+  select("Financial year", "Patient_Type", "Total") |>
   pivot_wider(names_from = Patient_Type, values_from = "Total")
 
 # Append totals columns
@@ -402,11 +421,11 @@ table2eii_uda <- append_total_column_1(table2eii_uda)
 #and whether activity was DCP-led, DCP-assisted, or not DCP led and not DCP assisted
 
 ## Drop unwanted years and cols, replace Quarter with Year-Quarter, re-order cols, and rename cols
-table2g <- table2g_import |>
+table2f <- table2g_import |>
   #  filter(between(TREATMENT_YEAR, first_year, last_year)) |>
   filter(between(TREATMENT_YEAR, "2022/2023", last_year)) |>
   select(!TOTAL) |>
-  unite("Financial Quarter",
+  unite("Financial quarter",
         c(TREATMENT_YEAR, QUARTER),
         sep = " ",
         remove = FALSE)  |>
@@ -428,7 +447,7 @@ table2g <- table2g_import |>
           DCP,
           DCP_TYPE) |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
+    "Financial year" = TREATMENT_YEAR,
     "Quarter" = QUARTER,
     "DCP status" = DCP,
     "DCP type" = DCP_TYPE,
@@ -444,22 +463,22 @@ table2g <- table2g_import |>
   ) 
 
 ## Insert a new Total column
-table2g <- append_total_column_12345(table2g)
+table2f <- append_total_column_12345(table2f)
 
 ## Split into Table_1g_i (quarters) and Table_1g_ii (years)
 
-table2gi <-
-  table2g |> filter (Quarter == "All") |> select (!c(Quarter, "Financial Quarter"))
+table2fi <-
+  table2f |> filter (Quarter == "All") |> select (!c(Quarter, "Financial quarter"))
 
-table2gii  <-
-  table2g |> filter (Quarter != "All") |> select (!Quarter) 
+table2fii  <-
+  table2f |> filter (Quarter != "All") |> select (!Quarter) 
 
 
 # Table 3a --------------------------------------------------
 ## Remove unwanted years and cols, and rename cols
 table3a <- table3a_import |>
   filter(between(TREATMENT_YEAR, first_year, last_year)) |>
-  rename("Financial Year" = TREATMENT_YEAR,
+  rename("Financial year" = TREATMENT_YEAR,
          "Units of Orthodontic Activity" = UOA)
 
 # Table 4a --------------------------------------------------
@@ -635,8 +654,8 @@ table5a <- table5a_import |>
     )
   ) |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
-    "Clinical Treatment" = CLINICAL_TREATMENT,
+    "Financial year" = TREATMENT_YEAR,
+    "Clinical treatment" = CLINICAL_TREATMENT,
     "Band 1"  = BAND_1,
     "Band 2"  = BAND_2,
     "Band 2a" = BAND_2A,
@@ -671,8 +690,8 @@ table5b <- table5b_import |>
     )
   )   |>
   rename(
-    "Financial Year"     = TREATMENT_YEAR,
-    "Clinical Treatment" = CLINICAL_TREATMENT,
+    "Financial year"     = TREATMENT_YEAR,
+    "Clinical treatment" = CLINICAL_TREATMENT,
     "Band 1"  = BAND_1,
     "Band 2"  = BAND_2,
     "Band 2a" = BAND_2A,
@@ -721,8 +740,8 @@ table5c <- table5c_import |>
     )
   )   |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
-    "Clinical Treatment" = CLINICAL_TREATMENT,
+    "Financial year" = TREATMENT_YEAR,
+    "Clinical treatment" = CLINICAL_TREATMENT,
     "Band 1"  = BAND_1,
     "Band 2"  = BAND_2,
     "Band 2a" = BAND_2A,
@@ -757,8 +776,8 @@ table5d <- table5d_import |>
     )
   )   |>
   rename(
-    "Financial Year"     = TREATMENT_YEAR,
-    "Clinical Treatment" = CLINICAL_TREATMENT,
+    "Financial year"     = TREATMENT_YEAR,
+    "Clinical treatment" = CLINICAL_TREATMENT,
     "Band 1"  = BAND_1,
     "Band 2"  = BAND_2,
     "Band 2a" = BAND_2A,
@@ -777,7 +796,7 @@ table6a <- table6a_import |>
   filter(between(TREATMENT_YEAR, first_year, last_year))  |>
   select(!FREE)                                          |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
+    "Financial year" = TREATMENT_YEAR,
     "Band 1"  = BAND_1,
     "Band 2"  = BAND_2,
     "Band 2a" = BAND_2A,
@@ -834,8 +853,8 @@ table6c <- table6c_import |>
   #   )
   # )   |>
   rename(
-    "Financial Year" = TREATMENT_YEAR,
-    "Exemption Type" = EXEMPTION_DESC,
+    "Financial year" = TREATMENT_YEAR,
+    "Exemption type" = EXEMPTION_DESC,
     "Band 1"  = BAND_1,
     "Band 2"  = BAND_2,
     "Band 2a" = BAND_2A,
@@ -868,12 +887,12 @@ table2eii     <- percentage_table_1(table2eii_uda)
 table6b       <- percentage_table_1(table6a)
 
 ## Fix for incorrect col name from percentage_table_1
-colnames(table1bi)[1] <- "Financial Year"
-colnames(table1eii)[1] <- "Financial Year"
-colnames(table2bii)[1] <- "Financial Year"
-colnames(table2bi)[1] <- "Financial Year"
-colnames(table2eii)[1] <- "Financial Year"
-colnames(table6b)[1]   <- "Financial Year"
+colnames(table1bi)[1] <- "Financial year"
+colnames(table1eii)[1] <- "Financial year"
+colnames(table2bii)[1] <- "Financial year"
+colnames(table2bi)[1] <- "Financial year"
+colnames(table2eii)[1] <- "Financial year"
+colnames(table6b)[1]   <- "Financial year"
 
 ## if NaN appear may need something like :
 #table2e$Total <- replace_na(table2e$Total, NA)  ## must refresh the table view to see the effect of this

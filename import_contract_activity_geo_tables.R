@@ -2,38 +2,6 @@
 # as data already in final format for column names, totals, percentages etc
 
 # Import data from SQL queries -------------------------------------------------
-#code commented out while switching to direct table import from warehouse
-
-# geo_data <- import_geog_tables(filepath = "",
-#                               con = nhsbsaR::con_nhsbsa(dsn = "FBS_8192k",
-#                                                    driver = "Oracle in OraClient19Home1",
-#                                                    "DWCP"))
-# Check data has been imported
-#geo_data$GEOG_TABLE_1A |> View()
-
-# aggregate NHS region population by ageband 
-# up to adults (18 and over) or children (17 and under)
-
-# TO DO: create loop or similar code to extract/rename objects more efficiently
-# store data from list as objects for use later 
-
-#code commented out while switching to direct table import from warehouse
-
-# geo_table1a <- geo_data$GEOG_TABLE_1A
-# geo_table1b <- geo_data$GEOG_TABLE_1B
-# geo_table1c <- geo_data$GEOG_TABLE_1C
-# geo_table1d <- geo_data$GEOG_TABLE_1D
-# geo_table1e <- geo_data$GEOG_TABLE_1E
-# geo_table1f <- geo_data$GEOG_TABLE_1F
-# geo_table2a <- geo_data$GEOG_TABLE_2A
-# geo_table2b <- geo_data$GEOG_TABLE_2B
-# geo_table2c <- geo_data$GEOG_TABLE_2C
-# geo_table2d <- geo_data$GEOG_TABLE_2D
-# geo_table2e <- geo_data$GEOG_TABLE_2E
-# geo_table2f <- geo_data$GEOG_TABLE_2F
-# geo_table3a <- geo_data$GEOG_TABLE_3A
-# geo_table3b <- geo_data$GEOG_TABLE_3B
-# geo_table3c <- geo_data$GEOG_TABLE_3C
 
 #TO DO: put table import into function/loop
 
@@ -46,12 +14,17 @@ geo_table1ci_import <- import_table("DENTAL_GEO_CONT_TABLE1CI_2425")
 geo_table1d_import <- import_table("DENTAL_GEO_CONT_TABLE1D_2425")
 geo_table1e_import <- import_table("DENTAL_GEO_CONT_TABLE1E_2425")
 geo_table1f_import <- import_table("DENTAL_GEO_CONT_TABLE1F_2425")
+
 geo_table2a_import <- import_table("DENTAL_GEO_CONT_TABLE2A_2425")
+geo_table2ai_import <- import_table("DENTAL_GEO_CONT_TABLE2AI_2425")
 geo_table2b_import <- import_table("DENTAL_GEO_CONT_TABLE2B_2425")
+geo_table2bi_import <- import_table("DENTAL_GEO_CONT_TABLE2BI_2425")
 geo_table2c_import <- import_table("DENTAL_GEO_CONT_TABLE2C_2425")
+geo_table2ci_import <- import_table("DENTAL_GEO_CONT_TABLE2CI_2425")
 geo_table2d_import <- import_table("DENTAL_GEO_CONT_TABLE2D_2425")
 geo_table2e_import <- import_table("DENTAL_GEO_CONT_TABLE2E_2425")
 geo_table2f_import <- import_table("DENTAL_GEO_CONT_TABLE2F_2425")
+
 geo_table3a_import <- import_table("DENTAL_GEO_CONT_TABLE3A_2425")
 geo_table3b_import <- import_table("DENTAL_GEO_CONT_TABLE3B_2425")
 geo_table3c_import <- import_table("DENTAL_GEO_CONT_TABLE3C_2425")
@@ -188,6 +161,138 @@ geo_table1ci <- geo_table1ci_import |>
 
 ## Insert a new Total column
 geo_table1ci <- append_total_column_1_to_6(geo_table1ci) 
+
+#Table 2ai
+
+geo_table2ai <- geo_table2ai_import |>
+  filter(between(TREATMENT_YEAR, "2022/2023", last_year)) |>
+  select(!TOTAL) |>
+  mutate(DCP =
+           recode(DCP,
+                  "0 - All"          = "All",
+                  "DCP-led"          = "DCP-led",
+                  "DCP-assisted"     = "DCP-assisted",
+                  "Non-DCP led and not DCP assisted" = "Non-DCP led and not DCP assisted"),
+         DCP_TYPE = 
+           recode(DCP_TYPE,
+                  "0 - All"          = "All",
+                  "Dental Hygienist" = "Dental Hygienist",
+                  "Dental Therapist" = "Dental Therapist",
+                  "Other" = "Other")) |>
+  arrange(desc(TREATMENT_YEAR),
+          ODS_CODE,
+          #          QUARTER,
+          DCP,
+          DCP_TYPE) |>
+  rename(
+    "Financial year" = TREATMENT_YEAR,
+    #    "Quarter" = QUARTER, #if importing quarterly table
+    "ONS code" = ONS_CODE,
+    "ODS code" = ODS_CODE,
+    "Region name" = REGION_NAME,
+    "DCP status" = DCP,
+    "DCP type" = DCP_TYPE,
+    "Band 1"  = BAND_1,
+    "Band 2"  = BAND_2,
+    "Band 2a" = BAND_2A,
+    "Band 2b" = BAND_2B,
+    "Band 2c" = BAND_2C,
+    "Band 3"  = BAND_3,
+    "Urgent"  = URGENT,
+    "Free"    = FREE,
+    "Regulation 11 Replacement Appliance" = REG_11_REP_APP
+  ) 
+
+## Insert a new Total column
+geo_table2ai <- append_total_column_1_to_6(geo_table2ai) 
+
+#Table 2bi
+
+geo_table2bi <- geo_table2bi_import |>
+  filter(between(TREATMENT_YEAR, "2022/2023", last_year)) |>
+  select(!(TOTAL)) |>
+  mutate(DCP =
+           recode(DCP,
+                  "0 - All"          = "All",
+                  "DCP-led"          = "DCP-led",
+                  "DCP-assisted"     = "DCP-assisted",
+                  "Non-DCP led and not DCP assisted" = "Non-DCP led and not DCP assisted"),
+         DCP_TYPE = 
+           recode(DCP_TYPE,
+                  "0 - All"          = "All",
+                  "Dental Hygienist" = "Dental Hygienist",
+                  "Dental Therapist" = "Dental Therapist",
+                  "Other" = "Other")) |>
+  arrange(desc(TREATMENT_YEAR),
+          ICB_NAME,
+          #          QUARTER,
+          DCP,
+          DCP_TYPE) |>
+  rename(
+    "Financial year" = TREATMENT_YEAR,
+    #    "Quarter" = QUARTER, #if importing quarterly table
+    "ONS code" = ONS_CODE,
+    "ODS code" = ODS_CODE,
+    "ICB name" = ICB_NAME,
+    "DCP status" = DCP,
+    "DCP type" = DCP_TYPE,
+    "Band 1"  = BAND_1,
+    "Band 2"  = BAND_2,
+    "Band 2a" = BAND_2A,
+    "Band 2b" = BAND_2B,
+    "Band 2c" = BAND_2C,
+    "Band 3"  = BAND_3,
+    "Urgent"  = URGENT,
+    "Free"    = FREE,
+    "Regulation 11 Replacement Appliance" = REG_11_REP_APP
+  ) 
+
+## Insert a new Total column
+geo_table2bi <- append_total_column_1_to_6(geo_table2bi) 
+
+#Table 2ci
+
+geo_table2ci <- geo_table2ci_import |>
+  filter(between(TREATMENT_YEAR, "2022/2023", last_year)) |>
+  select(!TOTAL) |>
+  mutate(DCP =
+           recode(DCP,
+                  "0 - All"          = "All",
+                  "DCP-led"          = "DCP-led",
+                  "DCP-assisted"     = "DCP-assisted",
+                  "Non-DCP led and not DCP assisted" = "Non-DCP led and not DCP assisted"),
+         DCP_TYPE = 
+           recode(DCP_TYPE,
+                  "0 - All"          = "All",
+                  "Dental Hygienist" = "Dental Hygienist",
+                  "Dental Therapist" = "Dental Therapist",
+                  "Other" = "Other")) |>
+  arrange(desc(TREATMENT_YEAR),
+          ONS_CODE,
+          #          QUARTER,
+          DCP,
+          DCP_TYPE) |>
+  rename(
+    "Financial year" = TREATMENT_YEAR,
+    #    "Quarter" = QUARTER, #if importing quarterly table
+    "ONS code" = ONS_CODE,
+    "Local Authority name" = LAD_NAME,
+    "DCP status" = DCP,
+    "DCP type" = DCP_TYPE,
+    "Band 1"  = BAND_1,
+    "Band 2"  = BAND_2,
+    "Band 2a" = BAND_2A,
+    "Band 2b" = BAND_2B,
+    "Band 2c" = BAND_2C,
+    "Band 3"  = BAND_3,
+    "Urgent"  = URGENT,
+    "Free"    = FREE,
+    "Regulation 11 Replacement Appliance" = REG_11_REP_APP
+  ) 
+
+## Insert a new Total column
+geo_table2ci <- append_total_column_1_to_6(geo_table2ci) 
+
 
 #Add population data to tables 3d, 3e, 3f and calculate % of population columns
 #from population data loaded in main pipeline
