@@ -1,7 +1,8 @@
--- script to create main contract-location activity fact for dental stats publication
+-- script to create main contact-location activity fact for dental stats publication
 -- updates for 2024/25:
 -- * remove filter of active remissions as tax credit exemption data has changed after scheme end
--- * add columns to get dental care professional (DCP) flag and performer number, to allow joins to DCP type
+-- * add columns to get dental care professional (DCP) flag and DCP type
+-- code added to fix 2 postcodes behaving unexpectedly
 
 --drop table ds_cont_activity_fact_2425 purge;
 create table  ds_cont_activity_fact_2425 compress for  query high  as
@@ -134,6 +135,7 @@ lkp_contra as (
     ,fact.dcp_dir_ind
     ,fact.dcp_ind
     ,fact.dcp_reg_num
+    ,fact.fd_performer
     ,con.provider_name
     ,con.ppc_address_postcode
     ,con.ppc_loc_id
@@ -221,6 +223,7 @@ lkp_contra as (
     ,fact.dcp_dir_ind
     ,fact.dcp_ind
     ,fact.dcp_reg_num
+    ,fact.fd_performer
     ,con.provider_name
     ,con.ppc_address_postcode
     ,con.ppc_loc_id
@@ -273,14 +276,127 @@ lkp_contra as (
   where 1 = 1
     /* apply restrictions on what udas are counted in line with UDA extract */
     and fact.year_month between period_start and period_end --year_month in 15 month submission window
+),
+
+-- build dcp columns
+-- subset for DCP_DIR_FLAG  = 1
+flag_1 as (
+select * from filtered_fact
+where DCP_DIR_FLAG = 1
+),
+-- subset for DCP_DIR_FLAG  = 0
+flag_0 as (
+select * from filtered_fact
+where DCP_DIR_FLAG = 0
+),
+-- joins for each subset
+joined_1 as (
+select j1.*, j2.*
+from flag_1 j1
+left join dim.ds_clinician_type_dim j2
+on j1.DCP_DIR_IND  = j2.TREATMENT_9182_VALUE
+),
+joined_0 as (
+select j1.*, j2.*
+from flag_0 j1
+-- filter out duplicate TREATMENT_9178_VALUE before joining
+left join (
+    select *
+    from dim.ds_clinician_type_dim
+    where TYPE_DESCR != 'Dental Technician'
+) j2
+on j1.DCP_IND  = j2.TREATMENT_9178_VALUE
+),
+-- union
+union_table as(
+select * from joined_1
+union all
+select * from joined_0),
+-- build fact with dcp column and dcp type column
+fact_table as (
+select t.* 
+,case
+    when DCP_DIR_FLAG = 1 then 'DCP-led'
+    when DCP_DIR_FLAG = 0 and type_id != -1 then 'DCP-assisted'
+    when DCP_DIR_FLAG = 0 and type_id = -1 then 'Non-DCP led and not DCP assisted'
+    else NULL
+end as DCP
+,case
+    when TYPE_DESCR = 'Clinical Dental Technician' then 'Other'
+    when TYPE_DESCR = 'No DCP on Form' then 'None'
+    when TYPE_DESCR = 'Dental Hygienist' then 'Dental Hygienist'
+    when TYPE_DESCR = 'Dental Therapist' then 'Dental Therapist'
+    when TYPE_DESCR = 'Dental Nurse' then 'Other'
+    else 'Other'
+end as DCP_TYPE
+from union_table t
 )
-
-select
-  *
-from
-  filtered_fact
+-- build summary
+select 
+YEAR_MONTH
+,TREATMENT_YEAR
+,TREATMENT_MONTH
+,DATE_OF_COMPLETION
+,DATE_OF_ACCEPTANCE
+,COMPLETION_MONTH
+,PERIOD_START
+,PERIOD_END
+,CONTRACT_NUMBER
+,FORMATTED_CONTRACT_NUMBER
+,PERFORMER_NUMBER
+,DCP_DIR_FLAG
+,DCP_DIR_IND
+,DCP_IND
+,DCP_REG_NUM
+,FD_PERFORMER
+,PROVIDER_NAME
+,PPC_ADDRESS_POSTCODE
+,PPC_LOC_ID
+,PPC_LOCATION_V_CODE
+,COMMISSIONER_CODE
+,COMMISSIONER_NAME
+,ICB_CODE_ONS
+,REGION_CODE
+,REGION_NAME
+,REGION_CODE_ONS
+,LAD_CODE
+,LAD_NAME
+,FORM_TYPE
+,TREATMENT_CHARGE_BAND
+,TREATMENT_SUB_CHARGE_BAND
+,TREATMENT_CHARGE_BAND_COMB
+,ER_CODE
+,ER_DESC
+,EXEMPTION_DESC
+,PATIENT_CHARGE_STATUS
+,UDA
+,COT
+,QUARTER
+,DCP
+,DCP_TYPE
+from fact_table
 where 1 = 1
-  and quarter is not null
-;
+  and quarter is not null;
+  
+-- Postcode fix for 2 known errors that make 2 postcodes not map to LA
 
--- grant access to other stats team members, if required
+update DS_CONT_ACTIVITY_FACT_2425
+set PPC_ADDRESS_POSTCODE = case PPC_ADDRESS_POSTCODE 
+               when 'ME1  2EL' then 'ME1 2EL'
+               when 'SW5 4UL' then 'SW6 4UL'
+               END
+where ppc_address_postcode in ('ME1  2EL','SW5 4UL');   
+
+update DS_CONT_ACTIVITY_FACT_2425
+set LAD_CODE = case PPC_ADDRESS_POSTCODE 
+               when 'ME1 2EL' then 'E06000035'
+               when 'SW6 4UL' then 'E09000013'
+               end
+where ppc_address_postcode in ('ME1 2EL','SW6 4UL');   
+
+update DS_CONT_ACTIVITY_FACT_2425
+set LAD_NAME = case PPC_ADDRESS_POSTCODE 
+               when 'ME1 2EL' then 'Medway'
+               when 'SW6 4UL' then 'Hammersmith and Fulham'
+               end
+where ppc_address_postcode in ('ME1 2EL','SW6 4UL');

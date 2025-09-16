@@ -3,9 +3,9 @@
 #data from https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates/mid2011tomid2022integratedcareboards2023geography/sapeicb202320112022.xlsx"
 
 # --- example ---
-link <- "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates/mid2011tomid2022integratedcareboards2023geography/sapeicb202320112022.xlsx"
-location_measure <- "ICB"        #must be one of c("ICB", "SICBL", "NHSER")
-pop_age <- get_ICB_SICBL_NHSER_pop_age(link,location_measure)
+#link <- "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates/mid2011tomid2022integratedcareboards2023geography/sapeicb202320112022.xlsx"
+#location_measure <- "ICB"        #must be one of c("ICB", "SICBL", "NHSER")
+#pop_age <- get_ICB_SICBL_NHSER_pop_age(link,location_measure)
 
 # --- function ---
 get_ICB_SICBL_NHSER_pop_age <- function(link, location_measure){

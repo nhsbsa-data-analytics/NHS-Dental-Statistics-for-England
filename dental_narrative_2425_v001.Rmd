@@ -1,0 +1,723 @@
+---
+title: "`r config$publication_name`"
+pagetitle: NHS Dental Statistics for England
+always_allow_html: true
+output:
+  word_document:
+    toc: yes
+    toc_depth: '3'
+  html_document:
+    anchor_sections: no
+    css: 
+      - www/style.css
+      - www/nhs-min.css
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+---
+
+<html lang="en">
+
+```{r setup, include=FALSE}
+
+# set code chunk options to disable echo by default
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+
+```
+
+<div class = "quartoheader", id = "fixed-header">
+  <header class="nhsuk-header" role="banner">
+    <div class="nhsuk-width-container nhsuk-header__container">
+      <div class="nhsuk-header__logo nhsuk-header__logo--only">
+        <a class="nhsuk-header__link" href="https://www.nhsbsa.nhs.uk/" aria-label="NHSBSA home" target="_blank">
+          <img class="nhsuk-logo" src="www/logo-nhsbsa.svg"" name="NHSBSA logo" alt="NHS Business Services Authority">
+        </a>
+      </div>
+    </div>
+</div>
+
+<main>
+
+# `r config$publication_sub_name` {.toc-ignore}
+
+`r paste0("Published ", config$publication_date)`
+
+::::{.row style="display: flex; padding-bottom: 22px;"} 
+:::{.col-md-12} 
+`r infoBox_border(header = "Feedback", text = paste0("We are interested in any feedback about the publication, which you can send by using our ", htmltools::HTML(paste("<a href='",config$stats_survey_link,"'>Official Statistics feedback survey</a>")),"."), width = "100%")` 
+::: 
+::::
+
+## Key findings
+
+In England in 2024/25:
+
+::::{.row style="display: flex; padding-bottom: 22px;"} 
+:::{.col-md-4} 
+`r infoBox_no_border(header = "There were 35 million courses of treatment (COTs) delivered, 4% more than 2023/24.", text = "<b></b>", width = "100%")` 
+::: 
+:::{.col-md-4} 
+`r infoBox_no_border(header = "There were 73 million units of dental activity (UDAs) delivered, a less than 1% increase since 2023/24.", text = "<b></b>", width = "100%")` 
+:::
+:::{.col-md-4} 
+`r infoBox_no_border(header = "There were 24,543 dentists in England with NHS activity, 1.4% more than in 2023/24.", text = "<b></b>", width = "100%")` 
+:::
+::::
+
+In 2024/25, COTs for adult patients increased by 2% to 23 million, and by 7% for child patients to 12 million. More than 60% of the total COTs delivered in 2024/25 were for band 1 treatments, and 10% were for urgent treatments.
+
+Band 1 was also the largest treatment band by UDAs, with 29% of the total UDAs for 2024/25. Band 1 includes check ups and simple treatment, for example examinations, x-rays, and advice.
+
+There were 18 million adult patients seen in the 24 months to 31 March 2025. In the 12 months to 31 March 2025, there were 6.9 million child patients seen. This was 40% of the national mid-year adult population for England in 2024, and 57% of the mid-year population for children.
+
+The number of dentists per 100,000 population in England was 42 in 2024/25, the same as 2023/24. However, the number of dentists per 100,000 population varies across England by Integrated Care Board (ICB). 
+
+---
+
+## 1.Things you should know
+
+### 1.1. Background {.toc-ignore}
+
+Full supporting information and methodology can be found in the [background and methodology document](`r config$background_link`) for this release. 
+
+Releases of this series before 2022/23 were published by NHS England, formerly NHS Digital, on their [NHS dental statistics for England webpage](https://digital.nhs.uk/data-and-information/publications/statistical/nhs-dental-statistics). 
+
+NHS dental activity in England is usually commissioned through ICBs, who make contracts with providers of dental services. The contract specifies the activity a provider needs to complete over the coming financial year. This activity comprises a pre-agreed number of units of dental activity (UDA), units of orthodontic activity (UOA), or other services such as domiciliary visits or sedations. 
+
+Dentists can work on multiple contracts at the same time. A contract can have more than one location, and a location can have more than one contract recorded against it. Although the contract itself is linked to a commissioning organisation's geographical boundary, a provider of dental services can have contracts across different ICBs or NHS regions. Therefore in these statistics, dentists can be recorded against multiple different geographical areas.
+
+Providers submit claims on FP17 forms to the NHSBSA for processing and this data forms the basis of the statistics in this publication. Dentists and other performers have 62 days to submit a claim for activity, and late submissions after this period may have the units of activity received reduced to 0. Activity from FP17 forms submitted outside the maximum possible submission window for a given financial year has been excluded.
+
+The 24-month time period for adult patients seen and 12-month time period for child patients seen has been used to align with the recommended longest interval between dental checks in the [National Institute for Health and Care Excellence (NICE) oral and dental health guidance](https://www.nice.org.uk/guidance/health-and-social-care-delivery/oral-health).
+
+### 1.2. What is in these statistics {.toc-ignore}
+
+This publication covers NHS Dental activity and the NHS Dental workforce in England from 2019/20 to 2024/25. This statistical summary narrative includes dental activity data on:
+
+* courses of treatment (COT)
+* units of dental activity (UDA)
+* patient charges
+* the number of adult and child patients seen
+
+The narrative also includes workforce data on: 
+
+* the annual number of NHS dentists
+* the number of NHS dentists with activity in 2024/25, per 100,000 population
+
+Some measures include additional breakdowns by ICB. The most granular level of data for this publication is released in the accompanying data files available on the [NHS dental annual statistics 2024/25 webpage](https://www.nhsbsa.nhs.uk/statistical-collections/dental-england/dental-statistics-england-202425).
+
+The publication does not include data on dental activity in the Channel Islands, private treatment or NHS dental services within hospitals. Workforce data in section 2.3 includes NHS foundation dentists but does not include dental care professionals (DCPs) such as hygienists. Some data on DCP activity is available in the supporting summary tables.
+
+For breakdowns of activity data by ICB, data has been provided based on the ICB of the dental contract and also by the ICB of a patient's postcode. Data on the number of dentists per 100,000 population is based on the ICB location of the dentist's contract.
+
+### 1.3. Time periods {.toc-ignore}
+The data in this publication covers the period from April 2019 to March 2025. Q1, Q2, Q3, and Q4 refer to different 3-month financial quarters within the financial year. For example, financial year 2024/25 covers April 2024 to March 2025. Q1 is quarter 1 of 2024/25 and covers April to June 2024, while Q4 is quarter 4 and covers January to March 2025.
+
+These statistics include the period of the coronavirus (COVID-19) pandemic. To limit COVID-19 transmissions, dental practices were instructed to close and cease all routine dental care from the 25th March 2020, and began to reopen from 8th June 2020. The data reported in the publication including activity, patient numbers, finances and treatments, will be lower than expected during the time period of restrictions. 
+
+Further information can be found in [NHS Digital's 2019/20 annual dental publication supplementary report](https://digital.nhs.uk/data-and-information/publications/statistical/nhs-dental-statistics/2019-20-annual-report/spotlight-report) as well as the background and methodology document for this release. The impact of COVID-19 should be considered when comparing across time periods.
+
+### 1.4. Definitions {.toc-ignore}
+
+::::{.row style="display: flex; margin-bottom: 24px;"} 
+:::{.col-md-12 .toc-ignore}
+`r infoBox_border(header = "Treatment band", text = "NHS dental activity is broken down into treatment bands based on how complex the treatment is. If a patient is not exempt and has to pay for treatment, the cost is determined by the treatment band. For activity with a date of acceptance from 25 November 2022 onwards, band 2 treatments are further broken down into sub-bands 2a, 2b, and 2c. [The latest patient charges by band can be found on the NHS website](https://www.nhs.uk/nhs-services/dentists/how-much-will-i-pay-for-nhs-dental-treatment/) along with information on what treatments each band covers.", width = "100%")` 
+::: 
+::::
+
+::::{.row style="display: flex; margin-bottom: 24px;"} 
+:::{.col-md-12 .toc-ignore}
+`r infoBox_border(header = "COT", text = "A COT is a course of treatment, usually begun after a dentist examines a patient and agrees treatment is required. In this release, COTs have been calculated by counting the number of valid FP17 claim forms. Depending on the treatment, a single COT can include multiple visits by a patient. For example, a patient may visit a dental practice several times while undergoing treatment, but this may be counted as a single COT. ", width = "100%")` 
+::: 
+::::
+
+::::{.row style="display: flex; margin-bottom: 24px;"} 
+:::{.col-md-12 .toc-ignore}
+`r infoBox_border(header = "UDA", text = "A UDA is a unit of dental activity, which a dental contract can be awarded after submitting a valid FP17 claim form. Late submissions may have the UDA they receive reduced to 0. A general dental COT can receive different numbers of UDAs based on treatment band. More information on the UDAs received for each treatment band [can be found on the NHSBSA website](https://faq.nhsbsa.nhs.uk/knowledgebase/article/KA-01976/en-us).", width = "100%")` 
+::: 
+::::
+
+::::{.row style="display: flex; margin-bottom: 24px;"} 
+:::{.col-md-12 .toc-ignore}
+`r infoBox_border(header = "UOA", text = "A UOA is a unit of orthodontic activity, which a dental contract can receive after submitting a valid FP17 claim form. How many UOAs are awarded depends on a patient's age on the date of assessment. More information on how many UOAs are awarded for a treatment [can be found on the NHSBSA website](https://faq.nhsbsa.nhs.uk/knowledgebase/article/KA-01976/en-us).", width = "100%")` 
+::: 
+::::
+
+::::{.row style="display: flex; margin-bottom: 24px;"} 
+:::{.col-md-12 .toc-ignore}
+`r infoBox_border(header = "Dental performer", text = "A performer is someone registered as a dentist with the General Dental Council (GDC) and who is on the Dental Performers List for England. Dentists can work under several different contract types based on what range of services they are required to provide.", width = "100%")` 
+::: 
+::::
+
+---
+
+## 2. Results and commentary
+
+### 2.1. National dental activity
+
+#### `r paste0("Number of NHS dental courses of treatment (COT) delivered in England 2019/20 to 2024/25")` {.tabset}
+
+<div class = "tabset">
+
+##### Chart
+
+###### Figure 1: The total number of COTs increased in 2024/25
+
+```{r annual_total_cot}
+
+figure_1
+get_download_button(title = "Download chart data", data = table_1_data, filename = "figure_1")
+
+```
+##### Table
+
+###### Table 1: The total number of COTs increased in 2024/25
+
+```{r annual_total_cot_table}
+knitr::kable(table_1_data, align = "lr")
+
+get_download_button(title = "Download table data", data = table_1_data, filename = "table_1")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: National overview summary tables (Excel: 199KB)](`r config$national_cont_excel_link`) 
+
+In 2024/25 there were 35.4 million COTs delivered, an increase of 3.8% from 2023/24. The total number of COTs decreased noticeably in 2020/21, when dental practices were instructed to close for a time due to the COVID-19 pandemic. Since 2021/21, COTS have been increasing each year.
+
+#### `r paste0("Number of NHS dental courses of treatment by band delivered in England 2024/25")` {.tabset}
+
+<div class = "tabset">
+
+##### Chart
+
+###### Figure 2: Treatment band 1 had the highest number of COTs in 2024/25
+
+Note: band 2 treatment with a date of acceptance on or after 25 November 2022 is split out into sub-bands 2a, 2b and 2c instead. Sub-bands totals will not add up to band 2 totals. Treatment bands Free and Regulation 11 Appliances have been excluded from the chart. 
+
+```{r annual_total_cot_band}
+
+figure_2
+get_download_button(title = "Download chart data", data = table_2_data, filename = "figure_2")
+
+```
+##### Table
+
+###### Table 2: Treatment band 1 had the highest number of COTs in 2024/25
+
+```{r annual_total_cot_band_table}
+knitr::kable(table_2_data, align = "llr")
+
+get_download_button(title = "Download table data", data = table_2_data, filename = "table_2")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: National overview summary tables (Excel: 199KB)](`r config$national_cont_excel_link`) 
+
+Band 1 remained the largest treatment band across COT in 2024/25, with 60% of national COTs for band 1 treatments. The number of band 1 COTs increased by 7% between 2023/24 and 2024/25, to 21.4 million. This remains lower than pre-pandemic totals, when there were 23.1 million COTs for band 1 in 2019/20. 
+
+From 2023/24 to 2024/25, band 3 COTs decreased by 6% to 1.30 million. Urgent treatment COTs also continued to decrease, falling by 0.4% to 3.66 million, though this was a smaller change than the 2.9% decrease between 2022/23 and 2023/24.
+
+#### `r paste0("Number of NHS dental courses of treatment by adult and child patients in England 2019/20 to 2024/25")` {.tabset}
+
+<div class = "tabset">
+
+##### Chart
+
+###### Figure 3: COTs increased for adults and children in 2024/25
+
+```{r annual_total_cot_pat_type}
+
+figure_3
+get_download_button(title = "Download chart data", data = table_3_data, filename = "figure_3")
+
+```
+##### Table
+
+###### Table 3: COTs increased for adults and children in 2024/25
+
+```{r nat_activity_cot_table}
+knitr::kable(table_3_data, align = "llr")
+
+get_download_button(title = "Download table data", data = table_3_data, filename = "table_3")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: National overview summary tables (Excel: 199KB)](`r config$national_cont_excel_link`)
+
+Adult patients and child patients both had an increase in COTs between 2023/24 and 2024/25. COTs for adult patients increased by 2.3% to 23.5 million, and 7% for child patients to 11.9 million.
+
+In 2024/25, 30% of adult COTs included scale and polish treatment. 57% of COTs for children included fluoride varnish clinical treatment.
+
+#### `r paste0("Number of units of dental activity (UDA) in England 2019/20 to 2024/25")` {.tabset}
+
+<div class = "tabset">
+
+##### Chart
+
+###### Figure 4: The total number of UDAs increased slightly in 2024/25
+
+```{r annual_total_uda}
+
+figure_4
+get_download_button(title = "Download chart data", data = table_4_data_format, filename = "figure_4")
+
+```
+##### Table
+
+###### Table 4: The total number of UDAs increased slightly in 2024/25
+
+```{r annual_total_uda_table}
+knitr::kable(table_4_data_formatted, align = "lr")
+
+get_download_button(title = "Download table data", data = table_4_data_format, filename = "table_4")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: National overview summary tables (Excel: 199KB)](`r config$national_cont_excel_link`)
+
+In 2024/25, the total number of UDAs awarded to dental activity claims was 73.1 million. The total number of UDAs increased by 0.8% from 2023/24, but was 8.3% lower than the 79.7 million total UDAs in 2019/20.
+
+Band 1 was the treatment band with the highest number of COTs and UDAs in 2024/25, with 21.3 million UDAs.
+
+#### `r paste0("Patient charge revenue (GBP) in England 2019/20 to 2024/25")` {.tabset}
+
+<div class = "tabset">
+
+##### Chart
+
+###### Figure 5: The total patient revenue increased in 2024/25
+
+```{r annual_patient_rev}
+
+figure_5
+get_download_button(title = "Download chart data", data = table_5_data, filename = "figure_5")
+
+```
+##### Table
+
+###### Table 5: The total patient revenue increased in 2024/25
+
+```{r annual_patient_rev_table}
+knitr::kable(table_5_data, align = "lr")
+
+get_download_button(title = "Download table data", data = table_5_data, filename = "table_5")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: National overview summary tables (Excel: 199KB)](`r config$national_cont_excel_link`)
+
+Patient revenue is the amount charged to patients who do not have a full or partial exemption. This money is a set charge a patient pays based on the treatment band. The total patient revenue was £807 million in 2024/25, a 4.2% increase from £774 million last year. 
+
+Patient charges are set by the NHS and generally reviewed every year. For example, the charge for a band 1 treatment in 2023/24 was £25.80, which rose to £27.40 in 2024/25. More information on patient charges for previous years can be found in the background and methodology document for this release.
+
+#### `r paste0("Number of NHS dental courses of treatment by Dental Care Professional (DCP) status, England 2024/25")` {.tabset}
+
+<div class = "tabset">
+
+##### Chart
+
+###### Figure 6: Dental COTs by DCP status in 2024/25
+
+Note: 'DCP-led' activity is where the main performer number recorded on an FP17 form was a DCP. Activity where a DCP performer number assisted another clinician has been grouped as 'DCP-assisted'. Band 2 activity is excluded from the chart due to low COTs, but is included in the supporting table.
+
+```{r dcp_cot_band}
+
+figure_6
+get_download_button(title = "Download chart data", data = figure_6_data, filename = "figure_6")
+
+```
+##### Table
+
+###### Table 6: Dental COTs by DCP status in 2024/25
+
+```{r dcp_cot_band_table}
+knitr::kable(figure_6_table_data, align = "lllr")
+
+get_download_button(title = "Download table data", data = figure_6_data, filename = "table_6")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: National overview summary tables (Excel: 199KB)](`r config$national_cont_excel_link`) 
+
+DCPs include dental roles such as dental hygienists, dental therapists and dental nurses. DCPs were previously permitted to assist dentists in providing a range of treatments, based on the [General Dental Council (GDC) scope of practice guidance](https://www.gdc-uk.org/standards-guidance/standards-and-guidance/scope-of-practice) for their role. In 2024/25, legislation has changed to allow dental hygienists and dental therapists to lead on activity within their scope of practice, except for teeth whitening.
+
+In 2024/25, treatment band 1 had the highest total COTs led by DCPs, at 861,000. Band 1 also had the highest total COTs for DCP-assisted treatment, at 532,000. Across all treatment bands, DCP-led activity accounted for 3.7% of the total COTs for 2024/25. In the same year, DCP-assisted activity was slightly lower at 3.2% of total COTS. Of all DCP-led NHS activity in 2024/25, 2.1% of COTs were led by dental hygienists and almost 98% by dental therapists.
+
+### 2.2 Geographical breakdown dental activity
+
+::::{.row style="display: flex; padding-bottom: 22px;"} 
+:::{.col-md-12} 
+`r infoBox_border(" ", text = "Breakdowns of data at sub-national geographies are available by contract location and patient location. Contract location has been mapped from the location of the dental contract the activity was commissioned under. Patient location has been mapped from the patient's postcode as recorded on the FP17 form. 
+
+A patient's location may therefore be different from where the contracted activity actually took place. Activity from patient postcodes that cannot be mapped or from valid postcodes mapped to Wales, Scotland, Northern Ireland, the Channel Islands or the Isle of Man have been excluded from this narrative. Data for these excluded postcodes is available in the supporting summary table excel files.", width = "100%")`
+:::
+::::
+
+#### `r paste0("Percentage of adult population seen by a dentist in the 24 months to March 2025, by ICB")` {.tabset}
+
+<div class = "tabset">
+
+##### Contract map
+
+###### Figure 7 (map): Percentage of adult population seen by a dentist varies by contract ICB
+
+```{r percent_adult_contract_map}
+
+map_adult_contract
+
+get_download_button(title = "Download map data", data = table_7_data_contract, filename = "figure_7_contract")
+```
+
+##### Patient map
+
+###### Figure 7 (map): Percentage of adult population seen by a dentist varies by patient ICB
+
+```{r percent_adult_patient_map}
+
+map_adult_patient
+
+get_download_button(title = "Download map data", data = table_7_data_patient, filename = "figure_7_patient")
+```
+
+##### Contract table
+
+###### Table 7: Percentage of adult population seen by a dentist varies by contract ICB
+
+```{r percent_adult_contract_table}
+knitr::kable(table_7_data_contract, align = "lllrrr")
+
+get_download_button(title = "Download table data", data = table_7_data_contract, filename = "table_7_contract")
+
+```
+
+##### Patient table
+
+###### Table 7: Percentage of adult population seen by a dentist varies by patient ICB
+
+```{r percent_adult_patient_table}
+knitr::kable(table_7_data_patient, align = "lllrrr")
+
+get_download_button(title = "Download table data", data = table_7_data_patient, filename = "table_7_patient")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: Geographical summary tables contract location (Excel: 1.9MB)](`r config$geography_cont_excel_link`) | [NHS Dental Statistics for England 2024/25: Geographical summary tables patient location (Excel: 3.9MB)](`r config$geography_pat_excel_link`)
+
+In 2024/25, an estimated 40% of the adult population for England in mid-year 2024 was seen by an NHS dentist. However, the percentage of adult patients seen varies across ICBs, for both contract location and patient location.
+
+South Yorkshire ICB had the highest percentage of adults seen by a dentist in 2024/25, at 57% by contract location and 53% by patient location.
+
+It should be noted that the ICB populations in figure 7 and figure 8 use the ICB mid-year population estimates for 2022. This was the latest available population data for ICBs at time of publishing, but may not be directly comparable with the 2024 mid-year estimated population used for England.
+
+#### `r paste0("Percentage of child population seen by a dentist in the 12 months to March 2025, by ICB")` {.tabset}
+
+<div class = "tabset">
+
+##### Contract map
+
+###### Figure 8 (map): Percentage of child population seen by a dentist varies by contract ICB
+
+```{r percent_child_contract_map}
+
+map_child_contract
+
+get_download_button(title = "Download map data", data = table_8_data_contract, filename = "figure_8_contract")
+```
+
+##### Patient map
+
+###### Figure 8 (map): Percentage of child population seen by a dentist varies by patient ICB
+
+```{r percent_child_patient_map}
+
+map_child_patient
+
+get_download_button(title = "Download map data", data = table_8_data_patient, filename = "figure_8_patient")
+```
+
+##### Contract table
+
+###### Table 8: Percentage of child population seen by a dentist varies by contract ICB
+
+```{r percent_child_contract_table}
+knitr::kable(table_8_data_contract, align = "lllrrr")
+
+get_download_button(title = "Download table data", data = table_8_data_contract, filename = "table_8_contract")
+
+```
+
+##### Patient table
+
+###### Table 8: Percentage of child population seen by a dentist varies by patient ICB
+
+```{r percent_child_patient_table}
+knitr::kable(table_8_data_patient, align = "lllrrr")
+
+get_download_button(title = "Download table data", data = table_8_data_patient, filename = "table_8_patient")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: Geographical summary tables contract location (Excel: 1.9MB)](`r config$geography_cont_excel_link`) | [NHS Dental Statistics for England 2024/25: Geographical summary tables patient location (Excel: 3.9MB)](`r config$geography_pat_excel_link`)
+
+In 2024/25, an estimated 57% of the child population for England in mid-year 2024 was seen by an NHS dentist. Similar to the pattern for adult patients seen, the percentage of child patients seen varies across ICBs, by contract location and patient location. 
+
+South Yorkshire ICB had the highest percentage of child population seen for contract location, at 67%. It was the third highest percentage by patient location with 64% of child population seen. For patient location, Greater Manchester ICB had the highest percentage of child population seen, though after rounding this was also 64%. 
+
+### 2.3 Dental workforce
+
+#### `r paste0("Number of dentists providing NHS dental activity in England 2019/20 to 2024/25")` {.tabset}
+
+<div class = "tabset">
+
+##### Chart
+
+###### Figure 9: There was a small increase in the number of dentists with NHS activity in 2024/25
+
+```{r annual_nhs_dentists}
+
+figure_9
+get_download_button(title = "Download chart data", data = table_9_data, filename = "figure_9")
+
+```
+##### Table
+
+###### Table 9: There was a small increase in the number of dentists with NHS activity in 2024/25
+
+```{r annual_nhs_dentists_table}
+knitr::kable(table_9_data, align = "lr")
+
+get_download_button(title = "Download table data", data = table_9_data, filename = "table_9")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: Workforce overview summary tables (Excel: 204KB)](`r config$workforce_excel_table_link`)
+
+In 2024/25 there were 24,543 dentists with NHS activity, 1.4% more than in 2023/24. There were 2,207 dentists who joined NHS dental services since last year, and 1,857 dentists who left NHS dental services. 
+
+In these statistics, joiners are defined as performers who carried out NHS dental activity in a given financial year but none in the previous year, recorded via FP17 forms. Leavers are defined as performers who carried out NHS dental activity in the previous financial year but none in the selected year.
+
+In 2024/25, female dentists made up 55% of total dentists, compared to 45% male dentists. More than a third of dentists in 2024/25 were aged under 35. Associates, which includes performer-only dentists and foundation dentists, were the largest dentist type group with 82% of the total dentists for 2024/25. Dentists who were provider-performers were 18% of the total dentists in the same year. 
+
+#### `r paste0("Dentists with NHS activity, per 100,000 population, by ICB")` {.tabset}
+
+<div class = "tabset">
+
+##### Map
+
+###### Figure 10 (map): The estimated number of NHS dentists per 100,000 population varies by ICB
+
+```{r dentists_pop_map}
+
+map_dentist_pop
+
+get_download_button(title = "Download map data", data = table_10_data_dentist_formatted, filename = "figure_10")
+```
+
+##### Chart
+
+###### Figure 10 (chart): The estimated number of NHS dentists per 100,000 population varies by ICB
+
+```{r dentists_pop_chart}
+
+figure_10_patient
+get_download_button(title = "Download chart data", data = table_10_data_dentist_formatted, filename = "figure_10")
+
+```
+##### Table
+
+###### Table 10: The estimated number of NHS dentists per 100,000 population varies by ICB
+
+```{r dentists_pop_table}
+knitr::kable(table_10_data_dentist, align = "lllrr")
+
+get_download_button(title = "Download table data", data = table_10_data_dentist_formatted, filename = "table_10")
+
+```
+
+</div>
+
+Source: [NHS Dental Statistics for England 2024/25: Workforce overview summary tables (Excel: 204KB)](`r config$workforce_excel_table_link`)
+
+The number of NHS dentists per 100,000 population varies by ICB. In 2024/25, Hertfordshire and West Essex ICB had the highest at 68 dentists per 100,000 population. Norfolk and Waveney ICB had the lowest, at 32 dentists per 100,000 population. The latest ONS ICB mid-year population estimates at time of publication were for mid-year 2022.
+
+The ICB in table 10 is the location of the dentist's dental contract. DCPs are not included in these statistics. Dentists are counted for each ICB they have a contract in, so adding together ICB totals will double count dentists with contracts in more than 1 ICB. Dentists have only been included where they have at least 1 UDA or UOA in the year.
+
+---
+
+## 3. Background
+
+Further information on the methodology used in this publication and further background information is available in our [background information and methodology](`r config$background_link`) supporting document.
+
+### 3.1 Dental activity {.toc-ignore}
+
+#### 3.1.1 FP17 Form {.toc-ignore}
+
+Dentists submit information on completed COT to NHS dental services using an FP17 form. The majority of these forms are now submitted electronically. Each FP17 is associated with 1 COT, so counts of COTs in these statistics are a count of valid FP17 forms. The NHSBSA dental services website has more information on [FP17 forms and how these are processed](https://www.nhsbsa.nhs.uk/fp17-processing-and-payments).
+
+Sometimes FP17 forms are revoked, for example if they were originally submitted against an incorrect contract number. These are known as contra records and have been excluded from the data used in this publication. The corrected information is re-submitted on another FP17 form.
+
+#### 3.1.2 Treatment band {.toc-ignore}
+
+COTs are broken down into treatment bands based on the most complex treatment in the course. COTs can include multiple treatments. For example, a COT with 3 large fillings would have the same treatment band as a COT with only 1 small filling.
+
+Band 1 includes check ups and simple treatments, for example examination, x-rays and prevention advice. 
+
+Band 2 was deprecated from 25 November 2022 onwards. It includes mid range treatments, for example fillings, extractions, and root canal work in addition to Band 1 work.
+
+Band 2a covers all band 2 treatments other than those in band 2b and band 2c. 
+
+Band 2b includes treatments involving either non-molar endodontics to permanent teeth or a combined total of three or more teeth requiring permanent fillings or extractions.
+
+Band 2c includes treatments involving molar endodontics on permanent teeth. 
+
+Band 3 includes complex treatments, for example, crowns, dentures, and bridges, in addition to band 1 and band 2 work. 
+
+Urgent covers a specified set of treatments, including up to two extractions and one filling. Urgent treatment is provided to a patient where oral health is likely to deteriorate significantly, or the person is in severe pain by reason of their oral condition. It is also provided when urgent treatment is needed to prevent significant deterioration or address severe pain.
+ 
+Other includes treatments which include the following procedures do not have a patient charge: arrest of bleeding, bridge repair, denture repair, removal of sutures and prescription issues. 
+
+##### Band 2 sub-bands {.toc-ignore}
+NHS England introduced changes to UDAs awarded for some band 2 claims, with the old band 2 being deprecated. For activity with a date of acceptance from 25 November 2022 onwards, band 2 treatments are further broken down into sub-bands 2a, 2b, and 2c. As courses of treatment can span many weeks, months, or years, it is possible for courses of treatments which concluded after 25 November 2022 to still be recorded under the 'legacy' band 2 treatment band, rather than the newly implemented Band 2a, 2b or 2c sub-bands. 
+
+More information can be found on [the NHSBSA webpage for band 2 changes](https://www.nhsbsa.nhs.uk/units-dental-activity-uda-changes-band-2-treatments-friday-25-november).
+
+#### 3.1.3 Patients seen {.toc-ignore}
+The measure of patients seen is the number of adult patients, aged 18 and over, who received NHS dental care in the previous 24 months. This includes patients where their last COT started within the past 24 months.
+
+For children, patients seen is the number of child patients, aged 17 and under, who received NHS dental care in the previous 12 months. This includes patients where their last COT started within the past 12 months.
+
+Orthodontic patients are included in patients seen counts, however it is not possible to determine which patients were seen for orthodontic visits. 
+
+Information is taken from the FP17 form and based on the date of validation processing at NHS Dental Services. Any COT started but not processed within the period will not appear in the 12 or 24 month count.
+
+This differs from the methodology for activity data, which measures the number of COTs which end within a given period such as a financial year. Valid claims can be submitted after the treatment finished, so activity data has a lag to account for receiving and processing claims from within the valid submission window. Because of the differences in dates used to include data, patients seen figures are available earlier than activity data.
+
+### 3.2 NHS dental workforce {.toc-ignore}
+
+Dental professionals working in dental services in England must be be registered with the [GDC](https://www.gdc-uk.org/). Dental workforce data is based on the number of dentists who have carried out NHS activity during each financial year.
+
+#### 3.2.1 Dental Contracts {.toc-ignore}
+Dentists can work under several contracts. General Dental Services (GDS) must provide a full range of mandatory services. Personal Dental Services (PDS) are not required to provide the full range of mandatory services. If specialist services such as orthodontic work are provided, this must be under a PDS agreement. Trust-led Dental Services (TDS) can provide services under PDS agreements, and then pay dentists directly rather than through the standard system operated by NHS Dental Services.
+
+Dentists can have multiple contracts, and are counted against each ICB where they have a contract. Therefore, the sum of local level information may not match the national total.
+
+#### 3.2.2 Dentist type
+
+Dentists are assigned to one of the following dentist types depending on their contractual and working arrangements:
+
+* A Providing-Performer is a dentist who has a contract with NHS England and NHS Improvement to provide primary dental services and who also delivers dental services themselves.
+
+* An Associate delivers dental services but does not hold a contract with NHS England and NHS Improvement. They are employed by a provider and were previously called ‘Performer-only’ dentists. Foundation dentists are included in the data as Associates, along with performer-only dentists.
+
+* Provider-only is a dentist who has a contract with NHS England to provide primary dental services, but sub-contracts all dental activity to other dentists. They therefore do not perform any NHS dentistry on the contract themselves. Provider-only have no NHS activity recorded against them, so do not appear in the workforce data in this publication.
+
+There are also DCPs, which are non-dentist roles, such as dental hygienists, dental therapists, dental nurses, and others. From 2024/25 onward, dental hygienists and dental therapists are now permitted to lead on dental activity within the GDC scope of guidance for their role. Other DCP roles are not permitted to lead on dental activity. DCPs can also assist activity, where another performer is leading.
+
+---
+
+## 4. About these statistics
+
+Further information on the methodology used in this publication and further background information is available in our [Background Information and Methodology](config$background_link) supporting document.
+
+### 4.1 Changes to this publication {.toc-ignore}
+
+This publication now includes geographic breakdowns of activity data based on the location of the patient's postcode. This is in addition to existing breakdowns by the location of the dental contract. This will allow users to investigate differences between the level of activity carried out in an area, compared to the level of activity for patients with a postcode in that area. Postcodes have been mapped using the National Statistics Postcode Lookup (NSPL) 2011 census version for August 2024.
+
+Some patient postcodes cannot be mapped using the NSPL and this data has been recorded as 'Unknown' in the supporting summary table files. When a patient's postcode is from areas in the UK outside of England, this has been recorded as 'Other' in the summary table files.
+
+Dental activity data by Ward and national Index of Multiple deprivation (IMD) quintile, both based on patient location, is also now included in the supporting summary tables. Breakdowns of activity by DCP status and DCP type have also been added.
+
+### 4.2 Population data {.toc-ignore}
+
+National population data for England and Local Authorities (LA) has been taken from the [Office for National Statistics (ONS) mid-year population estimates](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates). The latest available mid-year population estimates for these areas at time of publication is 2024.
+
+Mid-year population estimates by ICB, NHS region, Sub-ICB Location (SICBL), and Ward have also been taken from ONS mid-year population estimates. The latest mid-year population estimates for these areas at time of publication was 2022. Population totals for these geographical breakdown levels will therefore not match the national and local authority populations. 
+
+Some population estimates have been rebased by ONS since the 2023/24 release of this publication, so historical population data may have changed. Population data for sub-national areas has been mapped using lookups from the [ONS Open Geography portal](https://geoportal.statistics.gov.uk/). 
+
+Dental activity for the Isles of Scilly will not appear under the Isles of Scilly LA, so population totals by LA may not directly match ONS national or sub-national population totals.
+
+---
+
+## 5. Rounding
+
+The high-level figures in this statistical summary have been rounded, usually to 3 significant figures in the main narrative and 2 significant figures for percentages, the key findings, and info boxes.
+
+All changes and totals are calculated prior to rounding. As all figures within this statistical summary have been rounded, they may not match totals elsewhere when aggregated.
+
+The summary tables released with this publication allow users to investigate this data at lower levels of granularity. Figures in the supplementary tables have not been rounded.
+
+---
+
+## 6. Statistical disclosure control
+
+Statistical disclosure control has been applied to these statistics. Further information about our statistical disclosure control protocol [can be found on our website](https://www.nhsbsa.nhs.uk/policies-and-procedures).
+
+The high-level figures in this statistical summary have been rounded where appropriate for clarity. This is to make this narrative as accessible as possible to all readers. The summary tables released with this publication allow users to investigate this data at lower levels of granularity. Figures in the supplementary tables have not been rounded.
+
+---
+
+## 7. Accessibility
+
+If you need information on this website in a different format, such as accessible PDF, large print, easy read, audio recording or braille, you can contact us by:
+
+**Email**: accessibility@nhsbsa.nhs.uk
+
+**Telephone**: 0191 203 5318
+
+[Find out about call charges](https://www.nhsbsa.nhs.uk/contact-us/call-charges-and-phone-numbers)
+
+We will consider your request and get back to you in 5 working days.
+
+These contact details are only for accessibility queries. This email address is not for technical queries or IT problems. If you have a query that is not about accessibility, go to the ‘Feedback and contact us’ section of this page.
+
+Read our [Accessibility statement for Official Statistics Narratives](https://www.nhsbsa.nhs.uk/accessibility-statement-official-statistics-narratives).
+
+---
+
+## 8. Feedback and contact us
+
+Feedback is important to us. We welcome any questions and comments relating to these statistics. 
+
+You can complete a [short survey about this publication](`r config$stats_survey_link`) to help us improve the Official Statistics that we produce. All responses will remain anonymous, and individuals will not be identifiable in any report that we produce.
+
+You can view our [privacy policy](https://www.nhsbsa.nhs.uk/our-policies/privacy) on our website to see how your data is used and stored.
+
+You can contact us by:
+
+**Email:** statistics@nhsbsa.nhs.uk
+
+**You can also write to us at:**
+
+NHSBSA - Statistics  
+NHS Business Services Authority  
+Stella House  
+Goldcrest Way  
+Newburn Riverside  
+Newcastle upon Tyne  
+NE15 8NY
+
+**Responsible statistician:** `r config$responsible_statistician`
+
+</main>

@@ -3,6 +3,14 @@
 -- * remove filter of active remissions as tax credit exemption data has changed after scheme end
 -- * add advanced perio RSD to clinical treatments list
 
+--dependencies:
+--aml.ds_form_visit_fact
+--dim.ds_year_end_reporting_period
+--dim.ds_exempt_rem_dim
+--dim.ds_contract_dim
+--dim.ds_regions_dim
+--dim.ds_ons_eden_combined_dim
+
 --drop table ds_cont_clinical_fact_2425 cascade constraints purge;
 
 create table  ds_cont_clinical_fact_2425 compress for  query high  as
@@ -210,7 +218,8 @@ lkp_contra as (
     ,sum(cust_occ_app_hard_count)   as  custom_hard_bite
     ,sum(cust_occ_app_soft_count)   as  custom_soft_bite
     ,sum(denture_add_rel_reb_count) as  denture_add_rel_reb
-    ,sum(adv_perio_count)       as adv_perio
+    ,sum(adv_perio_count)       as adv_perio_count -- (-1, 0, 1 to indicate if adv perio appears on form)
+    ,sum(adv_perio)                      as adv_perio_sextants --number of sextant items
   from
     aml.ds_form_visit_fact  fact
   left outer join

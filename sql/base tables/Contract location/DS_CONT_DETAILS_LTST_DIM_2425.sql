@@ -1,6 +1,14 @@
 -- script to get latest dental contractor details for use in contract-location activity fact table build
 -- latest details needed to get Health and Justice (H&J) commissioners
 
+-- dependencies:
+--dim.ds_year_end_reporting_period
+--ost.ons_codes_lookup_23
+--dim.ds_contract_dim
+--dim.ds_commissioners_dim
+--dim.ds_regions_dim
+--dim.ds_ons_eden_combined_dim
+
 --drop table ds_cont_details_ltst_dim_2425 cascade constraints purge;
 
 create table  ds_cont_details_ltst_dim_2425  compress for  query high  as
@@ -57,7 +65,7 @@ tdim  as  (
     contract_number
 )
 
---select count(*) from m_con; --23,360
+--select count(*) from m_con;
 
 ,ltst_con as  (
   select
@@ -79,7 +87,7 @@ tdim  as  (
   
 )
 
---select count(*) from ltst_con; --
+--select count(*) from ltst_con;
 
 ,org  as  (
   select
