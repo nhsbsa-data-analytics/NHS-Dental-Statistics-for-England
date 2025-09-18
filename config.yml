@@ -1,5 +1,30 @@
 publication_name: "NHS Dental Statistics for England"
-publication_sub_name: "2023/24"
-publication_date: "22 August 2024"
-responsible_statistician: "Grace Libby"
+publication_sub_name: "2024/2025"
+publication_date: "28 August 2025"
+responsible_statistician: "" #remove statistician name if pushing to remote repo
+
 stats_survey_link: "https://online1.snapsurveys.com/Official_Statistics_Feedback"
+background_link: "https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/dental/dental_background_2425_v001.html"
+national_cont_excel_link: "https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/dental/dental_contract_national_overview_24_25_v001.xlsx"
+geography_cont_excel_link: "https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/dental/dental_contract_geo_breakdown_24_25_v001.xlsx"
+workforce_excel_table_link: "https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/dental/dental_workforce_24_25_v001.xlsx"
+#national_pat_link:
+geography_pat_excel_link: "https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/dental/dental_patient_geo_breakdown_24_25_v001.xlsx"
+
+cover_sheet_sub_title_nat_activity: "National activity overview 2019/20 to 2024/25"
+cover_sheet_sub_title_geo_activity_contract: "Contract location geographical activity 2024/25"
+cover_sheet_sub_title_geo_activity_patient: "Patient location geographical activity 2019/20 to 2024/25"
+cover_sheet_sub_title_workforce: "Workforce geographical overview 2019/20 to 2024/25"
+table_sheet_title_fy: "England 2019/20 to 2024/25"
+table_sheet_title_ltst_year: "England 2024/25"
+table_sheet_title_dcp_years: "England 2022/2023 to 2024/2025"
+
+#years for new edition
+first_year: "2019/2020"
+last_year: "2024/2025"
+
+
+
+
+
+

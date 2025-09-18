@@ -1,33 +1,34 @@
 #version of ons_nat_pop() function to get national mid year estimates 
-#excludes Isles of Scilly Local Authority due to dental data coverage
 #data available by dental publication age bands or by adult/child split
 #data from https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2023
-#to include data from mid-2023 and get agebands, function gets local authority level data
+#to include data from mid-2019 to mid-2024 and get agebands, function gets local authority level data
 #for single year of age, then aggregates this up to national and ageband level.
 #also returns flag for if ageband is for adult or child
-#example    eng_ageband_pop <- get_eng_nat_pop_age()
+#example  eng_ageband_pop <- get_eng_nat_pop_age()
 
 get_eng_nat_pop_age <-
-  function(url = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales/mid2011tomid2023detailedtimeserieseditionofthisdataset/myebtablesenglandwales20112023.xlsx") {
-    
-    df <- invisible(openxlsx::read.xlsx(
+  function(url = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales/mid2011tomid2024detailedtimeseries/myebtablesenglandwales20112024.xlsx") {
+
+    #TO DO: amend code to not include explicit column selection
+    #currently used to avoid missing out 2024 column when auto selecting
+  raw_data <- invisible(openxlsx::read.xlsx(
       xlsxFile = url,
       sheet = 5,
       startRow = 2,
       colNames = TRUE,
-      cols = c(1,2,3,4,5,14,15,16,17,18)
+      cols = c(1,2,3,4,5,14,15,16,17,18,19)
     ))
     
-    pop_df <- df |>
-      dplyr::filter(country == "E" & ladcode23 != "E06000053") |>
+    tidy_data <- raw_data |>
+      dplyr::filter(country == "E") |>
       tidyr::pivot_longer(
         cols = starts_with("population_"),
-        names_to = "year",
+        names_to = "calendar_year",
         names_prefix = "population_",
         values_to = "total_population",
         values_drop_na = TRUE
       ) |>
-      dplyr::group_by(country, age, year) |>
+      dplyr::group_by(country, age, calendar_year) |>
       dplyr::summarise(band_population = sum(total_population)) |>
       ungroup() |>
       dplyr::mutate(
@@ -45,12 +46,25 @@ get_eng_nat_pop_age <-
         adult_child = dplyr::case_when(
           age >= 18 ~ "Adult",
           TRUE ~ "Child"
-        )
+        ),
+        calendar_year = as.numeric(stringr::str_extract(calendar_year, "\\d{4}")),
+        financial_year = paste0(calendar_year, "/", calendar_year + 1)
       ) |>
-      dplyr::group_by(country, year, age_band, adult_child) |>
+      dplyr::group_by(country, financial_year, calendar_year, age_band, adult_child) |>
       dplyr::summarise(population = sum(band_population)) |>
-      ungroup()
+      ungroup() |>
+      dplyr::filter(as.numeric(substr(financial_year, 1,4)) >= 2019) |>
+      dplyr::arrange(calendar_year,
+                     (factor(adult_child, levels = c('Child',
+                                                     'Adult'))),
+                     (factor(age_band, levels = c('0','1', '2', '3',
+                                                  '4', '5', '6', '7',
+                                                  '8', '9', '10', '11',
+                                                  '12', '13', '14', '15',
+                                                  '16', '17', '18-64', '65-74',
+                                                  '75-84', '85+')))) |>
+      dplyr::select(2,3,1,5,4,6)
     
-    return(pop_df)
+    return(tidy_data)
     
   }
