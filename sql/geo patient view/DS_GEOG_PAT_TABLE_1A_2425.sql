@@ -1,24 +1,46 @@
 -------------------------------------------------------------------------
--- DENTAL Geographical Patient Activity - Table 1d 
+-- DENTAL Geographical Patient Activity - Table 1a
 -------------------------------------------------------------------------
 
---DROP TABLE dental_geo_pat_table1d_2425;
+--DROP TABLE dental_geo_pat_table1a_2425;
 
-CREATE TABLE dental_geo_pat_table1d_2425 AS 
+CREATE TABLE dental_geo_pat_table1a_2425 AS 
 
 with
 
-fact  as  (
+-- can remove code below for region columns join (contract location)
+-- and just use patient location region instead
+-- once patient region outputs have been tested
+regions as  (
+  select
+    distinct
+    nhser23cdh
+    ,nhser23cd
+    ,nhser23nm
+  from
+    ost.ons_codes_lookup_23
+  where 1 = 1
+)
+
+,fact  as  (
   select
     treatment_year
-    ,ward                                      as  ons_code
-    ,coalesce(treatment_charge_band_comb, 'Total')  as  treatment_charge_band_comb
-    ,sum(cot)                                       as  cot
+    ,pat_region                                     as pat_ons_code
+    ,ons.nhser23cdh                                 as ods_code
+    ,ons.nhser23nm                                  as pat_region_name
+    ,coalesce(treatment_charge_band_comb, 'Total')  as treatment_charge_band_comb
+    ,sum(cot)                                       as cot
   from
     ost.ds_pat_activity_fact_2425 fact
+  left outer join
+    regions ons
+    on  fact.pat_region = ons.nhser23cd
   where 1 = 1
-    and treatment_year  = '2024/2025'
+ --   and treatment_year  between '2019/2020' and '2024/2025'
+    and treatment_year = '2024/2025'
     and form_type = 'G'
+    AND quarter != 'unallocated_1' -- unallocated quarters shouldn't appear in table, but code kept to catch anything unusual
+    AND quarter != 'unallocated_2'
     and treatment_charge_band_comb  in  (
       'Band 1'
       ,'Band 2'
@@ -32,18 +54,22 @@ fact  as  (
     )
   group by
     treatment_year
-    ,ward
+    ,fact.pat_region
+    ,ons.nhser23cdh                                    
+    ,ons.nhser23nm             
     ,rollup(treatment_charge_band_comb)
   order by
     treatment_year
-    ,ward
+    ,ons.nhser23cdh
     ,treatment_charge_band_comb
     
 )
 
 select 
-  treatment_year  as  "Financial year"
-  ,ons_code       as  "ONS code"
+  treatment_year   as  "Financial year"
+  ,pat_ons_code    as  "ONS code"
+  ,ods_code        as  "ODS code"
+  ,pat_region_name as  "Region name"
   ,"Band 1"
   ,"Band 2"
   ,"Band 2a"
@@ -71,9 +97,5 @@ pivot(
   )
 )
 order by
-  ons_code
+  ods_code
 ;
-
-select count(distinct "ONS code") from dental_geo_pat_table1d_2425
-where 1=1
-and "ONS code" like 'E%';

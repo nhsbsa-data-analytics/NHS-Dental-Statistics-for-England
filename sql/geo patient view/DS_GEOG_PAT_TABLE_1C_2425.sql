@@ -1,17 +1,18 @@
 -------------------------------------------------------------------------
--- DENTAL Geographical Patient Activity - Table 1d 
+-- DENTAL Geographical Patient Activity - Table 1c 
 -------------------------------------------------------------------------
 
---DROP TABLE dental_geo_pat_table1d_2425;
+--DROP TABLE dental_geo_pat_table1c_2425;
 
-CREATE TABLE dental_geo_pat_table1d_2425 AS 
+CREATE TABLE dental_geo_pat_table1c_2425 AS 
 
 with
 
 fact  as  (
   select
     treatment_year
-    ,ward                                      as  ons_code
+    ,laua                                      as  ons_code
+--   ,lad_name                                  as la_name     
     ,coalesce(treatment_charge_band_comb, 'Total')  as  treatment_charge_band_comb
     ,sum(cot)                                       as  cot
   from
@@ -32,11 +33,11 @@ fact  as  (
     )
   group by
     treatment_year
-    ,ward
+    ,laua
     ,rollup(treatment_charge_band_comb)
   order by
     treatment_year
-    ,ward
+    ,laua
     ,treatment_charge_band_comb
     
 )
@@ -44,6 +45,7 @@ fact  as  (
 select 
   treatment_year  as  "Financial year"
   ,ons_code       as  "ONS code"
+--  ,lad_name       as  "Local Authority name"
   ,"Band 1"
   ,"Band 2"
   ,"Band 2a"
@@ -73,7 +75,3 @@ pivot(
 order by
   ons_code
 ;
-
-select count(distinct "ONS code") from dental_geo_pat_table1d_2425
-where 1=1
-and "ONS code" like 'E%';
