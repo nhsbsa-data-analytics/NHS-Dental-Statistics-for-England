@@ -2,7 +2,8 @@
 #statistical disclosure control applied to suppress patient totals of fewer than 5
 #write to CSV output files, then put these into a ZIP file
 
-#Extract data from patient location dental activity fact table in warehouse
+#Extract data from 24 month patient lists (for adults) in warehouse
+#and 12 month patient lists (for children) in warehouse
 #by Region, Integrated Care Board (ICB), and Local Authority District (LAD) levels
 
 #data for 2025/26 will only be a partial year, to 30/6/2025
