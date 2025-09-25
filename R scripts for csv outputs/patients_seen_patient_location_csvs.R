@@ -464,13 +464,13 @@ pat_seen_data_all <- bind_rows( pat_seen_data_region,
 pat_seen_data_ICB,
 pat_seen_data_LA,
 pat_seen_data_ward)
-write.csv(pat_seen_data_all, paste0("Y:/Official Stats/Dental/2024_25/csvs/KATEB/patients_seen_pat_loc_geog_monthly_tables/pat_seen_pat_loc_", relevant_year_months_current,".csv"), row.names = FALSE)
+write.csv(pat_seen_data_all, paste0("Y:/Official Stats/Dental/2024_25/csvs/CSV outputs/patients_seen_pat_loc_geog_monthly_tables/pat_seen_pat_loc_", relevant_year_months_current,".csv"), row.names = FALSE)
 })
 }
 
 #bind monthly files into years -------------------------------------------------
 
-path <- "Y:\\Official Stats\\Dental\\2024_25\\csvs\\KATEB\\patients_seen_pat_loc_geog_monthly_tables"
+path <- "Y:\\Official Stats\\Dental\\2024_25\\csvs\\CSV outputs\\patients_seen_pat_loc_geog_monthly_tables"
 
 files <- list.files(path = path, pattern = "\\.csv$", full.names = TRUE)
 
