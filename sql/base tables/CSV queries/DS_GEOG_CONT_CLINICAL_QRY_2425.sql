@@ -1,3 +1,7 @@
+--drop table DS_GEOG_CONT_CLINICAL_QRY_2425 cascade constraints purge;
+
+create table DS_GEOG_CONT_CLINICAL_QRY_2425 compress for  query high  as
+
 with
 
 icbs  as  (
@@ -24,7 +28,7 @@ icbs  as  (
   select
     *
   from
-    ost.ds_cont_clinical_fact
+    ost.ds_cont_clinical_fact_2425
   unpivot(
     value for measure in  (  
       SCALE_POLISH_COUNT as 'Cl_ScalePolish'
@@ -66,6 +70,8 @@ icbs  as  (
       ,CUSTOM_HARD_BITE as 'Cl_Custom_Oclusal_Hard_Bite'
       ,CUSTOM_SOFT_BITE as 'Cl_Custom_Oclusal_Soft_Bite'
       ,DENTURE_ADD_REL_REB as 'Cl_Denture_Adds_Reline_Rebase'
+      ,ADV_PERIO_COUNT as 'Cl_Adv_perio_RSD'
+      ,ADV_PERIO_SEXTANTS as 'Adv_perio_RSD_sextants'
       ,COT  as  'Total_Cl'
     )
   )
@@ -211,4 +217,5 @@ select
   ,value
 from
   union_tbl
+  where 1=1
 ;
