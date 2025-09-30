@@ -1,4 +1,4 @@
---drop table DS_GEOG_CONT_CLINICAL_QRY_2425 cascade constraints purge;
+--drop table DS_GEOG_PAT_CLINICAL_QRY_2425 cascade constraints purge;
 
 create table DS_GEOG_PAT_CLINICAL_QRY_2425 compress for  query high  as
 
