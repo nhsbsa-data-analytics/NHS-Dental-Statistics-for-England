@@ -6,8 +6,8 @@
 
 #data by LAD -------------------------------------------------------------------
 dcp_lad_csv_data <- dplyr::tbl(con,
-                                from = dbplyr::in_schema("OST", "DS_CONT_ACTIVITY_FACT_2425")) |>
-
+                               from = dbplyr::in_schema("OST", "DS_CONT_ACTIVITY_FACT_2425")) |>
+  
   dplyr::filter(
     TREATMENT_YEAR >= "2019/2020" & TREATMENT_YEAR <= "2024/2025",
     FORM_TYPE == "G", 
@@ -57,7 +57,7 @@ dcp_lad_csv_data <- dplyr::tbl(con,
 
 #data by ICB -------------------------------------------------------------------
 icb_data <- dplyr::tbl(con,
-                    from = dbplyr::in_schema("OST", "ONS_CODES_LOOKUP_23")) |>
+                       from = dbplyr::in_schema("OST", "ONS_CODES_LOOKUP_23")) |>
   select(ICB23CDH, ICB23CD, ICB23NM) |>
   distinct()
 
@@ -127,12 +127,12 @@ icb_check <- dcp_icb_csv_data |>
 
 #data by region ----------------------------------------------------------------
 region_data <- dplyr::tbl(con,
-                       from = dbplyr::in_schema("OST", "ONS_CODES_LOOKUP_23")) |>
+                          from = dbplyr::in_schema("OST", "ONS_CODES_LOOKUP_23")) |>
   select(NHSER23CDH, NHSER23CD, NHSER23NM) |>
   distinct() 
 
 dcp_region_csv_data <- dplyr::tbl(con,
-                               from = dbplyr::in_schema("OST", "DS_CONT_ACTIVITY_FACT_2425")) |>
+                                  from = dbplyr::in_schema("OST", "DS_CONT_ACTIVITY_FACT_2425")) |>
   left_join(
     region_data,
     by = c("REGION_CODE" = "NHSER23CDH")

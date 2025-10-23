@@ -1,3 +1,7 @@
+--drop table DS_GEOG_PAT_CLINICAL_QRY_2425 cascade constraints purge;
+
+create table DS_GEOG_PAT_CLINICAL_QRY_2425 compress for  query high  as
+
 with
 
 icbs  as  (
@@ -24,7 +28,7 @@ icbs  as  (
   select
     *
   from
-    ost.ds_cont_clinical_fact
+    ost.ds_pat_clinical_fact_2425
   unpivot(
     value for measure in  (  
       SCALE_POLISH_COUNT as 'Cl_ScalePolish'
@@ -66,10 +70,16 @@ icbs  as  (
       ,CUSTOM_HARD_BITE as 'Cl_Custom_Oclusal_Hard_Bite'
       ,CUSTOM_SOFT_BITE as 'Cl_Custom_Oclusal_Soft_Bite'
       ,DENTURE_ADD_REL_REB as 'Cl_Denture_Adds_Reline_Rebase'
+      ,ADV_PERIO_COUNT as 'Cl_Adv_perio_RSD'
+      ,ADV_PERIO_SEXTANTS as 'Adv_perio_RSD_sextants'
       ,COT  as  'Total_Cl'
     )
   )
   where 1 = 1
+--  and treatment_year = '2023/2024'
+--  and year_month in ('202304',
+--                     '202305',
+--                     '202306')
     and treatment_charge_band_comb  in  (
       'Band 1'
       ,'Band 2'
@@ -82,14 +92,48 @@ icbs  as  (
     )
 )
 
+--,ward_data as (
+--  select
+--    treatment_year                    as  financial_year
+--    ,treatment_year || ' ' || quarter as  financial_quarter
+--    ,'WARD'                           as  geography_type
+--    ,'N/A'                            as  geography_ods_code
+--    ,ward                             as  geography_ons_code
+--    ,'WARD NAME'                      as  geography_name
+--    ,adult_child_ind                  as  age_band
+--    ,treatment_charge_band_comb       as  dental_treatment_band
+--    ,measure
+--    ,sum(value)                       as  value
+--  from
+--    piv_fact
+--  where 1 = 1
+--  group by
+--    treatment_year
+--    ,treatment_year || ' ' || quarter 
+--    ,'WARD'                
+--    ,'N/A'                            
+--    ,ward 
+--    ,'WARD NAME'
+--    ,adult_child_ind                 
+--    ,treatment_charge_band_comb       
+--    ,measure
+--  order by
+--    treatment_year
+--    ,treatment_year || ' ' || quarter 
+--    ,ward
+--    ,adult_child_ind
+--    ,treatment_charge_band_comb       
+--    ,measure
+--)
+
 ,la_data  as  (
   select
     treatment_year                    as  financial_year
     ,treatment_year || ' ' || quarter as  financial_quarter
     ,'LOCAL_AUTHORITY'                as  geography_type
     ,'N/A'                            as  geography_ods_code
-    ,lad_code                         as  geography_ons_code
-    ,lad_name                         as  geography_name
+    ,laua                             as  geography_ons_code
+    ,'LA NAME'                        as  geography_name
     ,adult_child_ind                  as  age_band
     ,treatment_charge_band_comb       as  dental_treatment_band
     ,measure
@@ -102,15 +146,15 @@ icbs  as  (
     ,treatment_year || ' ' || quarter 
     ,'LOCAL_AUTHORITY'                
     ,'N/A'                            
-    ,lad_code                         
-    ,lad_name                         
+    ,laua 
+    ,'LA NAME'
     ,adult_child_ind                 
     ,treatment_charge_band_comb       
     ,measure
   order by
     treatment_year
     ,treatment_year || ' ' || quarter 
-    ,lad_code
+    ,laua
     ,adult_child_ind
     ,treatment_charge_band_comb       
     ,measure
@@ -121,33 +165,30 @@ icbs  as  (
     treatment_year                    as  financial_year
     ,treatment_year || ' ' || quarter as  financial_quarter
     ,'ICB'                            as  geography_type
-    ,commissioner_code                as  geography_ods_code
-    ,icbs.icb23cd                     as  geography_ons_code
-    ,commissioner_name                as  geography_name
+    ,pat_icb_cdh                      as  geography_ods_code
+    ,pat_icb                          as  geography_ons_code
+    ,pat_icb_nm                       as  geography_name
     ,adult_child_ind                  as  age_band
     ,treatment_charge_band_comb       as  dental_treatment_band
     ,measure
     ,sum(value)                       as  value
   from
     piv_fact  fact
-  inner join
-    icbs
-    on  fact.commissioner_code = icbs.icb23cdh
   where 1 = 1
   group by
     treatment_year
     ,treatment_year || ' ' || quarter 
     ,'ICB'                
-    ,commissioner_code                            
-    ,icbs.icb23cd                          
-    ,commissioner_name                         
+    ,pat_icb_cdh                            
+    ,pat_icb                           
+    ,pat_icb_nm                          
     ,adult_child_ind                 
     ,treatment_charge_band_comb       
     ,measure
   order by
     treatment_year
     ,treatment_year || ' ' || quarter 
-    ,commissioner_name
+    ,pat_icb
     ,adult_child_ind
     ,treatment_charge_band_comb       
     ,measure
@@ -158,39 +199,37 @@ icbs  as  (
     treatment_year                    as  financial_year
     ,treatment_year || ' ' || quarter as  financial_quarter
     ,'REGION'                         as  geography_type
-    ,region_code                      as  geography_ods_code
-    ,reg.nhser23cd                    as  geography_ons_code
-    ,region_name                      as  geography_name
+    ,'Unknown'                        as  geography_ods_code
+    ,pat_region                       as  geography_ons_code
+    ,'REGION NAME'                    as  geography_name
     ,adult_child_ind                  as  age_band
     ,treatment_charge_band_comb       as  dental_treatment_band
     ,measure
     ,sum(value)                       as  value
   from
     piv_fact  fact
-  inner join
-    regions reg
-    on  fact.region_code = reg.nhser23cdh
   where 1 = 1
   group by
     treatment_year
     ,treatment_year || ' ' || quarter 
     ,'REGION'                
-    ,region_code                            
-    ,reg.nhser23cd                          
-    ,region_name
+    ,pat_region  
+    ,'REGION NAME'
     ,adult_child_ind                 
     ,treatment_charge_band_comb       
     ,measure
   order by
     treatment_year
     ,treatment_year || ' ' || quarter
-    ,region_code
+    ,pat_region
     ,adult_child_ind
     ,treatment_charge_band_comb
     ,measure
 )
 
 ,union_tbl  as  (
+--  select  * from  ward_data
+--  union all
   select  * from  la_data
   union all
   select  * from  icb_data
@@ -211,4 +250,5 @@ select
   ,value
 from
   union_tbl
+  where 1=1
 ;

@@ -6,10 +6,10 @@
 
 #get lookups -------------------------------------------------------------------
 
-#collect ons code lookup from data warehouse
-ons_code_lookup <- dplyr::tbl(con,
-                              from = dbplyr::in_schema("OST", "ONS_CODES_LOOKUP_23"))|>
-  collect()
+#collect ONS code lookup from data warehouse if not already loaded into environment
+# ons_code_lookup <- dplyr::tbl(con,
+#                               from = dbplyr::in_schema("OST", "ONS_CODES_LOOKUP_23"))|>
+#   collect()
 
 #get lookups for LA, Ward, and Region, if not already loaded in environment
 # la_lookup<- get_la_lookup()
@@ -356,19 +356,19 @@ for(i in unique_years) {
     select(UID, everything())
   
   data.table::fwrite(year_data, 
-                     paste0("Y:\\Official Stats\\Dental\\2024_25\\csvs\\CSV outputs\\Geo Patient Activity csvs\\geo_pat_activity_",
+                     paste0("Y:\\Official Stats\\Dental\\2024_25\\csvs\\CSV outputs\\Geo Patient Activity (patient) csvs\\geo_pat_activity_",
                             substr(i, 1, 4),
                             "_",
                             substr(i, 8, 9),
                             ".csv"))
 }
 
-setwd("Y:\\Official Stats\\Dental\\2024_25\\csvs\\CSV outputs\\Geo Patient Activity csvs")
+setwd("Y:\\Official Stats\\Dental\\2024_25\\csvs\\CSV outputs\\Geo Patient Activity (patient) csvs")
 
 #get all geo data .csv files path name
 geo_csv_files <- list.files(pattern = "^geo_pat_activity.*\\.csv$",
                             full.names = TRUE)
 
 #save geo data to .zip
-zip("geo_patient_activity_201920_202425.zip",
+zip("geo_pat_activity_201920_202425.zip",
     files = c(geo_csv_files))
