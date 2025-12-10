@@ -55,52 +55,54 @@ regions_21_22 <- regions_21 |>
   rename(NHSER_NM = NHSER21NM)
 
 # populations (here NHSER codes are 2022)
-NHS_region_pop_by_age<- get_ICB_SICBL_NHSER_pop_age(link = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates/mid2011tomid2022integratedcareboards2023geography/sapeicb202320112022.xlsx",
+nhs_region_pop_by_age<- get_ICB_SICBL_NHSER_pop_age(link = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates/mid2011tomid2022integratedcareboards2023geography/sapeicb202320112022.xlsx",
                                                     "NHSER")
 
 # Using most recent available data to populate years without estimates
-NHS_region_pop_by_age_2324 <- NHS_region_pop_by_age |>
+nhs_region_pop_by_age_2324 <- nhs_region_pop_by_age |>
   dplyr::filter(FINANCIAL_YEAR == max(FINANCIAL_YEAR)) |>
   dplyr::mutate(FINANCIAL_YEAR = '2023/2024',
                 CALENDAR_YEAR = '2022')
 
-NHS_region_pop_by_age_2425 <- NHS_region_pop_by_age |>
+nhs_region_pop_by_age_2425 <- nhs_region_pop_by_age |>
   dplyr::filter(FINANCIAL_YEAR == max(FINANCIAL_YEAR)) |>
   dplyr::mutate(FINANCIAL_YEAR = '2024/2025',
                 CALENDAR_YEAR = '2022')
 
-NHS_region_pop_by_age_2526 <- NHS_region_pop_by_age |>
+nhs_region_pop_by_age_2526 <- nhs_region_pop_by_age |>
   dplyr::filter(FINANCIAL_YEAR == max(FINANCIAL_YEAR)) |>
   dplyr::mutate(FINANCIAL_YEAR = '2025/2026',
                 CALENDAR_YEAR = '2022')
 
-NHS_region_pop_by_age_fill <- NHS_region_pop_by_age |>
-  rbind(NHS_region_pop_by_age_2324, NHS_region_pop_by_age_2425, NHS_region_pop_by_age_2526)
+nhs_region_pop_by_age_fill <- nhs_region_pop_by_age |>
+  rbind(nhs_region_pop_by_age_2324, nhs_region_pop_by_age_2425, nhs_region_pop_by_age_2526)
 
 # --- ICB ---
 
-Sys.sleep(20)
-NHS_ICB_pop_by_age <- get_ICB_SICBL_NHSER_pop_age(link = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates/mid2011tomid2022integratedcareboards2023geography/sapeicb202320112022.xlsx",
+#set sys sleep delay if loop is failing due to frequency of requests
+#Sys.sleep(20)
+
+nhs_icb_pop_by_age <- get_ICB_SICBL_NHSER_pop_age(link = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates/mid2011tomid2022integratedcareboards2023geography/sapeicb202320112022.xlsx",
                                                   "ICB")
 
 # Using most recent available data to populate years without estimates
-NHS_ICB_pop_by_age_2324 <- NHS_ICB_pop_by_age |>
+nhs_icb_pop_by_age_2324 <- nhs_icb_pop_by_age |>
   dplyr::filter(FINANCIAL_YEAR == max(FINANCIAL_YEAR)) |>
   dplyr::mutate(FINANCIAL_YEAR = '2023/2024',
                 CALENDAR_YEAR = '2022')
 
-NHS_ICB_pop_by_age_2425 <- NHS_ICB_pop_by_age |>
+nhs_icb_pop_by_age_2425 <- nhs_icb_pop_by_age |>
   dplyr::filter(FINANCIAL_YEAR == max(FINANCIAL_YEAR)) |>
   dplyr::mutate(FINANCIAL_YEAR = '2024/2025',
                 CALENDAR_YEAR = '2022')
 
-NHS_ICB_pop_by_age_2526 <- NHS_ICB_pop_by_age |>
+nhs_icb_pop_by_age_2526 <- nhs_icb_pop_by_age |>
   dplyr::filter(FINANCIAL_YEAR == max(FINANCIAL_YEAR)) |>
   dplyr::mutate(FINANCIAL_YEAR = '2025/2026',
                 CALENDAR_YEAR = '2022')
 
-NHS_ICB_pop_by_age_fill <- NHS_ICB_pop_by_age |>
-  rbind(NHS_ICB_pop_by_age_2324, NHS_ICB_pop_by_age_2425, NHS_ICB_pop_by_age_2526)
+nhs_icb_pop_by_age_fill <- nhs_icb_pop_by_age |>
+  rbind(nhs_icb_pop_by_age_2324, nhs_icb_pop_by_age_2425, nhs_icb_pop_by_age_2526)
 
 
 # LOCAL AUTHORITY ---------------------------------------------------------
@@ -264,7 +266,7 @@ rename(GEOGRAPHY_ONS_CODE = NHSER22CD,
 GEOGRAPHY_ODS_CODE = NHSER21CDH,
 GEOGRAPHY_NAME = NHSER_NM) |>
 #Add in population data
-dplyr::left_join(NHS_region_pop_by_age_fill,
+dplyr::left_join(nhs_region_pop_by_age_fill,
 by = c("GEOGRAPHY_ONS_CODE" = "NHSER_CODE",
 "AGE_BAND" = "AGE_BAND",
 "FINANCIAL_YEAR" = "FINANCIAL_YEAR")) |>
@@ -318,7 +320,7 @@ rename(GEOGRAPHY_ONS_CODE = ICB,
 GEOGRAPHY_ODS_CODE = ICB23CDH,
 GEOGRAPHY_NAME = ICB23NM)|>
 #Add in population data
-dplyr::left_join(NHS_ICB_pop_by_age_fill,
+dplyr::left_join(nhs_icb_pop_by_age_fill,
 by = c("GEOGRAPHY_ONS_CODE" = "ICB_CODE",
 "AGE_BAND" = "AGE_BAND",
 "FINANCIAL_YEAR" = "FINANCIAL_YEAR")) |>
@@ -516,4 +518,3 @@ csv_files <- list.files(pattern = "^geo_dental_patients_seen_patient_location.*\
 #save geo data to .zip
 zip("geo_dental_patients_seen_patient_location_201920_202526.zip",
     files = c(csv_files))
-
