@@ -9,11 +9,13 @@
 #data for 2025/26 will only be a partial year, to 30/6/2025
 
 #Load required population data, if not already loaded into environment ---------
-# nhs_region_pop_by_age<- get_ICB_SICBL_NHSER_pop_age("NHSER")
+nhs_region_pop_by_age <- get_ICB_SICBL_NHSER_pop_age(link = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates/mid2011tomid2022integratedcareboards2023geography/sapeicb202320112022.xlsx",
+                                             location_measure = "NHSER")
 
-# icb_pop_by_age<- get_ICB_SICBL_NHSER_pop_age("ICB")
+icb_pop_by_age <- get_ICB_SICBL_NHSER_pop_age(link = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates/mid2011tomid2022integratedcareboards2023geography/sapeicb202320112022.xlsx",
+                            location_measure = "ICB")
 
-# la_pop_age <- get_la_pop_age()
+la_pop_age <- get_la_pop_age()
 
 #get lookups if not already loaded into environment
 #collect ons code lookup from DWH
@@ -31,28 +33,14 @@
 #   select(ICB23CDH, ICB23CD) |>
 #   unique()
 
-#years for new run of data -----------------------------------------------------
-first_year <- "2019/2020"
-last_year  <- "2025/2026"
-
-first_patients_seen_date <-
-  as.Date(paste(substr(first_year, 1, 4), "09", "30", sep = "-")) ## Sept 30th
-last_patients_seen_date  <-
-  as.Date(paste(substr(last_year, 6, 9),  "07", "01", sep = "-")) ## July 1st
-
-#connect to warehouse ----------------------------------------------------------
-# con <- nhsbsaR::con_nhsbsa(dsn = "FBS_8192k",
-#                            driver = "Oracle in OraClient19Home1",
-#                            "DWCP")
-
 #build time periods and contractor details from data warehouse -----------------
 tdim <- dplyr::tbl(
   con,
   from = dbplyr::in_schema("DIM", "DS_YEAR_END_REPORTING_PERIOD")
-) |> 
-  group_by(FINANCIAL_YEAR = TREATMENT_YEAR) |> 
+) |>
+  group_by(FINANCIAL_YEAR = TREATMENT_YEAR) |>
   summarise(PERIOD_START = min(YEAR_MONTH),
-            PERIOD_END = max(YEAR_MONTH)) |> 
+            PERIOD_END = max(YEAR_MONTH)) |>
   filter(between(FINANCIAL_YEAR, "2019/2020", "2025/2026"))
 
 ONS <- dplyr::tbl(con,
@@ -106,36 +94,6 @@ CONTRACTOR_DETAILS <- dplyr::tbl(con,
            "ONS_COUNTRY" = "ONS_COUNTRY",
            "YEAR_MONTH" = "YEAR_MONTH")
   )
-
-commissioner_dim <- dplyr::tbl(con,
-                               from = dbplyr::in_schema("DIM", "DS_COMMISSIONERS_DIM")) |>
-  mutate(
-    YEAR_MONTH = sql("LAST_DAY(TO_DATE(YEAR_MONTH, 'YYYYMM'))"),
-    FINANCIAL_YEAR = case_when(
-      YEAR_MONTH > as.Date("2019-03-31") &
-        YEAR_MONTH < as.Date("2020-04-01") ~ "2019/2020",
-      YEAR_MONTH > as.Date("2020-03-31") &
-        YEAR_MONTH < as.Date("2021-04-01") ~ "2020/2021",
-      YEAR_MONTH > as.Date("2021-03-31") &
-        YEAR_MONTH < as.Date("2022-04-01") ~ "2021/2022",
-      YEAR_MONTH > as.Date("2022-03-31") &
-        YEAR_MONTH < as.Date("2023-04-01") ~ "2022/2023",
-      YEAR_MONTH > as.Date("2023-03-31") &
-        YEAR_MONTH < as.Date("2024-04-01") ~ "2023/2024",
-      YEAR_MONTH > as.Date("2024-03-31") &
-        YEAR_MONTH < as.Date("2025-04-01") ~ "2024/2025",
-      YEAR_MONTH > as.Date("2025-03-31") &
-        YEAR_MONTH < as.Date("2025-07-01") ~ "2025/2026"
-    )
-  ) |>
-  filter(FINANCIAL_YEAR %in% c("2019/2020", "2020/2021", "2021/2022", "2022/2023", "2023/2024", "2024/2025","2025/2026")) |>
-  select(FINANCIAL_YEAR,
-         COMMISSIONER_CODE,
-         COMMISSIONER_TYPE,
-         COMMISSIONER_NAME) |>
-  distinct() |> 
-  collect()
-
 
 DS_CONT_DETAILS_LTST_DIM <- dplyr::tbl(con,
                                        from = dbplyr::in_schema("OST", "DS_CONT_DETAILS_LTST_DIM")) |>
@@ -222,11 +180,6 @@ pat_seen_data_region_adult <-
   relocate(
     "GEOGRAPHY_ONS_CODE", .after = "GEOGRAPHY_ODS_CODE" 
   ) |>
-  # filter(between(
-  #   PSEEN_END_DATE,
-  #   first_patients_seen_date,
-  #   last_patients_seen_date
-  # )) |>
   mutate(
     PSEEN_END_DATE = as.Date(PSEEN_END_DATE)
   ) |>
@@ -302,11 +255,6 @@ pat_seen_data_region_child <-
   relocate(
     "GEOGRAPHY_ONS_CODE", .after = "GEOGRAPHY_ODS_CODE" 
   ) |>
-  # filter(between(
-  #   PSEEN_END_DATE,
-  #   first_patients_seen_date,
-  #   last_patients_seen_date
-  # )) |>
   mutate(
     PSEEN_END_DATE = as.Date(PSEEN_END_DATE)
   ) |>
@@ -324,7 +272,7 @@ pat_seen_data_region_child <-
     PSEEN_END_DATE 
   ) |>
   mutate(
-    POPULATION = na.locf(POPULATION)
+    POPULATION = zoo::na.locf(POPULATION)
   ) 
 
 # ICB data ---------------------------------------------------------------------
@@ -414,7 +362,7 @@ pat_seen_data_icb_adult <-
     PSEEN_END_DATE 
   ) |>
   mutate(
-    POPULATION = na.locf(POPULATION)
+    POPULATION = zoo::na.locf(POPULATION)
   )
 
 pat_seen_data_icb_child <- 
@@ -489,7 +437,7 @@ pat_seen_data_icb_child <-
     PSEEN_END_DATE 
   ) |>
   mutate(
-    POPULATION = na.locf(POPULATION)
+    POPULATION = zoo::na.locf(POPULATION)
   )
 # LA data ----------------------------------------------------------------------
 
@@ -504,7 +452,8 @@ pat_seen_data_la_adult <-
   dplyr::tbl(con,
              from = dbplyr::in_schema("AML", "DS_PATIENT_LIST_24M")) |>
   filter(ONS_COUNTRY == "E92000001",
-         AGE_AT_PERIOD_END > 17
+         AGE_AT_PERIOD_END > 17,
+         
   ) |>
   mutate(
     PATIENT_TYPE = "Adult",
@@ -569,7 +518,7 @@ pat_seen_data_la_adult <-
     PSEEN_END_DATE 
   ) |>
   mutate(
-    POPULATION = na.locf(POPULATION)
+    POPULATION = zoo::na.locf(POPULATION)
   ) 
 
 pat_seen_data_la_child<- 
@@ -636,7 +585,7 @@ pat_seen_data_la_child<-
     PSEEN_END_DATE 
   ) |>
   mutate(
-    POPULATION = na.locf(POPULATION)
+    POPULATION = zoo::na.locf(POPULATION)
   ) 
 
 # Combine all data into one -----------------------------------------------
